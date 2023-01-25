@@ -1,0 +1,33 @@
+{
+	"name": "api-data-warehouse-reader-get-agreements-communication",
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
+		"urlPath": "/dataWarehouseReaderMock/agreements",
+		"method": "GET",
+		"queryParameters": {
+			"category": {
+				"equalTo": "COMMUNICATION"
+			}
+		}
+	},
+	"response": {
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"status": 200,
+		"jsonBody": {
+			"agreements": [],
+			"_meta": {
+				"page": 1,
+				"limit": 100,
+				"count": 0,
+				"totalRecords": 0,
+				"totalPages": 0
+			}
+		}
+	}
+}

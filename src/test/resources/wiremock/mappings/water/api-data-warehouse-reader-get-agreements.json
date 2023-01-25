@@ -1,0 +1,45 @@
+{
+	"name": "api-data-warehouse-reader-get-agreements-water",
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
+		"urlPath": "/dataWarehouseReaderMock/agreements",
+		"method": "GET",
+		"queryParameters": {
+			"category": {
+				"equalTo": "WATER"
+			}
+		}
+	},
+	"response": {
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"status": 200,
+		"jsonBody": {
+			"agreements": [
+				{
+					"customerNumber": "887462",
+					"facilityId": "7113401058",
+					"category": "WATER",
+					"billingId": "2132958",
+					"agreementId": "148956",
+					"description": "Vatten och avlopp",
+					"mainAgreement": true,
+					"binding": false,
+					"fromDate": "2022-07-14"
+				}
+			],
+			"_meta": {
+				"page": 1,
+				"limit": 100,
+				"count": 1,
+				"totalRecords": 1,
+				"totalPages": 1
+			}
+		}
+	}
+}

@@ -1,0 +1,29 @@
+version: "3"
+services:
+  ms-agreement-sandbox:
+    # TODO add correct name matching nexus repository also add build number parameter as suffix
+    container_name: ms-agreement-sandbox
+    image: 'ms-agreement:sandbox'
+    links:
+      - 'ms-agreement-wiremock-sandbox:wiremock'
+    restart: always
+    build:
+      context: ../../..
+      dockerfile: src/main/docker/Dockerfile
+      #TODO Check port to use in sandbox-environment
+    ports:
+      - '9725:8080'
+    environment:
+      SPRING_PROFILES_ACTIVE: 'sandbox'
+    depends_on:
+      - ms-agreement-wiremock-sandbox
+      
+  ms-agreement-wiremock-sandbox:
+    container_name: ms-agreement-wiremock-sandbox
+    image: wiremock/wiremock
+    restart: always
+    expose:
+      - '8080'
+    volumes:
+      - $PWD/src/test/resources/wiremock:/home/wiremock
+      

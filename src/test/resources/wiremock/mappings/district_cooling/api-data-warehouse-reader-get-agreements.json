@@ -1,0 +1,57 @@
+{
+	"name": "api-data-warehouse-reader-get-agreements-district-cooling",
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
+		"urlPath": "/dataWarehouseReaderMock/agreements",
+		"method": "GET",
+		"queryParameters": {
+			"category": {
+				"equalTo": "DISTRICT_COOLING"
+			}
+		}
+	},
+	"response": {
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"status": 200,
+		"jsonBody": {
+			"agreements": [
+				{
+					"customerNumber": "691268",
+					"facilityId": "7261218502",
+					"category": "DISTRICT_COOLING",
+					"billingId": "2133160",
+					"agreementId": "152689",
+					"description": "Kovland",
+					"mainAgreement": true,
+					"binding": false,
+					"fromDate": "2018-05-01",
+					"toDate": "2019-04-30"
+				},
+				{
+					"customerNumber": "691268",
+					"facilityId": "7261218502",
+					"category": "DISTRICT_COOLING",
+					"billingId": "2133160",
+					"agreementId": "484230",
+					"description": "Fjärrkyla_2",
+					"mainAgreement": true,
+					"binding": false,
+					"fromDate": "2019-05-01"
+				}
+			],
+			"_meta": {
+				"page": 1,
+				"limit": 100,
+				"count": 2,
+				"totalRecords": 2,
+				"totalPages": 1
+			}
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"agreementParties": [
+		{
+			"customerId": "703421",
+			"agreements": [
+				{
+					"agreementId": "513476",
+					"billingId": "2180429",
+					"category": "WASTE_MANAGEMENT",
+					"description": "Avfall",
+					"facilityId": "132220",
+					"mainAgreement": true,
+					"binding": false,
+					"fromDate": "2022-01-01",
+					"active": true
+				}
+			]
+		}
+	]
+}

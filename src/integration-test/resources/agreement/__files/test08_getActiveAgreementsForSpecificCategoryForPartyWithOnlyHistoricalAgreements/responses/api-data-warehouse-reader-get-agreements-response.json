@@ -1,0 +1,35 @@
+{
+	"agreements": [
+		{
+			"customerNumber": "113851",
+			"facilityId": "7112702055",
+			"category": "DISTRICT_COOLING",
+			"billingId": "2134123",
+			"agreementId": "139759",
+			"description": "Matfors",
+			"mainAgreement": true,
+			"binding": false,
+			"fromDate": "2017-09-01",
+			"toDate": "2017-12-01"
+		},
+		{
+			"customerNumber": "113851",
+			"facilityId": "7112702055",
+			"category": "DISTRICT_COOLING",
+			"billingId": "2134123",
+			"agreementId": "139760",
+			"description": "Rörligt pris Provapå",
+			"mainAgreement": true,
+			"binding": false,
+			"fromDate": "2017-09-01",
+			"toDate": "2017-12-01"
+		}
+	],
+	"_meta": {
+		"page": 1,
+		"limit": 100,
+		"count": 2,
+		"totalRecords": 2,
+		"totalPages": 1
+	}
+}
