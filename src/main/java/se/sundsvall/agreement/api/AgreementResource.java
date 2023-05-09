@@ -5,8 +5,6 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,8 +33,6 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 @Tag(name = "Agreement", description = "Agreement resources")
 public class AgreementResource {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AgreementResource.class);
-
 	@Autowired
 	private AgreementService agreementService;
 
@@ -48,11 +44,10 @@ public class AgreementResource {
 	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	public ResponseEntity<AgreementResponse> getAgreementsByCategoryAndFacilityId(
-		@Parameter(name = "category", description = "Agreement category", example = "ELECTRICITY") @PathVariable(name = "category") Category category,
-		@Parameter(name = "facilityId", description = "Id for the facility", example = "1471222") @PathVariable(name = "facilityId") String facilityId,
-		@Parameter(name = "onlyActive", description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true") @RequestParam(name = "onlyActive", defaultValue = "true") boolean onlyActive) {
-
-		LOGGER.debug("Received request to getAgreementsByCategoryAndFacilityId(): category='{}', facilityId='{}', , onlyActive='{}'", category, facilityId, onlyActive);
+		@Parameter(name = "category", description = "Agreement category", example = "ELECTRICITY") @PathVariable(name = "category") final Category category,
+		@Parameter(name = "facilityId", description = "Id for the facility", example = "1471222") @PathVariable(name = "facilityId") final String facilityId,
+		@Parameter(name = "onlyActive", description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true") @RequestParam(name = "onlyActive",
+			defaultValue = "true") final boolean onlyActive) {
 
 		return ResponseEntity.ok(agreementService.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive));
 	}
@@ -65,11 +60,11 @@ public class AgreementResource {
 	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	public ResponseEntity<AgreementResponse> getAgreementsForPartyId(
-		@Parameter(name = "partyId", description = "Party-ID", required = true, example = "81471222-5798-11e9-ae24-57fa13b361e1") @ValidUuid @PathVariable(name = "partyId") String partyId,
-		@Parameter(name = "category", description = "Optional list of one or more agreement categories to be included in response, default is to return all agreements connected to the party-ID") @RequestParam(value = "category", defaultValue = "") List<Category> categories,
-		@Parameter(name = "onlyActive", description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true") @RequestParam(name = "onlyActive", defaultValue = "true") boolean onlyActive) {
-
-		LOGGER.debug("Received request to getAgreementsForPartyId(): partyId='{}', categories='{}'", partyId, categories);
+		@Parameter(name = "partyId", description = "Party-ID", required = true, example = "81471222-5798-11e9-ae24-57fa13b361e1") @ValidUuid @PathVariable(name = "partyId") final String partyId,
+		@Parameter(name = "category", description = "Optional list of one or more agreement categories to be included in response, default is to return all agreements connected to the party-ID") @RequestParam(value = "category",
+			defaultValue = "") final List<Category> categories,
+		@Parameter(name = "onlyActive", description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true") @RequestParam(name = "onlyActive",
+			defaultValue = "true") final boolean onlyActive) {
 
 		return ResponseEntity.ok(agreementService.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
 	}
