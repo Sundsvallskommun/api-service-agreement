@@ -1,0 +1,33 @@
+{
+	"name": "api-data-warehouse-reader-get-agreements-3",
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
+		"urlPath": "/dataWarehouseReaderMock/agreements",
+		"method": "GET",
+		"queryParameters": {
+			"category": {
+				"equalTo": "DISTRICT_COOLING"
+			},
+			"facilityId": {
+				"equalTo": "7112702050"
+			},
+			"page": {
+				"equalTo": "3"
+			},
+			"limit": {
+				"equalTo": "1000"
+			}
+		}
+	},
+	"response": {
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"status": 200,
+		"bodyFileName": "test12_getFacilitysAgreementsMultipleCalls/responses/api-data-warehouse-reader-get-agreements-3-response.json"
+	}
+}

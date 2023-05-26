@@ -1,0 +1,22 @@
+{
+	"agreements": [
+		{
+			"customerNumber": "703421",
+			"facilityId": "132220",
+			"category": "WASTE_MANAGEMENT",
+			"billingId": "2180429",
+			"agreementId": "513476",
+			"description": "Avfall",
+			"mainAgreement": true,
+			"binding": false,
+			"fromDate": "2022-01-01"
+		}
+	],
+	"_meta": {
+		"page": 1,
+		"limit": 100,
+		"count": 1,
+		"totalRecords": 3,
+		"totalPages": 3
+	}
+}
