@@ -17,8 +17,16 @@ import se.sundsvall.agreement.integration.datawarehousereader.configuration.Data
 public interface DataWarehouseReaderClient {
 
 	@GetMapping(path = "agreements", produces = APPLICATION_JSON_VALUE)
-	AgreementResponse getAgreementsByCategoryAndFacility(@RequestParam(value = "category") Category category, @RequestParam(value = "facilityId") String facilityId);
+	AgreementResponse getAgreementsByCategoryAndFacility(
+		@RequestParam(value = "category") Category category,
+		@RequestParam(value = "facilityId") String facilityId,
+		@RequestParam(value = "page") int page,
+		@RequestParam(value = "limit") int limit);
 
 	@GetMapping(path = "agreements", produces = APPLICATION_JSON_VALUE)
-	AgreementResponse getAgreementsByPartyIdAndCategories(@RequestParam(value = "partyId") String partyId, @RequestParam(value = "category") List<Category> categories);
+	AgreementResponse getAgreementsByPartyIdAndCategories(
+		@RequestParam(value = "partyId") String partyId,
+		@RequestParam(value = "category") List<Category> categories,
+		@RequestParam(value = "page") int page,
+		@RequestParam(value = "limit") int limit);
 }

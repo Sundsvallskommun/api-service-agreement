@@ -1,0 +1,35 @@
+{
+	"agreements": [
+		{
+			"customerNumber": "692253",
+			"facilityId": "7112702050",
+			"category": "DISTRICT_COOLING",
+			"billingId": "2134243",
+			"agreementId": "485107",
+			"description": "Fjärrkyla_2",
+			"mainAgreement": true,
+			"binding": false,
+			"fromDate": "2019-05-01",
+			"toDate": "2019-10-06"
+		},
+		{
+			"customerNumber": "698815",
+			"facilityId": "7112702050",
+			"category": "DISTRICT_COOLING",
+			"billingId": "2145103",
+			"agreementId": "491917",
+			"description": "Fjärrkyla_2",
+			"mainAgreement": true,
+			"binding": false,
+			"fromDate": "2019-10-22",
+			"toDate": "2020-04-30"
+		}
+	],
+	"_meta": {
+		"page": 2,
+		"limit": 100,
+		"count": 2,
+		"totalRecords": 5,
+		"totalPages": 3
+	}
+}
