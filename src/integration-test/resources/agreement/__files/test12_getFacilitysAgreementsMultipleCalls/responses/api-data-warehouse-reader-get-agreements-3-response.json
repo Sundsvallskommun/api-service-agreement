@@ -1,0 +1,22 @@
+{
+	"agreements": [
+		{
+			"customerNumber": "698815",
+			"facilityId": "7112702050",
+			"category": "DISTRICT_COOLING",
+			"billingId": "2145103",
+			"agreementId": "491919",
+			"description": "Rörligt pris Provapå",
+			"mainAgreement": true,
+			"binding": false,
+			"fromDate": "2020-05-01"
+		}
+	],
+	"_meta": {
+		"page": 3,
+		"limit": 100,
+		"count": 1,
+		"totalRecords": 5,
+		"totalPages": 3
+	}
+}

@@ -138,4 +138,26 @@ class AgreementIT extends AbstractAppTest {
 			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
+
+	@Test
+	void test12_getFacilitysAgreementsMultipleCalls() throws Exception {
+
+		setupCall()
+			.withServicePath("/agreements/DISTRICT_COOLING/7112702050?onlyActive=false")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test13_getAgreementsForPartyMultipleCalls() throws Exception {
+
+		setupCall()
+			.withServicePath("/agreements/485F409A-CB65-47EE-968A-33736365E139?onlyActive=false")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
 }

@@ -26,18 +26,17 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.ThrowableProblem;
 
-import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.api.model.Agreement;
 import se.sundsvall.agreement.api.model.AgreementParty;
 import se.sundsvall.agreement.api.model.AgreementResponse;
-import se.sundsvall.agreement.integration.datawarehousereader.DataWarehouseReaderClient;
+import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.service.mapper.AgreementMapper;
 
 @ExtendWith(MockitoExtension.class)
 class AgreementServiceTest {
 
 	@Mock
-	private DataWarehouseReaderClient dataWarehouseReaderClientMock;
+	private AgreementPartyProvider agreementPartyProviderMock;
 
 	@Mock
 	private generated.se.sundsvall.datawarehousereader.AgreementResponse agreementResponseMock;
@@ -58,8 +57,7 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategory(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByCategoryAndFacility(generated.se.sundsvall.datawarehousereader.Category.WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 			when(agreementMock.isActive()).thenReturn(true);
 
@@ -67,10 +65,10 @@ class AgreementServiceTest {
 			AgreementResponse response = agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, true);
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategory(WASTE_MANAGEMENT));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyMock, times(2)).getAgreements();
 			verify(agreementMock).isActive();
+			verify(agreementPartyProviderMock).getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId);
 			
 			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1);
 			assertThat(response.getAgreementParties()).extracting(AgreementParty::getAgreements).asList().hasSize(1);
@@ -84,15 +82,13 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategory(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByCategoryAndFacility(generated.se.sundsvall.datawarehousereader.Category.WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 
 			// Call
 			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, true));
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategory(WASTE_MANAGEMENT));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyMock, times(2)).getAgreements();
 			verify(agreementMock).isActive();
@@ -111,15 +107,13 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategory(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByCategoryAndFacility(generated.se.sundsvall.datawarehousereader.Category.WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 
 			// Call
 			AgreementResponse response = agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, false);
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategory(WASTE_MANAGEMENT));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verifyNoInteractions(agreementPartyMock, agreementMock);
 			
@@ -134,14 +128,12 @@ class AgreementServiceTest {
 		
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toCategory(any())).thenCallRealMethod();
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(any())).thenReturn(emptyList());
 
 			// Call
 			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, false));
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategory(WASTE_MANAGEMENT));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(any()));
 			verifyNoInteractions(agreementPartyMock, agreementMock);
 			
@@ -161,8 +153,7 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategories(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 			when(agreementMock.isActive()).thenReturn(true);
 
@@ -170,7 +161,6 @@ class AgreementServiceTest {
 			AgreementResponse response = agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive);
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategories(filters));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyMock, times(2)).getAgreements();
 			verify(agreementMock).isActive();
@@ -189,15 +179,13 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategories(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 
 			// Call
 			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive));
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategories(filters));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyMock, times(2)).getAgreements();
 			verify(agreementMock).isActive();
@@ -218,15 +206,13 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategories(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 
 			// Call
 			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive));
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategories(filters));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyMock, times(2)).getAgreements();
 			verify(agreementMock).isActive();
@@ -247,15 +233,13 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			agreementMapperMock.when(() -> AgreementMapper.toCategories(any())).thenCallRealMethod();
-			when(dataWarehouseReaderClientMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
+			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
 			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
 
 			// Call
 			AgreementResponse response = agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive);
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategories(filters));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyMock, never()).getAgreements();
 			verify(agreementMock, never()).isActive();
@@ -272,14 +256,12 @@ class AgreementServiceTest {
 		
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toCategories(any())).thenCallRealMethod();
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(any())).thenReturn(emptyList());
 
 			// Call
 			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, true));
 
 			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toCategories(filters));
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(any()));
 			verifyNoInteractions(agreementPartyMock, agreementMock);
 			

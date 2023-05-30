@@ -1,0 +1,23 @@
+{
+	"agreements": [
+		{
+			"customerNumber": "703421",
+			"facilityId": "735999109223205905",
+			"category": "ELECTRICITY",
+			"billingId": "2179863",
+			"agreementId": "512843",
+			"description": "Säkringsabonnemang",
+			"mainAgreement": true,
+			"binding": false,
+			"bindingRule": "B00-U00",
+			"fromDate": "2022-01-04"
+		}
+	],
+	"_meta": {
+		"page": 2,
+		"limit": 100,
+		"count": 1,
+		"totalRecords": 3,
+		"totalPages": 3
+	}
+}
