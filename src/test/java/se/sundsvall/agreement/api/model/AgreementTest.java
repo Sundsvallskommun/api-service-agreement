@@ -1,5 +1,11 @@
 package se.sundsvall.agreement.api.model;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.Random;
+
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
@@ -12,12 +18,6 @@ import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.time.LocalDate;
-import java.util.Random;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 class AgreementTest {
 
@@ -38,6 +38,7 @@ class AgreementTest {
 
 	@Test
 	void testBuilderMethods() {
+		final var customerId = "customerId";
 		final var active = true;
 		final var agreementId = "agreementId";
 		final var billingId = "billingId";
@@ -51,6 +52,7 @@ class AgreementTest {
 		final var toDate = MAX;
 
 		final var agreement = Agreement.create()
+			.withCustomerId(customerId)
 			.withActive(active)
 			.withAgreementId(agreementId)
 			.withBillingId(billingId)
@@ -64,6 +66,7 @@ class AgreementTest {
 			.withToDate(toDate);
 
 		assertThat(agreement).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(agreement.getCustomerId()).isEqualTo(customerId);
 		assertThat(agreement.isActive()).isEqualTo(active);
 		assertThat(agreement.getAgreementId()).isEqualTo(agreementId);
 		assertThat(agreement.getBillingId()).isEqualTo(billingId);

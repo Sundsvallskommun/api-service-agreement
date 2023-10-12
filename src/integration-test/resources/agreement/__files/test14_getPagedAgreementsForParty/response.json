@@ -1,0 +1,37 @@
+{
+  "agreements": [
+    {
+      "agreementId": "512840",
+      "billingId": "2179883",
+      "category": "ELECTRICITY_TRADE",
+      "customerId": "703421",
+      "description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
+      "facilityId": "735999109223205905",
+      "mainAgreement": true,
+      "binding": false,
+      "bindingRule": "Anvisat, 14 dagars uppsägning",
+      "fromDate": "2022-01-04",
+      "toDate": "2022-03-13",
+      "active": false
+    },
+    {
+      "agreementId": "513476",
+      "billingId": "2180429",
+      "category": "WASTE_MANAGEMENT",
+      "customerId": "703421",
+      "description": "Avfall",
+      "facilityId": "132220",
+      "mainAgreement": true,
+      "binding": false,
+      "fromDate": "2022-01-01",
+      "active": true
+    }
+  ],
+  "_meta": {
+    "count": 1,
+    "limit": 100,
+    "page": 1,
+    "totalPages": 1,
+    "totalRecords": 2
+  }
+}

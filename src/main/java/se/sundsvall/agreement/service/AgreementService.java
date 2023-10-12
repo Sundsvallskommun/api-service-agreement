@@ -1,19 +1,21 @@
 package se.sundsvall.agreement.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.zalando.problem.Problem;
+import se.sundsvall.agreement.api.model.AgreementParameters;
+import se.sundsvall.agreement.api.model.AgreementResponse;
+import se.sundsvall.agreement.api.model.Category;
+import se.sundsvall.agreement.api.model.PagedAgreementResponse;
+import se.sundsvall.dept44.models.api.paging.PagingMetaData;
+
+import java.util.List;
+
 import static java.lang.String.format;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreementParties;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-
-import se.sundsvall.agreement.api.model.AgreementParty;
-import se.sundsvall.agreement.api.model.AgreementResponse;
-import se.sundsvall.agreement.api.model.Category;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreements;
 
 @Service
 public class AgreementService {
@@ -46,5 +48,24 @@ public class AgreementService {
 		}
 
 		return response;
+	}
+
+	public PagedAgreementResponse getPagedAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, AgreementParameters parameters) {
+		var response = agreementPartyProvider.getAgreementsByPartyIdAndCategories(
+			partyId,
+			categories,
+			parameters.getPage(),
+			parameters.getLimit(),
+			parameters.isOnlyActive() ? true : null,
+			true);
+
+		return PagedAgreementResponse.create()
+			.withAgreements(toAgreements(response))
+			.withMetaData(PagingMetaData.create()
+				.withPage(response.getMeta().getPage())
+				.withLimit(response.getMeta().getLimit())
+				.withCount(response.getMeta().getCount())
+				.withTotalRecords(response.getMeta().getTotalRecords())
+				.withTotalPages(response.getMeta().getTotalPages()));
 	}
 }

@@ -1,5 +1,17 @@
 package se.sundsvall.agreement.service.mapper;
 
+import generated.se.sundsvall.datawarehousereader.Agreement;
+import generated.se.sundsvall.datawarehousereader.Category;
+import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import se.sundsvall.agreement.api.model.AgreementParty;
+
+import java.time.LocalDate;
+import java.util.List;
+
 import static java.time.LocalDate.now;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,23 +22,10 @@ import static se.sundsvall.agreement.api.model.Category.ELECTRICITY;
 import static se.sundsvall.agreement.api.model.Category.ELECTRICITY_TRADE;
 import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 import static se.sundsvall.agreement.api.model.Category.WATER;
-import static se.sundsvall.agreement.service.mapper.AgreementMapper.isActiveAgreement;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreementParties;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreements;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategories;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import generated.se.sundsvall.datawarehousereader.Agreement;
-import generated.se.sundsvall.datawarehousereader.Category;
-import se.sundsvall.agreement.api.model.AgreementParty;
 
 class AgreementMapperTest {
 
@@ -63,6 +62,28 @@ class AgreementMapperTest {
 		assertThat(toCategory(WASTE_MANAGEMENT)).isEqualTo(Category.WASTE_MANAGEMENT);
 		assertThat(toCategory(WATER)).isEqualTo(Category.WATER);
 	}
+
+	@Test
+	void testToAgreementsWhenNull() {
+		assertThat(toAgreements(null)).isNotNull().isEmpty();
+	}
+
+	@Test
+	void testToAgreementsWhenResponseEmpty() {
+		assertThat(toAgreements(createResponse(0))).isNotNull().isEmpty();
+	}
+
+	@Test
+	void testToAgreements() {
+		var agreementSize = 2;
+		var agreements = toAgreements(createResponse(agreementSize));
+
+		assertThat(agreements).isNotNull().hasSize(agreementSize);
+		for (int i=0; i<agreementSize; i++) {
+			assertAgreementValues(agreements.get(i), i, false, true, i % 2 == 0, now().plusYears(i));
+			assertThat(agreements.get(i).getCustomerId()).isEqualTo(CUSTOMER_ID + "0");
+		}
+	}
 	
 	@Test
 	void testToAgreementPartiesWhenNull() {
@@ -85,7 +106,7 @@ class AgreementMapperTest {
 		
 		assertThat(agreementParty).isNotNull().extracting(AgreementParty::getAgreements).asList().hasSize(agreementSize);
 		for (int i=0; i<agreementSize; i++) {
-			assertAgreementValues(agreementParty.getAgreements().get(i), i, false, true, true, now().plusYears(i));
+			assertAgreementValues(agreementParty.getAgreements().get(i), i, false, true, i % 2 == 0, now().plusYears(i));
 		}
 	}
 
@@ -99,7 +120,7 @@ class AgreementMapperTest {
 			assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + i);
 			
 			assertThat(agreementParty).extracting(AgreementParty::getAgreements).asList().hasSize(1);
-			assertAgreementValues(agreementParty.getAgreements().get(0), i, true, false, true, now().plusYears(i));
+			assertAgreementValues(agreementParty.getAgreements().get(0), i, true, false, i % 2 == 0, now().plusYears(i));
 		}
 	}
 	
@@ -116,7 +137,7 @@ class AgreementMapperTest {
 			assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + i);
 			
 			assertThat(agreementParty).extracting(AgreementParty::getAgreements).asList().hasSize(1);
-			assertAgreementValues(agreementParty.getAgreements().get(0), i, true, false, false, now().minusDays(1));
+			assertAgreementValues(agreementParty.getAgreements().get(0), i, true, false, i % 2 == 0, now().minusDays(1));
 		}
 	}
 
@@ -144,17 +165,6 @@ class AgreementMapperTest {
 		assertThat(agreement.getFromDate()).isEqualTo(now().minusYears(i));
 		assertThat(agreement.isMainAgreement()).isEqualTo(mainAgreement);
 		assertThat(agreement.getToDate()).isEqualTo(toDate);
-	}
-	
-	@Test
-	void testIsActiveAgreement() {
-		assertThat(isActiveAgreement(new Agreement())).isFalse();
-		assertThat(isActiveAgreement(new Agreement().fromDate(now().plusDays(1)))).isFalse();
-		assertThat(isActiveAgreement(new Agreement().fromDate(now()))).isTrue();
-		assertThat(isActiveAgreement(new Agreement().fromDate(now().minusDays(1)))).isTrue();
-		assertThat(isActiveAgreement(new Agreement().fromDate(now()).toDate(now().minusDays(1)))).isFalse();
-		assertThat(isActiveAgreement(new Agreement().fromDate(now()).toDate(now()))).isTrue();
-		assertThat(isActiveAgreement(new Agreement().fromDate(now()).toDate(now().plusDays(1)))).isTrue();
 	}
 	
 	@ParameterizedTest
@@ -195,7 +205,8 @@ class AgreementMapperTest {
 			.fromDate(now().minusYears(i))
 			.mainAgreement(mainAgreement)
 			.partyId(PARTY_ID + (sameCustomer ? 0 : i))
-			.toDate(now().plusYears(i)));
+			.toDate(now().plusYears(i))
+			.active(i % 2 == 0));
 		}
 		
 		return response;

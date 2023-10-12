@@ -1,30 +1,30 @@
 package se.sundsvall.agreement.service;
 
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import generated.se.sundsvall.datawarehousereader.Agreement;
+import generated.se.sundsvall.datawarehousereader.AgreementResponse;
 import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import generated.se.sundsvall.datawarehousereader.Agreement;
-import generated.se.sundsvall.datawarehousereader.AgreementResponse;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.integration.datawarehousereader.DataWarehouseReaderClient;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 
 @ExtendWith(MockitoExtension.class)
 class AgreementPartyProviderTest {
@@ -125,5 +125,28 @@ class AgreementPartyProviderTest {
 		verify(dataWarehouseReaderClientMock).getAgreementsByPartyIdAndCategories(partyId, emptyList(), 3, 1000, null);
 		verifyNoMoreInteractions(dataWarehouseReaderClientMock);
 		assertThat(response).isNotNull().extracting(AgreementResponse::getAgreements).asList().hasSize(3).hasSameElementsAs(List.of(agreementMock, agreementMock, agreementMock));
+	}
+
+	@Test
+	void getAgreementsByPartyIdAndCategoriesPaged() {
+		final var partyId = "partyId";
+		final List<Category> categories = List.of(WASTE_MANAGEMENT);
+		final var page = 2;
+		final var limit = 13;
+		final var active = Boolean.TRUE;
+
+		// Setup mocks
+		when(dataWarehouseReaderClientMock.getAgreementsByPartyIdAndCategories(eq(partyId), any(), anyInt(), anyInt(), any())).thenReturn(agreementResponseMock);
+
+		// Call
+		var response = agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories, page, limit, active, true);
+
+		verify(dataWarehouseReaderClientMock).getAgreementsByPartyIdAndCategories(
+			same(partyId),
+			eq(List.of(generated.se.sundsvall.datawarehousereader.Category.WASTE_MANAGEMENT)),
+			eq(page),
+			eq(limit),
+			same(active));
+		assertThat(response).isSameAs(agreementResponseMock);
 	}
 }
