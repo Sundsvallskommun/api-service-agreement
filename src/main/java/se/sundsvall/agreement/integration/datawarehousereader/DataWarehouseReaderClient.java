@@ -18,15 +18,17 @@ public interface DataWarehouseReaderClient {
 
 	@GetMapping(path = "agreements", produces = APPLICATION_JSON_VALUE)
 	AgreementResponse getAgreementsByCategoryAndFacility(
-		@RequestParam(value = "category") Category category,
-		@RequestParam(value = "facilityId") String facilityId,
-		@RequestParam(value = "page") int page,
-		@RequestParam(value = "limit") int limit);
+		@RequestParam("category") Category category,
+		@RequestParam("facilityId") String facilityId,
+		@RequestParam("page") int page,
+		@RequestParam("limit") int limit,
+		@RequestParam("active") Boolean active);
 
 	@GetMapping(path = "agreements", produces = APPLICATION_JSON_VALUE)
 	AgreementResponse getAgreementsByPartyIdAndCategories(
-		@RequestParam(value = "partyId") String partyId,
-		@RequestParam(value = "category") List<Category> categories,
-		@RequestParam(value = "page") int page,
-		@RequestParam(value = "limit") int limit);
+		@RequestParam("partyId") String partyId,
+		@RequestParam("category") List<Category> categories,
+		@RequestParam("page") int page,
+		@RequestParam("limit") int limit,
+		@RequestParam("active") Boolean active);
 }

@@ -18,6 +18,7 @@ import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
 import java.time.LocalDate;
 import java.util.List;
 
+import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -25,7 +26,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import generated.se.sundsvall.datawarehousereader.Agreement;
 import generated.se.sundsvall.datawarehousereader.Category;
-import generated.se.sundsvall.datawarehousereader.MetaData;
 import se.sundsvall.agreement.api.model.AgreementParty;
 
 class AgreementMapperTest {
@@ -178,7 +178,7 @@ class AgreementMapperTest {
 	 * Utility method returning dataWarehouseReader response with list of size x agreements with different data depending on incoming settings
 	 */
 	private static generated.se.sundsvall.datawarehousereader.AgreementResponse createResponse(int size, boolean sameCustomer, boolean binding, boolean mainAgreement) {
-		MetaData meta = new MetaData().totalRecords(Long.valueOf(size));
+		PagingAndSortingMetaData meta = new PagingAndSortingMetaData().totalRecords(Long.valueOf(size));
 		generated.se.sundsvall.datawarehousereader.AgreementResponse response = new generated.se.sundsvall.datawarehousereader.AgreementResponse();
 		response.meta(meta);
 		

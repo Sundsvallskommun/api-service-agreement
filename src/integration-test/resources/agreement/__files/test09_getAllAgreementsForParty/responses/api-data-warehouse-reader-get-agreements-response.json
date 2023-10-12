@@ -9,7 +9,8 @@
 			"description": "Avfall",
 			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2022-01-01"
+			"fromDate": "2022-01-01",
+			"active": true
 		},
 		{
 			"customerNumber": "703421",
@@ -21,7 +22,8 @@
 			"mainAgreement": true,
 			"binding": false,
 			"bindingRule": "B00-U00",
-			"fromDate": "2022-01-04"
+			"fromDate": "2022-01-04",
+			"active": true
 		},
 		{
 			"customerNumber": "703421",
@@ -34,12 +36,13 @@
 			"binding": false,
 			"bindingRule": "Anvisat, 14 dagars uppsägning",
 			"fromDate": "2022-01-04",
-			"toDate": "2022-03-13"
+			"toDate": "2022-03-13",
+			"active": false
 		}
 	],
 	"_meta": {
 		"page": 1,
-		"limit": 100,
+		"limit": 1000,
 		"count": 3,
 		"totalRecords": 3,
 		"totalPages": 1

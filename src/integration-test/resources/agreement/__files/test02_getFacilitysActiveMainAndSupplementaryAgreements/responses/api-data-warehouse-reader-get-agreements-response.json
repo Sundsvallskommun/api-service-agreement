@@ -1,18 +1,6 @@
 {
 	"agreements": [
 		{
-			"customerNumber": "601851",
-			"facilityId": "735999109116016144",
-			"category": "ELECTRICITY",
-			"billingId": "1120035",
-			"agreementId": "12855",
-			"description": "Villa Matfors & Kvissleby",
-			"mainAgreement": true,
-			"binding": false,
-			"fromDate": "2013-01-01",
-			"toDate": "2014-08-31"
-		},
-		{
 			"partyId": "D2797E93-920A-4F53-B3AE-4516A4F80479",
 			"customerNumber": "629956",
 			"facilityId": "735999109116016144",
@@ -22,7 +10,8 @@
 			"description": "Villa Matfors & Kvissleby",
 			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2014-09-01"
+			"fromDate": "2014-09-01",
+			"active": true
 		},
 		{
 			"partyId": "D2797E93-920A-4F53-B3AE-4516A4F80479",
@@ -34,7 +23,8 @@
 			"description": "Fastpris med el-certifikat",
 			"mainAgreement": false,
 			"binding": false,
-			"fromDate": "2014-09-01"
+			"fromDate": "2014-09-01",
+			"active": true
 		},
 		{
 			"partyId": "D2797E93-920A-4F53-B3AE-4516A4F80479",
@@ -46,12 +36,13 @@
 			"description": "Fastpris 2 år",
 			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2014-09-01"
+			"fromDate": "2014-09-01",
+			"active": true
 		}
 	],
 	"_meta": {
 		"page": 1,
-		"limit": 100,
+		"limit": 1000,
 		"count": 3,
 		"totalRecords": 3,
 		"totalPages": 1

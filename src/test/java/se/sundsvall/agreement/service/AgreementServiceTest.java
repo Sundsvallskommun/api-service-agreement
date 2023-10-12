@@ -5,7 +5,9 @@ import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -51,91 +53,44 @@ class AgreementServiceTest {
 	private AgreementService agreementService;
 
 	@Test
-	void getOnlyActiveAgreementsByCategoryAndFacilityIdShouldReturnAgreement() {
+	void getAgreementsByCategoryAndFacilityIdShouldReturnAgreement() {
 		final var facilityId = "facilityId";
+		final var onlyActive = true;
+		final var category = WASTE_MANAGEMENT;
 		
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
-			when(agreementMock.isActive()).thenReturn(true);
+			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(of(agreementPartyMock));
+			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive)).thenReturn(agreementResponseMock);
 
 			// Call
-			AgreementResponse response = agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, true);
+			AgreementResponse response = agreementService.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive);
 
 			// Verifications
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verify(agreementPartyMock, times(2)).getAgreements();
-			verify(agreementMock).isActive();
-			verify(agreementPartyProviderMock).getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId);
+			verify(agreementPartyProviderMock).getAgreementsByCategoryAndFacility(same(category), same(facilityId), eq(onlyActive));
 			
-			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1);
-			assertThat(response.getAgreementParties()).extracting(AgreementParty::getAgreements).asList().hasSize(1);
+			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1).first().isSameAs(agreementPartyMock);
 		}
 	}
 	
 	@Test
-	void getOnlyActiveAgreementsByCategoryAndFacilityIdWhenNoActiveExists() {
+	void getAgreementsByCategoryAndFacilityIdShouldThrow404() {
 		final var facilityId = "facilityId";
+		final var onlyActive = false;
+		final var category = WASTE_MANAGEMENT;
 		
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
+			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(emptyList());
+			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive)).thenReturn(agreementResponseMock);
 
 			// Call
-			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, true));
+			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive));
 
 			// Verifications
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verify(agreementPartyMock, times(2)).getAgreements();
-			verify(agreementMock).isActive();
-			
-			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
-			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
-			assertThat(exception.getMessage()).isEqualTo("Not Found: No matching agreements were found for facility with id 'facilityId' and category 'WASTE_MANAGEMENT'");
-			assertThat(exception.getDetail()).isEqualTo("No matching agreements were found for facility with id 'facilityId' and category 'WASTE_MANAGEMENT'");
-		}
-	}
-
-	@Test
-	void getAllAgreementsByCategoryAndFacilityIdShouldReturnAgreement() {
-		final var facilityId = "facilityId";
-		
-		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
-			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByCategoryAndFacility(WASTE_MANAGEMENT, facilityId)).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
-
-			// Call
-			AgreementResponse response = agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, false);
-
-			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verifyNoInteractions(agreementPartyMock, agreementMock);
-			
-			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1);
-			assertThat(response.getAgreementParties()).extracting(AgreementParty::getAgreements).asList().hasSize(1);
-		}
-	}
-	
-	@Test
-	void getAllAgreementsByCategoryAndFacilityIdWhenNoAgreementsExists() {
-		final var facilityId = "facilityId";
-		
-		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
-			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(any())).thenReturn(emptyList());
-
-			// Call
-			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByCategoryAndFacilityId(WASTE_MANAGEMENT, facilityId, false));
-
-			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(any()));
-			verifyNoInteractions(agreementPartyMock, agreementMock);
+			verify(agreementPartyProviderMock).getAgreementsByCategoryAndFacility(same(category), same(facilityId), eq(onlyActive));
 			
 			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
 			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
@@ -145,7 +100,7 @@ class AgreementServiceTest {
 	}
 	
 	@Test
-	void getAgreementsByPartyIdAndCategoriesWithoutCategoryFiltersAndOnlyActiveTrueShouldReturnAgreement() {
+	void getAgreementsByPartyIdAndCategoriesShouldReturnAgreement() {
 		final var partyId = "partyId";
 		final List<Category> filters = emptyList();
 		final var onlyActive = true;
@@ -153,122 +108,41 @@ class AgreementServiceTest {
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
 			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
-			when(agreementMock.isActive()).thenReturn(true);
+			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any(), anyBoolean())).thenReturn(agreementResponseMock);
 
 			// Call
-			AgreementResponse response = agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive);
+			var response = agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive);
 
 			// Verifications
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verify(agreementPartyMock, times(2)).getAgreements();
-			verify(agreementMock).isActive();
+			verify(agreementPartyProviderMock).getAgreementsByPartyIdAndCategories(same(partyId), same(filters), eq(onlyActive));
 			
-			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1);
-			assertThat(response.getAgreementParties()).extracting(AgreementParty::getAgreements).asList().hasSize(1);
+			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1).first().isSameAs(agreementPartyMock);
 		}
 	}
 
 	@Test
-	void getAgreementsByPartyIdAndCategoriesWithoutCategoryFiltersAndOnlyActiveTrueWhenNoActiveExists() {
+	void getAgreementsByPartyIdAndCategoriesShouldThrow404() {
 		final var partyId = "partyId";
 		final List<Category> filters = emptyList();
-		final var onlyActive = true;
+		final var onlyActive = false;
 		
 		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
 			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
+			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(emptyList());
+			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any(), anyBoolean())).thenReturn(agreementResponseMock);
 
 			// Call
 			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive));
 
 			// Verifications
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verify(agreementPartyMock, times(2)).getAgreements();
-			verify(agreementMock).isActive();
+			verify(agreementPartyProviderMock).getAgreementsByPartyIdAndCategories(same(partyId), same(filters), eq(onlyActive));
 			
 			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
 			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
 			assertThat(exception.getMessage()).isEqualTo("Not Found: No matching agreements were found for party with id 'partyId'");
 			assertThat(exception.getDetail()).isEqualTo("No matching agreements were found for party with id 'partyId'");
-		}
-	}
-
-	@Test
-	void getAgreementsByPartyIdAndCategoriesWithCategoryFilterAndOnlyActiveTrueWhenNoActiveExists() {
-		final var partyId = "partyId";
-		final List<Category> filters = List.of(Category.WASTE_MANAGEMENT);
-		final var onlyActive = true;
-		
-		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
-			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
-
-			// Call
-			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive));
-
-			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verify(agreementPartyMock, times(2)).getAgreements();
-			verify(agreementMock).isActive();
-			
-			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
-			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
-			assertThat(exception.getMessage()).isEqualTo("Not Found: No matching agreements were found for party with id 'partyId' and category in '[WASTE_MANAGEMENT]'");
-			assertThat(exception.getDetail()).isEqualTo("No matching agreements were found for party with id 'partyId' and category in '[WASTE_MANAGEMENT]'");
-		}
-	}
-	
-	@Test
-	void getAllAgreementsByPartyIdAndCategoriesWithCategoryFilterAndOnlyActiveTrueShouldReturnAgreement() {
-		final var partyId = "partyId";
-		final List<Category> filters = List.of(Category.WASTE_MANAGEMENT);
-		final var onlyActive = false;
-		
-		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
-			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(agreementResponseMock)).thenReturn(new ArrayList<>(of(agreementPartyMock)));
-			when(agreementPartyProviderMock.getAgreementsByPartyIdAndCategories(eq(partyId), any())).thenReturn(agreementResponseMock);
-			when(agreementPartyMock.getAgreements()).thenReturn(new ArrayList<>(of(agreementMock)));
-
-			// Call
-			AgreementResponse response = agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, onlyActive);
-
-			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
-			verify(agreementPartyMock, never()).getAgreements();
-			verify(agreementMock, never()).isActive();
-			
-			assertThat(response).isNotNull().extracting(AgreementResponse::getAgreementParties).asList().hasSize(1);
-			assertThat(response.getAgreementParties()).extracting(AgreementParty::getAgreements).asList().hasSize(1);
-		}
-	}
-	
-	@Test
-	void getAllAgreementsByPartyIdAndCategoriesWithCategoryWhenNoAgreementsExists() {
-		final var partyId = "partyId";
-		final List<Category> filters = List.of(WASTE_MANAGEMENT);
-		
-		try (MockedStatic<AgreementMapper> agreementMapperMock = Mockito.mockStatic(AgreementMapper.class)) {
-			// Setup mocks
-			agreementMapperMock.when(() -> AgreementMapper.toAgreementParties(any())).thenReturn(emptyList());
-
-			// Call
-			final var exception = assertThrows(ThrowableProblem.class, () -> agreementService.getAgreementsByPartyIdAndCategories(partyId, filters, true));
-
-			// Verifications
-			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(any()));
-			verifyNoInteractions(agreementPartyMock, agreementMock);
-			
-			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
-			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
-			assertThat(exception.getMessage()).isEqualTo("Not Found: No matching agreements were found for party with id 'partyId' and category in '[WASTE_MANAGEMENT]'");
-			assertThat(exception.getDetail()).isEqualTo("No matching agreements were found for party with id 'partyId' and category in '[WASTE_MANAGEMENT]'");
 		}
 	}
 }

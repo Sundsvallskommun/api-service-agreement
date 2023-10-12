@@ -25,9 +25,11 @@ public class AgreementService {
 	@Autowired
 	private AgreementPartyProvider agreementPartyProvider;
 
+
 	public AgreementResponse getAgreementsByCategoryAndFacilityId(Category category, String facilityId, boolean onlyActive) {
-		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId));
-		var response = AgreementResponse.create().withAgreementParties(onlyActive ? filterActiveParties(agreementParties) : agreementParties);
+		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive));
+		var response = AgreementResponse.create().withAgreementParties(agreementParties);
+
 		if (response.getAgreementParties().isEmpty()) {
 			throw Problem.valueOf(NOT_FOUND, format(NO_CATEGORY_AND_FACILITY_MATCH_MESSAGE, facilityId, category));
 		}
@@ -36,24 +38,13 @@ public class AgreementService {
 	}
 
 	public AgreementResponse getAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, final boolean onlyActive) {
-		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories));
-		var response = AgreementResponse.create().withAgreementParties(onlyActive ? filterActiveParties(agreementParties) : agreementParties);
+		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
+		var response = AgreementResponse.create().withAgreementParties(agreementParties);
+
 		if (response.getAgreementParties().isEmpty()) {
 			throw isEmpty(categories) ? Problem.valueOf(NOT_FOUND, format(NO_PARTYID_MATCH_MESSAGE, partyId)) : Problem.valueOf(NOT_FOUND, format(NO_PARTYID_AND_CATEGORY_MATCH_MESSAGE, partyId, categories));
 		}
 
 		return response;
-	}
-
-	private List<AgreementParty> filterActiveParties(final List<AgreementParty> parties) {
-		return parties.stream()
-			.map(this::removeNonActiveAgreements)
-			.filter(party -> !party.getAgreements().isEmpty())
-			.toList();
-	}
-
-	private AgreementParty removeNonActiveAgreements(final AgreementParty party) {
-		party.getAgreements().removeIf(agreement -> !agreement.isActive());
-		return party;
 	}
 }

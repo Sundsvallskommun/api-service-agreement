@@ -9,12 +9,13 @@
 			"description": "Avfall",
 			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2022-01-01"
+			"fromDate": "2022-01-01",
+			"active": true
 		}
 	],
 	"_meta": {
 		"page": 1,
-		"limit": 100,
+		"limit": 1000,
 		"count": 1,
 		"totalRecords": 1,
 		"totalPages": 1

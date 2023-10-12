@@ -15,6 +15,9 @@
 			"facilityId": {
 				"equalTo": "7112702050"
 			},
+			"active": {
+				"absent": true
+			},
 			"page": {
 				"equalTo": "3"
 			},

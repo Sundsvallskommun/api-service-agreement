@@ -9,7 +9,8 @@
 			"description": "Avfall",
 			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2022-01-01"
+			"fromDate": "2022-01-01",
+			"active": true
 		},
 		{
 			"customerNumber": "703421",
@@ -21,27 +22,15 @@
 			"mainAgreement": true,
 			"binding": false,
 			"bindingRule": "B00-U00",
-			"fromDate": "2022-01-04"
-		},
-		{
-			"customerNumber": "703421",
-			"facilityId": "735999109223205905",
-			"category": "ELECTRICITY_TRADE",
-			"billingId": "2179883",
-			"agreementId": "512840",
-			"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
-			"mainAgreement": true,
-			"binding": false,
-			"bindingRule": "Anvisat, 14 dagars uppsägning",
 			"fromDate": "2022-01-04",
-			"toDate": "2022-03-13"
+			"active": true
 		}
 	],
 	"_meta": {
 		"page": 1,
-		"limit": 100,
-		"count": 3,
-		"totalRecords": 3,
+		"limit": 1000,
+		"count": 2,
+		"totalRecords": 2,
 		"totalPages": 1
 	}
 }

@@ -10,7 +10,8 @@
 			"mainAgreement": true,
 			"binding": false,
 			"bindingRule": "B00-U00",
-			"fromDate": "2022-01-04"
+			"fromDate": "2022-01-04",
+			"active": true
 		}
 	],
 	"_meta": {
