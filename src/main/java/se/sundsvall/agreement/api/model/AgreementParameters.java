@@ -11,12 +11,31 @@ public class AgreementParameters extends AbstractParameterPagingBase {
 	@Schema(description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true")
 	private boolean onlyActive = true;
 
+	public static AgreementParameters create() {
+		return new AgreementParameters();
+	}
+
 	public boolean isOnlyActive() {
 		return onlyActive;
 	}
 
 	public void setOnlyActive(boolean onlyActive) {
 		this.onlyActive = onlyActive;
+	}
+
+	public AgreementParameters withOnlyActive(boolean onlyActive) {
+		this.onlyActive = onlyActive;
+		return this;
+	}
+
+	public AgreementParameters withPage(int page){
+		super.setPage(page);
+		return this;
+	}
+
+	public AgreementParameters withLimit(int limit) {
+		super.setLimit(limit);
+		return this;
 	}
 
 	@Override

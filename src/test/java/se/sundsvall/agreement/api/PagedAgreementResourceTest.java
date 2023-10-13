@@ -76,10 +76,10 @@ class PagedAgreementResourceTest {
 		// Arrange
 		final var partyId = UUID.randomUUID().toString();
 		final var categories = List.of(Category.DISTRICT_COOLING, Category.DISTRICT_HEATING);
-		final var parameters = new AgreementParameters();
-		parameters.setOnlyActive(false);
-		parameters.setPage(2);
-		parameters.setLimit(123);
+		final var parameters = AgreementParameters.create()
+				.withOnlyActive(false)
+				.withPage(2)
+				.withLimit(123);
 
 		final var pagingResponse = PagedAgreementResponse.create()
 			.withMetaData(PagingMetaData.create()
