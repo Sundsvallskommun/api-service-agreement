@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
-public class PagedAgreementResourceTest {
+class PagedAgreementResourceTest {
 
 	@MockBean
 	private AgreementService agreementServiceMock;
