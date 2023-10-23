@@ -11,12 +11,13 @@
 			"binding": false,
 			"bindingRule": "Anvisat, 14 dagars uppsägning",
 			"fromDate": "2022-01-04",
-			"toDate": "2022-03-13"
+			"toDate": "2022-03-13",
+			"active": false
 		}
 	],
 	"_meta": {
 		"page": 1,
-		"limit": 100,
+		"limit": 1000,
 		"count": 1,
 		"totalRecords": 1,
 		"totalPages": 1

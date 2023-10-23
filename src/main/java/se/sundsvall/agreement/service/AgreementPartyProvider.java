@@ -1,17 +1,16 @@
 package se.sundsvall.agreement.service;
 
-import static org.apache.commons.lang3.ObjectUtils.allNotNull;
-import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategories;
-import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
+import generated.se.sundsvall.datawarehousereader.AgreementResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import se.sundsvall.agreement.api.model.Category;
+import se.sundsvall.agreement.integration.datawarehousereader.DataWarehouseReaderClient;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import generated.se.sundsvall.datawarehousereader.AgreementResponse;
-import se.sundsvall.agreement.api.model.Category;
-import se.sundsvall.agreement.integration.datawarehousereader.DataWarehouseReaderClient;
+import static org.apache.commons.lang3.ObjectUtils.allNotNull;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategories;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
 
 @Service
 public class AgreementPartyProvider {
@@ -21,36 +20,38 @@ public class AgreementPartyProvider {
 	@Autowired
 	private DataWarehouseReaderClient dataWarehouseReaderClient;
 
-	public AgreementResponse getAgreementsByCategoryAndFacility(Category category, String facilityId) {
-		return getAgreementsByCategoryAndFacility(category, facilityId, DATAWAREHOUSEREADER_START_PAGE, DATAWAREHOUSEREADER_PAGE_LIMIT);
+	public AgreementResponse getAgreementsByCategoryAndFacility(Category category, String facilityId, boolean onlyActive) {
+		var active = onlyActive ? true : null;
+		return getAgreementsByCategoryAndFacility(category, facilityId, DATAWAREHOUSEREADER_START_PAGE, DATAWAREHOUSEREADER_PAGE_LIMIT, active);
 	}
 
-	private AgreementResponse getAgreementsByCategoryAndFacility(Category category, String facilityId, int page, int limit) {
-		var agreementsResponse = dataWarehouseReaderClient.getAgreementsByCategoryAndFacility(toCategory(category), facilityId, page, limit);
+	private AgreementResponse getAgreementsByCategoryAndFacility(Category category, String facilityId, int page, int limit, Boolean active) {
+		var agreementsResponse = dataWarehouseReaderClient.getAgreementsByCategoryAndFacility(toCategory(category), facilityId, page, limit, active);
 
 		var currentPage = page;
 
 		if (allNotNull(agreementsResponse, agreementsResponse.getMeta(), agreementsResponse.getMeta().getTotalPages()) && agreementsResponse.getMeta().getTotalPages() > currentPage) {
 			while (agreementsResponse.getMeta().getTotalPages() > currentPage) {
-				agreementsResponse.getAgreements().addAll(dataWarehouseReaderClient.getAgreementsByCategoryAndFacility(toCategory(category), facilityId, ++currentPage, limit).getAgreements());
+				agreementsResponse.getAgreements().addAll(dataWarehouseReaderClient.getAgreementsByCategoryAndFacility(toCategory(category), facilityId, ++currentPage, limit, active).getAgreements());
 			}
 		}
 
 		return agreementsResponse;
 	}
 
-	public AgreementResponse getAgreementsByPartyIdAndCategories(String partyId, List<Category> categories) {
-		return getAgreementsByPartyIdAndCategories(partyId, categories, DATAWAREHOUSEREADER_START_PAGE, DATAWAREHOUSEREADER_PAGE_LIMIT);
+	public AgreementResponse getAgreementsByPartyIdAndCategories(String partyId, List<Category> categories, boolean onlyActive) {
+		var active = onlyActive ? true : null;
+		return getAgreementsByPartyIdAndCategories(partyId, categories, DATAWAREHOUSEREADER_START_PAGE, DATAWAREHOUSEREADER_PAGE_LIMIT, active, false);
 	}
 
-	private AgreementResponse getAgreementsByPartyIdAndCategories(String partyId, List<Category> categories, int page, int limit) {
-		var agreementsResponse = dataWarehouseReaderClient.getAgreementsByPartyIdAndCategories(partyId, toCategories(categories), page, limit);
+	public AgreementResponse getAgreementsByPartyIdAndCategories(String partyId, List<Category> categories, int page, int limit, Boolean active, boolean paged) {
+		var agreementsResponse = dataWarehouseReaderClient.getAgreementsByPartyIdAndCategories(partyId, toCategories(categories), page, limit, active);
 
 		var currentPage = page;
 
-		if (allNotNull(agreementsResponse, agreementsResponse.getMeta(), agreementsResponse.getMeta().getTotalPages()) && agreementsResponse.getMeta().getTotalPages() > currentPage) {
+		if (!paged && allNotNull(agreementsResponse, agreementsResponse.getMeta(), agreementsResponse.getMeta().getTotalPages()) && agreementsResponse.getMeta().getTotalPages() > currentPage) {
 			while (agreementsResponse.getMeta().getTotalPages() > currentPage) {
-				agreementsResponse.getAgreements().addAll(dataWarehouseReaderClient.getAgreementsByPartyIdAndCategories(partyId, toCategories(categories), ++currentPage, limit).getAgreements());
+				agreementsResponse.getAgreements().addAll(dataWarehouseReaderClient.getAgreementsByPartyIdAndCategories(partyId, toCategories(categories), ++currentPage, limit, active).getAgreements());
 			}
 		}
 

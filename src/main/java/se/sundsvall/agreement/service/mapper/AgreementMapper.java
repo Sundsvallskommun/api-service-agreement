@@ -1,22 +1,19 @@
 package se.sundsvall.agreement.service.mapper;
 
-import static java.time.LocalDate.now;
-import static java.time.ZoneId.systemDefault;
-import static java.util.Collections.emptyList;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.BooleanUtils.toBoolean;
+import generated.se.sundsvall.datawarehousereader.AgreementResponse;
+import se.sundsvall.agreement.api.model.Agreement;
+import se.sundsvall.agreement.api.model.AgreementParty;
+import se.sundsvall.agreement.api.model.Category;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import generated.se.sundsvall.datawarehousereader.AgreementResponse;
-import se.sundsvall.agreement.api.model.Agreement;
-import se.sundsvall.agreement.api.model.AgreementParty;
-import se.sundsvall.agreement.api.model.Category;
+import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.BooleanUtils.toBoolean;
 
 public class AgreementMapper {
 	private AgreementMapper() {}
@@ -51,7 +48,7 @@ public class AgreementMapper {
 				parties.put(agreement.getCustomerNumber(), toAgreementParty(agreement));
 			}
 
-			parties.get(agreement.getCustomerNumber()).getAgreements().add(toAgreement(agreement));
+			parties.get(agreement.getCustomerNumber()).getAgreements().add(toAgreement(agreement, false));
 		});
 
 		return new ArrayList<>(parties.values());
@@ -67,9 +64,19 @@ public class AgreementMapper {
 			.withAgreements(new ArrayList<>());
 	}
 
-	private static Agreement toAgreement(final generated.se.sundsvall.datawarehousereader.Agreement agreement) {
+	public static List<Agreement> toAgreements(final AgreementResponse response) {
+			return ofNullable(response)
+				.map(AgreementResponse::getAgreements)
+				.map(list -> list.stream()
+					.map(agreement -> toAgreement(agreement, true))
+					.toList())
+				.orElse(emptyList());
+	}
+
+	private static Agreement toAgreement(final generated.se.sundsvall.datawarehousereader.Agreement agreement, boolean mapCustomerId) {
 		return Agreement.create()
-			.withActive(isActiveAgreement(agreement))
+			.withCustomerId(mapCustomerId ? agreement.getCustomerNumber() : null)
+			.withActive(agreement.getActive())
 			.withAgreementId(agreement.getAgreementId())
 			.withBillingId(agreement.getBillingId())
 			.withBinding(toBoolean(agreement.getBinding()))
@@ -92,12 +99,5 @@ public class AgreementMapper {
 			case WASTE_MANAGEMENT -> se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 			case WATER -> se.sundsvall.agreement.api.model.Category.WATER;
 		};
-	}
-
-	static boolean isActiveAgreement(final generated.se.sundsvall.datawarehousereader.Agreement agreement) {
-		final boolean startDateHasOccured = nonNull(agreement.getFromDate()) && (now(systemDefault()).isEqual(agreement.getFromDate()) || now(systemDefault()).isAfter(agreement.getFromDate()));
-		final boolean endDateHasNotOccured = isNull(agreement.getToDate()) || now(systemDefault()).isEqual(agreement.getToDate()) || now(systemDefault()).isBefore(agreement.getToDate());
-
-		return startDateHasOccured && endDateHasNotOccured;
 	}
 }

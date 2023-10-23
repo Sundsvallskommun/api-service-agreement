@@ -1,19 +1,21 @@
 package se.sundsvall.agreement.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.zalando.problem.Problem;
+import se.sundsvall.agreement.api.model.AgreementParameters;
+import se.sundsvall.agreement.api.model.AgreementResponse;
+import se.sundsvall.agreement.api.model.Category;
+import se.sundsvall.agreement.api.model.PagedAgreementResponse;
+import se.sundsvall.dept44.models.api.paging.PagingMetaData;
+
+import java.util.List;
+
 import static java.lang.String.format;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreementParties;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-
-import se.sundsvall.agreement.api.model.AgreementParty;
-import se.sundsvall.agreement.api.model.AgreementResponse;
-import se.sundsvall.agreement.api.model.Category;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreements;
 
 @Service
 public class AgreementService {
@@ -25,9 +27,11 @@ public class AgreementService {
 	@Autowired
 	private AgreementPartyProvider agreementPartyProvider;
 
+
 	public AgreementResponse getAgreementsByCategoryAndFacilityId(Category category, String facilityId, boolean onlyActive) {
-		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId));
-		var response = AgreementResponse.create().withAgreementParties(onlyActive ? filterActiveParties(agreementParties) : agreementParties);
+		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive));
+		var response = AgreementResponse.create().withAgreementParties(agreementParties);
+
 		if (response.getAgreementParties().isEmpty()) {
 			throw Problem.valueOf(NOT_FOUND, format(NO_CATEGORY_AND_FACILITY_MATCH_MESSAGE, facilityId, category));
 		}
@@ -36,8 +40,9 @@ public class AgreementService {
 	}
 
 	public AgreementResponse getAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, final boolean onlyActive) {
-		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories));
-		var response = AgreementResponse.create().withAgreementParties(onlyActive ? filterActiveParties(agreementParties) : agreementParties);
+		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
+		var response = AgreementResponse.create().withAgreementParties(agreementParties);
+
 		if (response.getAgreementParties().isEmpty()) {
 			throw isEmpty(categories) ? Problem.valueOf(NOT_FOUND, format(NO_PARTYID_MATCH_MESSAGE, partyId)) : Problem.valueOf(NOT_FOUND, format(NO_PARTYID_AND_CATEGORY_MATCH_MESSAGE, partyId, categories));
 		}
@@ -45,15 +50,22 @@ public class AgreementService {
 		return response;
 	}
 
-	private List<AgreementParty> filterActiveParties(final List<AgreementParty> parties) {
-		return parties.stream()
-			.map(this::removeNonActiveAgreements)
-			.filter(party -> !party.getAgreements().isEmpty())
-			.toList();
-	}
+	public PagedAgreementResponse getPagedAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, AgreementParameters parameters) {
+		var response = agreementPartyProvider.getAgreementsByPartyIdAndCategories(
+			partyId,
+			categories,
+			parameters.getPage(),
+			parameters.getLimit(),
+			parameters.isOnlyActive() ? true : null,
+			true);
 
-	private AgreementParty removeNonActiveAgreements(final AgreementParty party) {
-		party.getAgreements().removeIf(agreement -> !agreement.isActive());
-		return party;
+		return PagedAgreementResponse.create()
+			.withAgreements(toAgreements(response))
+			.withMetaData(PagingMetaData.create()
+				.withPage(response.getMeta().getPage())
+				.withLimit(response.getMeta().getLimit())
+				.withCount(response.getMeta().getCount())
+				.withTotalRecords(response.getMeta().getTotalRecords())
+				.withTotalPages(response.getMeta().getTotalPages()));
 	}
 }

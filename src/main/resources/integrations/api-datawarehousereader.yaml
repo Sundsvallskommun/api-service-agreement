@@ -5,9 +5,9 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: '2.2'
+  version: "3.1"
 servers:
-  - url: https://microservices.sundsvall.se/datawarehousereader
+  - url: https://microservices-test.sundsvall.se/datawarehousereader
     description: Generated server url
 tags:
   - name: Measurement
@@ -45,16 +45,13 @@ paths:
           schema:
             $ref: '#/components/schemas/MeasurementParameters'
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful operation
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/MeasurementResponse'
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/MeasurementResponse'
         "400":
@@ -65,6 +62,12 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /invoices:
     get:
       tags:
@@ -85,12 +88,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvoiceResponse'
-        "500":
-          description: Internal Server error
-          content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/Problem'
+                $ref: '#/components/schemas/InvoiceResponse'
         "400":
           description: Bad request
           content:
@@ -99,13 +99,27 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-  /invoices/{invoiceNumber}/details:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /invoices/{organizationNumber}/{invoiceNumber}/details:
     get:
       tags:
         - Invoice
-      summary: Get invoice details for invoice matching provided invoice number
+      summary: Get invoice details for invoice matching issuer of provided organization
+        number and having invoice number matching provided invoice number
       operationId: getInvoiceDetails
       parameters:
+        - name: organizationNumber
+          in: path
+          description: Organization number of invoice issuer
+          required: true
+          schema:
+            type: string
+          example: 5565027223
         - name: invoiceNumber
           in: path
           description: Invoice number
@@ -121,12 +135,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful operation
           content:
@@ -135,6 +143,17 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InvoiceDetail'
+            application/problem+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceDetail'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "404":
           description: Not found
           content:
@@ -161,12 +180,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstalledBaseResponse'
-        "500":
-          description: Internal Server error
-          content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/Problem'
+                $ref: '#/components/schemas/InstalledBaseResponse'
         "400":
           description: Bad request
           content:
@@ -175,6 +191,12 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /customer/engagements:
     get:
       tags:
@@ -190,16 +212,13 @@ paths:
           schema:
             $ref: '#/components/schemas/CustomerEngagementParameters'
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful operation
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerEngagementResponse'
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/CustomerEngagementResponse'
         "400":
@@ -210,6 +229,50 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /customer/details:
+    get:
+      tags:
+        - Customer
+      summary: Get detailed customer information
+      description: Resource returns all customer details matching provided search
+        parameters
+      operationId: getCustomerDetails
+      parameters:
+        - name: searchParams
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/CustomerDetailsParameters'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDetailsResponse'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/CustomerDetailsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /api-docs:
     get:
       tags:
@@ -240,16 +303,13 @@ paths:
           schema:
             $ref: '#/components/schemas/AgreementParameters'
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful operation
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/AgreementResponse'
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/AgreementResponse'
         "400":
@@ -260,12 +320,17 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
 components:
   schemas:
     Category:
       type: string
       description: Category
-      readOnly: true
       enum:
         - COMMUNICATION
         - DISTRICT_COOLING
@@ -277,12 +342,18 @@ components:
     Aggregation:
       type: string
       description: Data point aggregation granularity
-      readOnly: true
       enum:
         - HOUR
         - DAY
         - MONTH
         - YEAR
+    Direction:
+      type: string
+      description: The sort order direction
+      example: ASC
+      enum:
+        - ASC
+        - DESC
     MeasurementParameters:
       type: object
       properties:
@@ -294,13 +365,20 @@ components:
           example: 1
           default: 1
         limit:
-          maximum: 1000
           minimum: 1
           type: integer
-          description: Result size per page
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
           format: int32
-          example: 100
-          default: 100
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
         partyId:
           type: string
           description: PartyId (e.g. a personId or an organizationId)
@@ -333,12 +411,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: '#/components/schemas/StatusType'
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
     StatusType:
       type: object
       properties:
@@ -346,6 +424,173 @@ components:
           type: integer
           format: int32
         reasonPhrase:
+          type: string
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        cause:
+          $ref: '#/components/schemas/ThrowableProblem'
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        type:
+          type: string
+          format: uri
+        status:
+          $ref: '#/components/schemas/StatusType'
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Violation'
+        title:
+          type: string
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ThrowableProblem:
+      type: object
+      properties:
+        cause:
+          $ref: '#/components/schemas/ThrowableProblem'
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        title:
+          type: string
+        detail:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
           type: string
     Measurement:
       type: object
@@ -424,9 +669,9 @@ components:
           items:
             $ref: '#/components/schemas/Measurement'
         _meta:
-          $ref: '#/components/schemas/MetaData'
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
       description: Measurement response model
-    MetaData:
+    PagingAndSortingMetaData:
       type: object
       properties:
         page:
@@ -459,237 +704,21 @@ components:
           format: int32
           readOnly: true
           example: 23
-      description: Metadata model
+        sortBy:
+          type: array
+          readOnly: true
+          items:
+            type: string
+            description: The properties to sort by
+            readOnly: true
+            example: property
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
+      description: PagingAndSortingMetaData model
       readOnly: true
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        cause:
-          $ref: '#/components/schemas/ThrowableProblem'
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              nativeMethod:
-                type: boolean
-              className:
-                type: string
-        type:
-          type: string
-          format: uri
-        status:
-          $ref: '#/components/schemas/StatusType'
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Violation'
-        title:
-          type: string
-        message:
-          type: string
-        instance:
-          type: string
-          format: uri
-        parameters:
-          type: object
-          additionalProperties:
-            type: object
-        detail:
-          type: string
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              cause:
-                type: object
-                properties:
-                  stackTrace:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        classLoaderName:
-                          type: string
-                        moduleName:
-                          type: string
-                        moduleVersion:
-                          type: string
-                        methodName:
-                          type: string
-                        fileName:
-                          type: string
-                        lineNumber:
-                          type: integer
-                          format: int32
-                        nativeMethod:
-                          type: boolean
-                        className:
-                          type: string
-                  message:
-                    type: string
-                  localizedMessage:
-                    type: string
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    nativeMethod:
-                      type: boolean
-                    className:
-                      type: string
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
-    ThrowableProblem:
-      type: object
-      properties:
-        cause:
-          $ref: '#/components/schemas/ThrowableProblem'
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              nativeMethod:
-                type: boolean
-              className:
-                type: string
-        message:
-          type: string
-        instance:
-          type: string
-          format: uri
-        type:
-          type: string
-          format: uri
-        parameters:
-          type: object
-          additionalProperties:
-            type: object
-        status:
-          $ref: '#/components/schemas/StatusType'
-        title:
-          type: string
-        detail:
-          type: string
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              cause:
-                type: object
-                properties:
-                  stackTrace:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        classLoaderName:
-                          type: string
-                        moduleName:
-                          type: string
-                        moduleVersion:
-                          type: string
-                        methodName:
-                          type: string
-                        fileName:
-                          type: string
-                        lineNumber:
-                          type: integer
-                          format: int32
-                        nativeMethod:
-                          type: boolean
-                        className:
-                          type: string
-                  message:
-                    type: string
-                  localizedMessage:
-                    type: string
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    nativeMethod:
-                      type: boolean
-                    className:
-                      type: string
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
-    Violation:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
     CustomerType:
       type: string
       description: Customer type
-      readOnly: true
       example: Enterprise
       enum:
         - Enterprise
@@ -705,13 +734,20 @@ components:
           example: 1
           default: 1
         limit:
-          maximum: 1000
           minimum: 1
           type: integer
-          description: Result size per page
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
           format: int32
-          example: 100
-          default: 100
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
         customerNumber:
           type: array
           items:
@@ -774,8 +810,8 @@ components:
           example: stadsbacken
         organizationNumber:
           type: string
-          description: Organization number
-          example: 556502-7223
+          description: Organization number of invoice issuer
+          example: "5565027223"
         administration:
           type: string
           description: Adminstration
@@ -887,9 +923,9 @@ components:
           example: stadsbacken
         organizationNumber:
           type: string
-          description: Organization number
+          description: Organization number of invoice issuer
           readOnly: true
-          example: 556502-7223
+          example: "5565027223"
         administration:
           type: string
           description: Adminstration
@@ -931,7 +967,7 @@ components:
           items:
             $ref: '#/components/schemas/Invoice'
         _meta:
-          $ref: '#/components/schemas/MetaData'
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
       description: Invoice response model
     InvoiceDetail:
       type: object
@@ -1004,6 +1040,11 @@ components:
           description: Product name
           readOnly: true
           example: Elöverföring
+        organizationNumber:
+          type: string
+          description: Organization number of invoice issuer
+          readOnly: true
+          example: "5565027223"
       description: Invoice detail model
     InstalledBaseParameters:
       type: object
@@ -1016,13 +1057,20 @@ components:
           example: 1
           default: 1
         limit:
-          maximum: 1000
           minimum: 1
           type: integer
-          description: Result size per page
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
           format: int32
-          example: 100
-          default: 100
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
         company:
           type: string
           description: Company
@@ -1055,6 +1103,10 @@ components:
           type: string
           description: City
           example: Sundsvall
+        propertyDesignation:
+          type: string
+          description: Property designation
+          example: Södermalm 1:27
       description: Installed base request parameters model
     InstalledBaseItem:
       type: object
@@ -1105,6 +1157,11 @@ components:
           description: City
           readOnly: true
           example: Sundsvall
+        propertyDesignation:
+          type: string
+          description: Property designation
+          readOnly: true
+          example: Södermalm 1:27
         dateFrom:
           type: string
           description: From date
@@ -1159,7 +1216,7 @@ components:
           items:
             $ref: '#/components/schemas/InstalledBaseItem'
         _meta:
-          $ref: '#/components/schemas/MetaData'
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
       description: Installed base response model
     CustomerEngagementParameters:
       type: object
@@ -1172,13 +1229,20 @@ components:
           example: 1
           default: 1
         limit:
-          maximum: 1000
           minimum: 1
           type: integer
-          description: Result size per page
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
           format: int32
-          example: 100
-          default: 100
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
         partyId:
           type: array
           items:
@@ -1234,8 +1298,143 @@ components:
           items:
             $ref: '#/components/schemas/CustomerEngagement'
         _meta:
-          $ref: '#/components/schemas/MetaData'
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
       description: Customer engagement response model
+    CustomerDetailsParameters:
+      type: object
+      properties:
+        page:
+          minimum: 1
+          type: integer
+          description: Page number
+          format: int32
+          example: 1
+          default: 1
+        limit:
+          minimum: 1
+          type: integer
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
+          format: int32
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
+        partyId:
+          type: array
+          items:
+            type: string
+            description: PartyId (e.g. a personId or an organizationId)
+            example: 81471222-5798-11e9-ae24-57fa13b361e1
+        customerEngagementOrgId:
+          type: string
+          description: Organization id for customer engagements
+        fromDateTime:
+          type: string
+          description: "Date and time for when to search for changes from. Format\
+            \ is yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
+          format: date-time
+        toDateTime:
+          type: string
+          description: "Date and time for when to search for change to. Format is\
+            \ yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
+          format: date-time
+      description: Customer details request parameters model
+    CustomerDetails:
+      type: object
+      properties:
+        partyId:
+          type: string
+          description: PartyId (e.g. a personId or an organizationId)
+          readOnly: true
+          example: 81471222-5798-11e9-ae24-57fa13b361e1
+        customerNumber:
+          type: string
+          description: Customer number
+          readOnly: true
+          example: "39195"
+        customerName:
+          type: string
+          description: Customer name
+          readOnly: true
+          example: Sven Svensson
+        street:
+          type: string
+          description: Street
+          readOnly: true
+          example: Storgatan 44
+        postalCode:
+          type: string
+          description: Postal code
+          readOnly: true
+          example: "85230"
+        city:
+          type: string
+          description: City
+          readOnly: true
+          example: Sundsvall
+        careOf:
+          type: string
+          description: Care of address
+          readOnly: true
+          example: Agatha Malm
+        phoneNumbers:
+          type: array
+          readOnly: true
+          items:
+            type: string
+            description: List of phoneNumbers
+            readOnly: true
+            example: 076-1234567
+        emails:
+          type: array
+          readOnly: true
+          items:
+            type: string
+            description: List of emailAddresses
+            readOnly: true
+            example: test@test.se
+        customerCategoryID:
+          type: integer
+          description: Customer category ID
+          format: int32
+          readOnly: true
+          example: 1
+        customerCategoryDescription:
+          type: string
+          description: Customer category description
+          readOnly: true
+          example: Privat
+        customerChangedFlg:
+          type: boolean
+          description: Indicates if customer details have changed since the search
+            date
+          readOnly: true
+          example: false
+        installedChangedFlg:
+          type: boolean
+          description: Indicates if placement and/or equipment details have changed
+            since the search date
+          readOnly: true
+          example: true
+      description: Customer details model
+      readOnly: true
+    CustomerDetailsResponse:
+      type: object
+      properties:
+        customerDetails:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/CustomerDetails'
+        _meta:
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
+      description: Customer details response model
     AgreementParameters:
       type: object
       properties:
@@ -1247,13 +1446,20 @@ components:
           example: 1
           default: 1
         limit:
-          maximum: 1000
           minimum: 1
           type: integer
-          description: Result size per page
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
           format: int32
-          example: 100
-          default: 100
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
         partyId:
           type: string
           description: PartyId (e.g. a personId or an organizationId)
@@ -1302,6 +1508,12 @@ components:
           type: string
           description: To-date in validity of agreement
           format: date
+        active:
+          type: boolean
+          description: Shows if agreement is active ('fromDate' <= today and 'toDate'
+            => today). Null shows both active and inactive
+          nullable: true
+          example: true
       description: Agreement request parameters model
     Agreement:
       type: object
@@ -1363,6 +1575,12 @@ components:
           description: To-date in validity of agreement
           format: date
           readOnly: true
+        active:
+          type: boolean
+          description: Shows if agreement is active ('fromDate' <= today and 'toDate'
+            => today)
+          readOnly: true
+          example: true
       description: Agreement model
       readOnly: true
     AgreementResponse:
@@ -1374,6 +1592,6 @@ components:
           items:
             $ref: '#/components/schemas/Agreement'
         _meta:
-          $ref: '#/components/schemas/MetaData'
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
       description: Agreement response model
   securitySchemes: {}

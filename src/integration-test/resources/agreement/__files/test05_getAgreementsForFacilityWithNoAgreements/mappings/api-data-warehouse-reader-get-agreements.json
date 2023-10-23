@@ -14,6 +14,15 @@
 			},
 			"facilityId": {
 				"equalTo": "731588001866455800"
+			},
+			"active": {
+				"absent": true
+			},
+			"page": {
+				"equalTo": "1"
+			},
+			"limit": {
+				"equalTo": "1000"
 			}
 		}
 	},

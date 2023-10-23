@@ -1,14 +1,13 @@
 package se.sundsvall.agreement.apptest;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
-
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.agreement.Application;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * Read agreements tests
@@ -155,6 +154,50 @@ class AgreementIT extends AbstractAppTest {
 
 		setupCall()
 			.withServicePath("/agreements/485F409A-CB65-47EE-968A-33736365E139?onlyActive=false")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test14_getPagedAgreementsForParty() throws Exception {
+
+		setupCall()
+			.withServicePath("/paged/agreements/ff02dab0-8f08-43a4-9734-831fc7571246?onlyActive=false")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test15_getPagedAgreementsForPartyAndCategoryAll() throws Exception {
+
+		setupCall()
+			.withServicePath("/paged/agreements/b4ed77db-306c-49f0-a3d4-b1aa32092ba8?category=ELECTRICITY_TRADE&onlyActive=false")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test16_getPagedAgreementsForPartyAndCategoryOnlyActive() throws Exception {
+
+		setupCall()
+			.withServicePath("/paged/agreements/c1783f00-d992-4a03-93f4-16eb62be7364")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test17_getPagedAgreementsForPartyWithNoAgreements() throws Exception {
+
+		setupCall()
+			.withServicePath("/paged/agreements/bf0c239d-35e4-432d-b14d-843fce523583?onlyActive=false&limit=2&page=3")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse(RESPONSE_FILE)

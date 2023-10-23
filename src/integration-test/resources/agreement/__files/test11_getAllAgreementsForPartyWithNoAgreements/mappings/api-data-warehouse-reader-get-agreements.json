@@ -11,6 +11,15 @@
 		"queryParameters": {
 			"partyId": {
 				"equalTo": "413AEBB2-BCCF-4447-B25E-D2B5F1D47C38"
+			},
+			"active": {
+				"absent": true
+			},
+			"page": {
+				"equalTo": "1"
+			},
+			"limit": {
+				"equalTo": "1000"
 			}
 		}
 	},

@@ -1,0 +1,33 @@
+{
+	"name": "api-data-warehouse-reader-get-agreements",
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
+		"urlPath": "/dataWarehouseReaderMock/agreements",
+		"method": "GET",
+		"queryParameters": {
+			"partyId": {
+				"equalTo": "ff02dab0-8f08-43a4-9734-831fc7571246"
+			},
+			"active": {
+				"absent": true
+			},
+			"page": {
+				"equalTo": "1"
+			},
+			"limit": {
+				"equalTo": "100"
+			}
+		}
+	},
+	"response": {
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"status": 200,
+		"bodyFileName": "test14_getPagedAgreementsForParty/responses/api-data-warehouse-reader-get-agreements-response.json"
+	}
+}
