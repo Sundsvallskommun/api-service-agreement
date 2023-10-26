@@ -10,7 +10,8 @@
 			"mainAgreement": true,
 			"binding": false,
 			"fromDate": "2019-05-01",
-			"toDate": "2019-10-06"
+			"toDate": "2019-10-06",
+			"active": false
 		},
 		{
 			"customerNumber": "698815",
@@ -22,7 +23,8 @@
 			"mainAgreement": true,
 			"binding": false,
 			"fromDate": "2019-10-22",
-			"toDate": "2020-04-30"
+			"toDate": "2020-04-30",
+			"active": false
 		}
 	],
 	"_meta": {

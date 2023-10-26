@@ -12,6 +12,9 @@
 			"partyId": {
 				"equalTo": "485F409A-CB65-47EE-968A-33736365E139"
 			},
+			"active": {
+				"absent": true
+			},
 			"page": {
 				"equalTo": "2"
 			},

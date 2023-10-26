@@ -1,17 +1,19 @@
 package se.sundsvall.agreement.api.model;
 
-import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Agreement model")
 public class Agreement {
+
+	@Schema(description = "Customer identifier at the supplier of the agreement", example = "81471222", accessMode = READ_ONLY)
+	private String customerId;
 
 	@Schema(description = "Agreement identifier", example = "223344-A", accessMode = READ_ONLY)
 	private String agreementId;
@@ -48,6 +50,19 @@ public class Agreement {
 	
 	public static Agreement create() {
 		return new Agreement();
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public Agreement withCustomerId(String customerId) {
+		this.customerId = customerId;
+		return this;
 	}
 
 	public String getAgreementId() {
@@ -195,7 +210,7 @@ public class Agreement {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(active, agreementId, billingId, binding, bindingRule, category, description, facilityId,
+		return Objects.hash(active, agreementId, billingId, binding, bindingRule, category, customerId, description, facilityId,
 				fromDate, mainAgreement, toDate);
 	}
 
@@ -213,17 +228,25 @@ public class Agreement {
 				&& Objects.equals(bindingRule, other.bindingRule) && category == other.category
 				&& Objects.equals(description, other.description) && Objects.equals(facilityId, other.facilityId)
 				&& Objects.equals(fromDate, other.fromDate) && mainAgreement == other.mainAgreement
-				&& Objects.equals(toDate, other.toDate);
+				&& Objects.equals(toDate, other.toDate) && Objects.equals(customerId, other.customerId);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Agreement [agreementId=").append(agreementId).append(", billingId=").append(billingId)
-				.append(", category=").append(category).append(", description=").append(description)
-				.append(", facilityId=").append(facilityId).append(", mainAgreement=").append(mainAgreement)
-				.append(", binding=").append(binding).append(", bindingRule=").append(bindingRule).append(", fromDate=")
-				.append(fromDate).append(", toDate=").append(toDate).append(", active=").append(active).append("]");
-		return builder.toString();
+		final StringBuilder sb = new StringBuilder("Agreement{");
+		sb.append("customerId='").append(customerId).append('\'');
+		sb.append(", agreementId='").append(agreementId).append('\'');
+		sb.append(", billingId='").append(billingId).append('\'');
+		sb.append(", category=").append(category);
+		sb.append(", description='").append(description).append('\'');
+		sb.append(", facilityId='").append(facilityId).append('\'');
+		sb.append(", mainAgreement=").append(mainAgreement);
+		sb.append(", binding=").append(binding);
+		sb.append(", bindingRule='").append(bindingRule).append('\'');
+		sb.append(", fromDate=").append(fromDate);
+		sb.append(", toDate=").append(toDate);
+		sb.append(", active=").append(active);
+		sb.append('}');
+		return sb.toString();
 	}
 }
