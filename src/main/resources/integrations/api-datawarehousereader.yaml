@@ -5,9 +5,9 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "3.1"
+  version: "3.4"
 servers:
-  - url: https://microservices-test.sundsvall.se/datawarehousereader
+  - url: https://api-i-test.sundsvall.se/datawarehousereader
     description: Generated server url
 tags:
   - name: Measurement
@@ -45,6 +45,20 @@ paths:
           schema:
             $ref: '#/components/schemas/MeasurementParameters'
       responses:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -54,20 +68,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/MeasurementResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /invoices:
     get:
       tags:
@@ -82,6 +82,20 @@ paths:
           schema:
             $ref: '#/components/schemas/InvoiceParameters'
       responses:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -91,20 +105,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/InvoiceResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /invoices/{organizationNumber}/{invoiceNumber}/details:
     get:
       tags:
@@ -129,8 +129,8 @@ paths:
             format: int64
           example: 805137494
       responses:
-        "400":
-          description: Bad request
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
@@ -148,14 +148,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InvoiceDetail'
-        "500":
-          description: Internal Server error
+        "404":
+          description: Not found
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not found
+        "400":
+          description: Bad request
           content:
             application/problem+json:
               schema:
@@ -174,6 +174,20 @@ paths:
           schema:
             $ref: '#/components/schemas/InstalledBaseParameters'
       responses:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -183,20 +197,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/InstalledBaseResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /customer/engagements:
     get:
       tags:
@@ -212,6 +212,20 @@ paths:
           schema:
             $ref: '#/components/schemas/CustomerEngagementParameters'
       responses:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -221,20 +235,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/CustomerEngagementResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /customer/details:
     get:
       tags:
@@ -250,6 +250,20 @@ paths:
           schema:
             $ref: '#/components/schemas/CustomerDetailsParameters'
       responses:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -259,20 +273,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/CustomerDetailsResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /api-docs:
     get:
       tags:
@@ -303,6 +303,20 @@ paths:
           schema:
             $ref: '#/components/schemas/AgreementParameters'
       responses:
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -312,20 +326,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/AgreementResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
 components:
   schemas:
     Category:
@@ -1107,6 +1107,16 @@ components:
           type: string
           description: Property designation
           example: Södermalm 1:27
+        lastModifiedDateFrom:
+          type: string
+          description: Earliest date when item was last modified
+          format: date
+          example: 2022-12-31
+        lastModifiedDateTom:
+          type: string
+          description: Latest date when item was last modified
+          format: date
+          example: 2022-12-31
       description: Installed base request parameters model
     InstalledBaseItem:
       type: object
@@ -1171,6 +1181,12 @@ components:
         dateTo:
           type: string
           description: To date
+          format: date
+          readOnly: true
+          example: 2022-12-31
+        dateLastModified:
+          type: string
+          description: Date when object was last modified (or null if never modified)
           format: date
           readOnly: true
           example: 2022-12-31
@@ -1301,6 +1317,8 @@ components:
           $ref: '#/components/schemas/PagingAndSortingMetaData'
       description: Customer engagement response model
     CustomerDetailsParameters:
+      required:
+        - customerEngagementOrgId
       type: object
       properties:
         page:
@@ -1334,20 +1352,35 @@ components:
         customerEngagementOrgId:
           type: string
           description: Organization id for customer engagements
+          example: "5565027225"
         fromDateTime:
           type: string
-          description: "Date and time for when to search for changes from. Format\
-            \ is yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
+          description: Date and time for when to search for changes from. Format is
+            yyyy-MM-dd'T'HH:mm:ss.SSSXXX. If omitted changes within the last year
+            will be returned.
           format: date-time
+          example: 2000-10-31T01:30:00-05:00
         toDateTime:
           type: string
           description: "Date and time for when to search for change to. Format is\
-            \ yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
+            \ yyyy-MM-dd'T'HH:mm:ss.SSSXXX,"
           format: date-time
+          example: 2000-10-31T01:30:00-05:00
       description: Customer details request parameters model
     CustomerDetails:
       type: object
       properties:
+        customerEngagementOrgId:
+          type: string
+          description: Company with which the customer has an engagement (organization
+            number)
+          readOnly: true
+          example: "5591962591"
+        customerEngagementOrgName:
+          type: string
+          description: Name of the company the customer has an engagement with
+          readOnly: true
+          example: Sundsvall Elnät
         partyId:
           type: string
           description: PartyId (e.g. a personId or an organizationId)
