@@ -1,0 +1,14 @@
+integration:
+    datawarehousereader:
+        url: http://localhost:${wiremock.server.port}/dataWarehouseReaderMock
+spring:
+    security:
+        oauth2:
+            client:
+                provider:
+                    datawarehousereader:
+                        token-uri: http://localhost:${wiremock.server.port:}/dataWarehouseReaderMock/token
+                registration:
+                    datawarehousereader:
+                        client-id: the-client-id
+                        client-secret: the-client-secret
