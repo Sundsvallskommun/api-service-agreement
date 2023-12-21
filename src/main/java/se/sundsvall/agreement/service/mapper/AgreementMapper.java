@@ -1,21 +1,22 @@
 package se.sundsvall.agreement.service.mapper;
 
-import generated.se.sundsvall.datawarehousereader.AgreementResponse;
-import se.sundsvall.agreement.api.model.Agreement;
-import se.sundsvall.agreement.api.model.AgreementParty;
-import se.sundsvall.agreement.api.model.Category;
+import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.BooleanUtils.toBoolean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.emptyList;
-import static java.util.Objects.isNull;
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.BooleanUtils.toBoolean;
+import generated.se.sundsvall.datawarehousereader.AgreementResponse;
+import se.sundsvall.agreement.api.model.Agreement;
+import se.sundsvall.agreement.api.model.AgreementParty;
+import se.sundsvall.agreement.api.model.Category;
 
-public class AgreementMapper {
+public final class AgreementMapper {
+
 	private AgreementMapper() {}
 
 	public static List<generated.se.sundsvall.datawarehousereader.Category> toCategories(final List<Category> categories) {
@@ -65,12 +66,12 @@ public class AgreementMapper {
 	}
 
 	public static List<Agreement> toAgreements(final AgreementResponse response) {
-			return ofNullable(response)
-				.map(AgreementResponse::getAgreements)
-				.map(list -> list.stream()
-					.map(agreement -> toAgreement(agreement, true))
-					.toList())
-				.orElse(emptyList());
+		return ofNullable(response)
+			.map(AgreementResponse::getAgreements)
+			.map(list -> list.stream()
+				.map(agreement -> toAgreement(agreement, true))
+				.toList())
+			.orElse(emptyList());
 	}
 
 	private static Agreement toAgreement(final generated.se.sundsvall.datawarehousereader.Agreement agreement, boolean mapCustomerId) {
