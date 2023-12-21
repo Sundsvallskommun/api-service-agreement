@@ -2,10 +2,10 @@ package se.sundsvall.agreement.api;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.ok;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +33,11 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 @Tag(name = "Agreement", description = "Agreement resources")
 public class AgreementResource {
 
-	@Autowired
-	private AgreementService agreementService;
+	private final AgreementService agreementService;
+
+	public AgreementResource(AgreementService agreementService) {
+		this.agreementService = agreementService;
+	}
 
 	@GetMapping(path = "/{category}/{facilityId}", produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
 	@Operation(summary = "Get agreements by category and facility-id")
@@ -49,7 +52,7 @@ public class AgreementResource {
 		@Parameter(name = "onlyActive", description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true") @RequestParam(name = "onlyActive",
 			defaultValue = "true") final boolean onlyActive) {
 
-		return ResponseEntity.ok(agreementService.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive));
+		return ok(agreementService.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive));
 	}
 
 	@GetMapping(path = "/{partyId}", produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
@@ -66,6 +69,6 @@ public class AgreementResource {
 		@Parameter(name = "onlyActive", description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true") @RequestParam(name = "onlyActive",
 			defaultValue = "true") final boolean onlyActive) {
 
-		return ResponseEntity.ok(agreementService.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
+		return ok(agreementService.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
 	}
 }

@@ -1,13 +1,11 @@
 package se.sundsvall.agreement.api;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.ok;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import se.sundsvall.agreement.api.model.AgreementParameters;
-import se.sundsvall.agreement.api.model.AgreementResponse;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.api.model.PagedAgreementResponse;
 import se.sundsvall.agreement.service.AgreementService;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
-
-import java.util.List;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 @RestController
 @Validated
@@ -35,8 +35,11 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 @Tag(name = "Paged Agreement", description = "Agreement resources with paging")
 public class PagedAgreementResource {
 
-	@Autowired
-	private AgreementService agreementService;
+	private final AgreementService agreementService;
+
+	public PagedAgreementResource(AgreementService agreementService) {
+		this.agreementService = agreementService;
+	}
 
 	@GetMapping(path = "/{partyId}", produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
 	@Operation(summary = "Get agreements connected to a party-ID, optionally filtered by provided categories")
@@ -50,6 +53,6 @@ public class PagedAgreementResource {
 			defaultValue = "") final List<Category> categories,
 		@Valid AgreementParameters parameters) {
 
-		return ResponseEntity.ok(agreementService.getPagedAgreementsByPartyIdAndCategories(partyId, categories, parameters));
+		return ok(agreementService.getPagedAgreementsByPartyIdAndCategories(partyId, categories, parameters));
 	}
 }

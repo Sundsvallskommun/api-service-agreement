@@ -15,11 +15,9 @@
 	<properties>
 		<!-- Pipeline properties -->
 		<docker.image.name>ms-agreement</docker.image.name>
-		
 		<published.container.port.test>8725</published.container.port.test>
 		<published.container.port.production>8728</published.container.port.production>
   		<!-- Service properties -->
-		<openapi-generator-maven-plugin.version>7.1.0</openapi-generator-maven-plugin.version>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
 	</properties>
@@ -54,7 +52,6 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>${openapi-generator-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>datawarehousereader-api</id>
@@ -71,7 +68,7 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<useBeanValidation>false</useBeanValidation>
 								<useSwaggerAnnotations>false</useSwaggerAnnotations>
-								<sourceFolder>${generated-sources-java-path}</sourceFolder>
+								<sourceFolder>models</sourceFolder>
 								<dateLibrary>java8</dateLibrary>
 								<modelPackage>generated.se.sundsvall.datawarehousereader</modelPackage>
 								<openApiNullable>false</openApiNullable>
@@ -95,7 +92,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>${generated-sources-path}/${generated-sources-java-path}</source>
+								<source>${generated-sources-path}/models</source>
 							</sources>
 						</configuration>
 					</execution>
