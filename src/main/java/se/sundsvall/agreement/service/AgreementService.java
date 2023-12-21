@@ -1,21 +1,21 @@
 package se.sundsvall.agreement.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-import se.sundsvall.agreement.api.model.AgreementParameters;
-import se.sundsvall.agreement.api.model.AgreementResponse;
-import se.sundsvall.agreement.api.model.Category;
-import se.sundsvall.agreement.api.model.PagedAgreementResponse;
-import se.sundsvall.dept44.models.api.paging.PagingMetaData;
-
-import java.util.List;
-
 import static java.lang.String.format;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreementParties;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreements;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.zalando.problem.Problem;
+
+import se.sundsvall.agreement.api.model.AgreementParameters;
+import se.sundsvall.agreement.api.model.AgreementResponse;
+import se.sundsvall.agreement.api.model.Category;
+import se.sundsvall.agreement.api.model.PagedAgreementResponse;
+import se.sundsvall.dept44.models.api.paging.PagingMetaData;
 
 @Service
 public class AgreementService {
@@ -24,13 +24,15 @@ public class AgreementService {
 	private static final String NO_PARTYID_MATCH_MESSAGE = "No matching agreements were found for party with id '%s'";
 	private static final String NO_PARTYID_AND_CATEGORY_MATCH_MESSAGE = "No matching agreements were found for party with id '%s' and category in '%s'";
 
-	@Autowired
-	private AgreementPartyProvider agreementPartyProvider;
+	private final AgreementPartyProvider agreementPartyProvider;
 
+	public AgreementService(AgreementPartyProvider agreementPartyProvider) {
+		this.agreementPartyProvider = agreementPartyProvider;
+	}
 
 	public AgreementResponse getAgreementsByCategoryAndFacilityId(Category category, String facilityId, boolean onlyActive) {
-		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive));
-		var response = AgreementResponse.create().withAgreementParties(agreementParties);
+		final var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive));
+		final var response = AgreementResponse.create().withAgreementParties(agreementParties);
 
 		if (response.getAgreementParties().isEmpty()) {
 			throw Problem.valueOf(NOT_FOUND, format(NO_CATEGORY_AND_FACILITY_MATCH_MESSAGE, facilityId, category));
@@ -40,8 +42,8 @@ public class AgreementService {
 	}
 
 	public AgreementResponse getAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, final boolean onlyActive) {
-		var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
-		var response = AgreementResponse.create().withAgreementParties(agreementParties);
+		final var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
+		final var response = AgreementResponse.create().withAgreementParties(agreementParties);
 
 		if (response.getAgreementParties().isEmpty()) {
 			throw isEmpty(categories) ? Problem.valueOf(NOT_FOUND, format(NO_PARTYID_MATCH_MESSAGE, partyId)) : Problem.valueOf(NOT_FOUND, format(NO_PARTYID_AND_CATEGORY_MATCH_MESSAGE, partyId, categories));
@@ -51,7 +53,7 @@ public class AgreementService {
 	}
 
 	public PagedAgreementResponse getPagedAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, AgreementParameters parameters) {
-		var response = agreementPartyProvider.getAgreementsByPartyIdAndCategories(
+		final var response = agreementPartyProvider.getAgreementsByPartyIdAndCategories(
 			partyId,
 			categories,
 			parameters.getPage(),
