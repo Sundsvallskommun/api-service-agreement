@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
@@ -13,10 +13,6 @@
 	<name>api-service-agreement</name>
 	<description>Service for retrieving contracts connected to a facility or a party</description>
 	<properties>
-		<!-- Pipeline properties -->
-		<docker.image.name>ms-agreement</docker.image.name>
-		<published.container.port.test>8725</published.container.port.test>
-		<published.container.port.production>8728</published.container.port.production>
   		<!-- Service properties -->
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
