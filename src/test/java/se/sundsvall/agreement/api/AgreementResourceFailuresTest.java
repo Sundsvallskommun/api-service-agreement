@@ -1,5 +1,6 @@
 package se.sundsvall.agreement.api;
 
+import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -26,6 +27,9 @@ import se.sundsvall.agreement.service.AgreementService;
 @ActiveProfiles("junit")
 class AgreementResourceFailuresTest {
 
+	private static final String CATEGORY_AND_FACILITY_ID_PATH = "/{municipalityId}/agreements/{category}/{facilityId}";
+	private static final String PARTY_ID_PATH = "/{municipalityId}/agreements/{partyId}";
+
 	@MockBean
 	private AgreementService agreementServiceMock;
 
@@ -36,10 +40,12 @@ class AgreementResourceFailuresTest {
 	void getAgreementsByInvalidCategory() {
 
 		// Arrange
+		final var municipalityId = "2281";
+		final var category = "INVALID-CATEGORY";
 		final var id = "1234567";
 
 		// Act
-		final var response = webTestClient.get().uri("/agreements/{category}/{facilityId}", "INVALID-CATEGORY", id)
+		final var response = webTestClient.get().uri(CATEGORY_AND_FACILITY_ID_PATH, municipalityId, category, id)
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON_VALUE)
@@ -57,13 +63,42 @@ class AgreementResourceFailuresTest {
 	}
 
 	@Test
-	void methodNotSupported() {
+	void getAgreementsByCategoryAndFacilityIdInvalidMunicipalityId() {
 
 		// Arrange
+		final var municipalityId = "invalid";
+		final var category = Category.ELECTRICITY;
 		final var id = "1234567";
 
 		// Act
-		final var response = webTestClient.delete().uri("/agreements/{category}/{facilityId}", Category.ELECTRICITY, id)
+		final var response = webTestClient.get().uri(CATEGORY_AND_FACILITY_ID_PATH, municipalityId, category, id)
+			.exchange()
+			.expectStatus().isBadRequest()
+			.expectHeader().contentType(APPLICATION_PROBLEM_JSON_VALUE)
+			.expectBody(ConstraintViolationProblem.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
+		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
+		assertThat(response.getViolations())
+			.extracting(Violation::getField, Violation::getMessage)
+			.containsExactly(tuple("getAgreementsByCategoryAndFacilityId.municipalityId", "not a valid municipality ID"));
+
+		verifyNoInteractions(agreementServiceMock);
+	}
+
+	@Test
+	void methodNotSupported() {
+
+		// Arrange
+		final var municipalityId = "2281";
+		final var category = Category.ELECTRICITY;
+		final var id = "1234567";
+
+		// Act
+		final var response = webTestClient.delete().uri(CATEGORY_AND_FACILITY_ID_PATH, municipalityId, category, id)
 			.exchange()
 			.expectStatus().isEqualTo(METHOD_NOT_ALLOWED.getStatusCode())
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON_VALUE)
@@ -82,8 +117,12 @@ class AgreementResourceFailuresTest {
 	@Test
 	void getAgreementsByInvalidPartyId() {
 
+		// Arrange
+		final var municipalityId = "2281";
+		final var partyId = "invalid";
+
 		// Act
-		final var response = webTestClient.get().uri("/agreements/invalid-party-id")
+		final var response = webTestClient.get().uri(PARTY_ID_PATH, municipalityId, partyId)
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON_VALUE)
@@ -97,6 +136,32 @@ class AgreementResourceFailuresTest {
 		assertThat(response.getViolations())
 			.extracting(Violation::getField, Violation::getMessage)
 			.containsExactly(tuple("getAgreementsForPartyId.partyId", "not a valid UUID"));
+
+		verifyNoInteractions(agreementServiceMock);
+	}
+
+	@Test
+	void getAgreementsByPartyIdInvalidMunicipalityId() {
+
+		// Arrange
+		final var municipalityId = "invalid";
+		final var partyId = randomUUID().toString();
+
+		// Act
+		final var response = webTestClient.get().uri(PARTY_ID_PATH, municipalityId, partyId)
+			.exchange()
+			.expectStatus().isBadRequest()
+			.expectHeader().contentType(APPLICATION_PROBLEM_JSON_VALUE)
+			.expectBody(ConstraintViolationProblem.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
+		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
+		assertThat(response.getViolations())
+			.extracting(Violation::getField, Violation::getMessage)
+			.containsExactly(tuple("getAgreementsForPartyId.municipalityId", "not a valid municipality ID"));
 
 		verifyNoInteractions(agreementServiceMock);
 	}

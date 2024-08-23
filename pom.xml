@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>se.sundsvall</groupId>
 	<artifactId>api-service-agreement</artifactId>
-	<version>3.1</version>
+	<version>4.0</version>
 	<name>api-service-agreement</name>
 	<description>Service for retrieving contracts connected to a facility or a party</description>
 	<properties>
@@ -57,7 +57,7 @@
 						<configuration>
 							<inputSpec>src/main/resources/integrations/api-datawarehousereader.yaml</inputSpec>
 							<output>${generated-sources-path}</output>
-							<generatorName>jaxrs-spec</generatorName>
+							<generatorName>spring</generatorName>
 							<generateApis>false</generateApis>
 							<generateSupportingFiles>false</generateSupportingFiles>
 							<configOptions>
@@ -69,7 +69,7 @@
 								<modelPackage>generated.se.sundsvall.datawarehousereader</modelPackage>
 								<openApiNullable>false</openApiNullable>
 								<generatePom>false</generatePom>
-								<interfaceOnly>true</interfaceOnly>
+								<interfaceOnly>true</interfaceOnly>					
 							</configOptions>
 						</configuration>
 					</execution>

@@ -6,7 +6,7 @@
 				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
 			}
 		},
-		"urlPath": "/dataWarehouseReaderMock/agreements",
+		"urlPath": "/dataWarehouseReaderMock/2281/agreements",
 		"method": "GET",
 		"queryParameters": {
 			"partyId": {
