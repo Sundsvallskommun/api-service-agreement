@@ -27,11 +27,12 @@ import se.sundsvall.agreement.api.model.AgreementParameters;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.api.model.PagedAgreementResponse;
 import se.sundsvall.agreement.service.AgreementService;
+import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 
 @RestController
 @Validated
-@RequestMapping("paged/agreements")
+@RequestMapping("/{municipalityId}/paged/agreements")
 @Tag(name = "Paged Agreement", description = "Agreement resources with paging")
 public class PagedAgreementResource {
 
@@ -48,11 +49,12 @@ public class PagedAgreementResource {
 	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	public ResponseEntity<PagedAgreementResponse> getAgreementsForPartyId(
-		@Parameter(name = "partyId", description = "Party-ID", required = true, example = "81471222-5798-11e9-ae24-57fa13b361e1") @ValidUuid @PathVariable(name = "partyId") final String partyId,
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "partyId", description = "Party-ID", example = "81471222-5798-11e9-ae24-57fa13b361e1") @ValidUuid @PathVariable(name = "partyId") final String partyId,
 		@Parameter(name = "category", description = "Optional list of one or more agreement categories to be included in response, default is to return all agreements connected to the party-ID") @RequestParam(value = "category",
 			defaultValue = "") final List<Category> categories,
 		@Valid AgreementParameters parameters) {
 
-		return ok(agreementService.getPagedAgreementsByPartyIdAndCategories(partyId, categories, parameters));
+		return ok(agreementService.getPagedAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, parameters));
 	}
 }

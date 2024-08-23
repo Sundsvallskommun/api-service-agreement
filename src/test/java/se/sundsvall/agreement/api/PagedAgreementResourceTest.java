@@ -1,5 +1,6 @@
 package se.sundsvall.agreement.api;
 
+import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -30,6 +31,8 @@ import se.sundsvall.dept44.models.api.paging.PagingMetaData;
 @ActiveProfiles("junit")
 class PagedAgreementResourceTest {
 
+	private static final String PATH = "/{municipalityId}/paged/agreements/{partyId}";
+
 	@MockBean
 	private AgreementService agreementServiceMock;
 
@@ -38,8 +41,10 @@ class PagedAgreementResourceTest {
 
 	@Test
 	void getAgreementsForPartyIdDefaultValues() {
+
 		// Arrange
-		final var partyId = UUID.randomUUID().toString();
+		final var municipalityId = "2281";
+		final var partyId = randomUUID().toString();
 		final var categories = new ArrayList<Category>();
 		final var parameters = new AgreementParameters();
 
@@ -51,12 +56,12 @@ class PagedAgreementResourceTest {
 				.withTotalRecords(1)
 				.withTotalPages(1))
 			.withAgreements(List.of(Agreement.create().withAgreementId("agreementId")));
-		when(agreementServiceMock.getPagedAgreementsByPartyIdAndCategories(any(), any(), any()))
+		when(agreementServiceMock.getPagedAgreementsByPartyIdAndCategories(any(), any(), any(), any()))
 			.thenReturn(pagingResponse);
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("paged/agreements/{partyId}")
-			.build(partyId))
+		final var response = webTestClient.get().uri(builder -> builder.path(PATH)
+			.build(municipalityId, partyId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -64,14 +69,16 @@ class PagedAgreementResourceTest {
 			.returnResult()
 			.getResponseBody();
 
-		verify(agreementServiceMock).getPagedAgreementsByPartyIdAndCategories(partyId, categories, parameters);
+		verify(agreementServiceMock).getPagedAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, parameters);
 		assertThat(response.getMetaData()).isEqualTo(pagingResponse.getMetaData());
 		assertThat(response.getAgreements()).isEqualTo(pagingResponse.getAgreements());
 	}
 
 	@Test
 	void getAgreementsForPartyIdNonDefaultValues() {
+
 		// Arrange
+		final var municipalityId = "2281";
 		final var partyId = UUID.randomUUID().toString();
 		final var categories = List.of(Category.DISTRICT_COOLING, Category.DISTRICT_HEATING);
 		final var parameters = AgreementParameters.create()
@@ -87,16 +94,16 @@ class PagedAgreementResourceTest {
 				.withTotalRecords(444)
 				.withTotalPages(9))
 			.withAgreements(List.of(Agreement.create().withAgreementId("agreementId")));
-		when(agreementServiceMock.getPagedAgreementsByPartyIdAndCategories(any(), any(), any()))
+		when(agreementServiceMock.getPagedAgreementsByPartyIdAndCategories(any(), any(), any(), any()))
 			.thenReturn(pagingResponse);
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("paged/agreements/{partyId}")
+		final var response = webTestClient.get().uri(builder -> builder.path(PATH)
 			.queryParam("category", categories)
 			.queryParam("onlyActive", parameters.isOnlyActive())
 			.queryParam("limit", parameters.getLimit())
 			.queryParam("page", parameters.getPage())
-			.build(partyId))
+			.build(municipalityId, partyId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -104,7 +111,7 @@ class PagedAgreementResourceTest {
 			.returnResult()
 			.getResponseBody();
 
-		verify(agreementServiceMock).getPagedAgreementsByPartyIdAndCategories(partyId, categories, parameters);
+		verify(agreementServiceMock).getPagedAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, parameters);
 		assertThat(response.getMetaData()).isEqualTo(pagingResponse.getMetaData());
 		assertThat(response.getAgreements()).isEqualTo(pagingResponse.getAgreements());
 	}

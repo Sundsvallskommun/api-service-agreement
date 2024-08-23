@@ -30,8 +30,8 @@ public class AgreementService {
 		this.agreementPartyProvider = agreementPartyProvider;
 	}
 
-	public AgreementResponse getAgreementsByCategoryAndFacilityId(Category category, String facilityId, boolean onlyActive) {
-		final var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(category, facilityId, onlyActive));
+	public AgreementResponse getAgreementsByCategoryAndFacilityId(String municipalityId, Category category, String facilityId, boolean onlyActive) {
+		final var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByCategoryAndFacility(municipalityId, category, facilityId, onlyActive));
 		final var response = AgreementResponse.create().withAgreementParties(agreementParties);
 
 		if (response.getAgreementParties().isEmpty()) {
@@ -41,8 +41,8 @@ public class AgreementService {
 		return response;
 	}
 
-	public AgreementResponse getAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, final boolean onlyActive) {
-		final var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive));
+	public AgreementResponse getAgreementsByPartyIdAndCategories(final String municipalityId, final String partyId, final List<Category> categories, final boolean onlyActive) {
+		final var agreementParties = toAgreementParties(agreementPartyProvider.getAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, onlyActive));
 		final var response = AgreementResponse.create().withAgreementParties(agreementParties);
 
 		if (response.getAgreementParties().isEmpty()) {
@@ -52,8 +52,9 @@ public class AgreementService {
 		return response;
 	}
 
-	public PagedAgreementResponse getPagedAgreementsByPartyIdAndCategories(final String partyId, final List<Category> categories, AgreementParameters parameters) {
+	public PagedAgreementResponse getPagedAgreementsByPartyIdAndCategories(final String municipalityId, final String partyId, final List<Category> categories, AgreementParameters parameters) {
 		final var response = agreementPartyProvider.getAgreementsByPartyIdAndCategories(
+			municipalityId,
 			partyId,
 			categories,
 			parameters.getPage(),

@@ -1,140 +1,161 @@
 openapi: 3.0.1
 info:
-  title: api-datawarehousereader
+  title: datawarehousereader
   contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "3.4"
+  version: "4.0"
 servers:
-  - url: https://api-i-test.sundsvall.se/datawarehousereader
-    description: Generated server url
+- url: https://datawarehousereader-af-datawarehousereader.apps.ocp101.sundsvall.se
+  description: Generated server url
 tags:
-  - name: Measurement
-    description: Measurement operations
-  - name: Installed base
-    description: Installed base operations
-  - name: Agreement
-    description: Agreement operations
-  - name: Customer
-    description: Customer operations
-  - name: Invoice
-    description: Invoice operations
+- name: Measurement
+  description: Measurement operations
+- name: Installed base
+  description: Installed base operations
+- name: Agreement
+  description: Agreement operations
+- name: Customer
+  description: Customer operations
+- name: Invoice
+  description: Invoice operations
 paths:
-  /measurements/{category}/{aggregateOn}:
+  /{municipalityId}/measurements/{category}/{aggregateOn}:
     get:
       tags:
-        - Measurement
+      - Measurement
       summary: Get measurement information
       description: Resource returns measurement data matching provided search parameters
       operationId: getMeasurements
       parameters:
-        - name: category
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/Category'
-        - name: aggregateOn
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/Aggregation'
-        - name: searchParams
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/MeasurementParameters'
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: category
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/Category"
+      - name: aggregateOn
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/Aggregation"
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/MeasurementParameters"
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MeasurementResponse'
+                $ref: "#/components/schemas/MeasurementResponse"
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/MeasurementResponse'
-  /invoices:
+                $ref: "#/components/schemas/MeasurementResponse"
+  /{municipalityId}/invoices:
     get:
       tags:
-        - Invoice
+      - Invoice
       summary: Get basic invoice information
       description: Resource returns all invoices matching provided search parameters
       operationId: getInvoices
       parameters:
-        - name: searchParams
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/InvoiceParameters'
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/InvoiceParameters"
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceResponse'
+                $ref: "#/components/schemas/InvoiceResponse"
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/InvoiceResponse'
-  /invoices/{organizationNumber}/{invoiceNumber}/details:
+                $ref: "#/components/schemas/InvoiceResponse"
+  /{municipalityId}/invoices/{organizationNumber}/{invoiceNumber}/details:
     get:
       tags:
-        - Invoice
+      - Invoice
       summary: Get invoice details for invoice matching issuer of provided organization
         number and having invoice number matching provided invoice number
       operationId: getInvoiceDetails
       parameters:
-        - name: organizationNumber
-          in: path
-          description: Organization number of invoice issuer
-          required: true
-          schema:
-            type: string
-          example: 5565027223
-        - name: invoiceNumber
-          in: path
-          description: Invoice number
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 805137494
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: organizationNumber
+        in: path
+        description: Organization number of invoice issuer
+        required: true
+        schema:
+          type: string
+        example: 5565027223
+      - name: invoiceNumber
+        in: path
+        description: Invoice number
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 805137494
       responses:
         "500":
           description: Internal Server error
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/Problem'
+                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
@@ -142,141 +163,250 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InvoiceDetail'
+                  $ref: "#/components/schemas/InvoiceDetail"
             application/problem+json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InvoiceDetail'
+                  $ref: "#/components/schemas/InvoiceDetail"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "404":
           description: Not found
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-  /installedbase:
+                $ref: "#/components/schemas/Problem"
+  /{municipalityId}/installedbase:
     get:
       tags:
-        - Installed base
+      - Installed base
       summary: Get installed base information
       description: Resource returns all installed bases matching provided search parameters
       operationId: getInstalledBase
       parameters:
-        - name: searchParams
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/InstalledBaseParameters'
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/InstalledBaseParameters"
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InstalledBaseResponse'
+                $ref: "#/components/schemas/InstalledBaseResponse"
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/InstalledBaseResponse'
-  /customer/engagements:
+                $ref: "#/components/schemas/InstalledBaseResponse"
+  /{municipalityId}/installations:
     get:
       tags:
-        - Customer
+      - Installations
+      summary: Get installation details
+      description: Resource returns all installations matching provided search parameters
+      operationId: getInstallationDetails
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/InstallationParameters"
+      responses:
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstallationDetailsResponse"
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/InstallationDetailsResponse"
+  /{municipalityId}/customer/engagements:
+    get:
+      tags:
+      - Customer
       summary: Get basic customer information
       description: Resource returns all customer engagements matching provided search
         parameters
       operationId: getCustomerEngagements
       parameters:
-        - name: searchParams
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/CustomerEngagementParameters'
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/CustomerEngagementParameters"
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerEngagementResponse'
+                $ref: "#/components/schemas/CustomerEngagementResponse"
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/CustomerEngagementResponse'
-  /customer/details:
+                $ref: "#/components/schemas/CustomerEngagementResponse"
+  /{municipalityId}/customer/details:
     get:
       tags:
-        - Customer
+      - Customer
       summary: Get detailed customer information
       description: Resource returns all customer details matching provided search
         parameters
       operationId: getCustomerDetails
       parameters:
-        - name: searchParams
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/CustomerDetailsParameters'
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/CustomerDetailsParameters"
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerDetailsResponse'
+                $ref: "#/components/schemas/CustomerDetailsResponse"
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/CustomerDetailsResponse'
+                $ref: "#/components/schemas/CustomerDetailsResponse"
+  /{municipalityId}/agreements:
+    get:
+      tags:
+      - Agreement
+      summary: Get agreements
+      description: Resource returns all agreements matching provided search parameters
+      operationId: getAgreements
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: searchParams
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/AgreementParameters"
+      responses:
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementResponse"
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/AgreementResponse"
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -289,71 +419,34 @@ paths:
       x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-mutual-ssl: Optional
-  /agreements:
-    get:
-      tags:
-        - Agreement
-      summary: Get agreements
-      description: Resource returns all agreements matching provided search parameters
-      operationId: getAgreements
-      parameters:
-        - name: searchParams
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/AgreementParameters'
-      responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgreementResponse'
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/AgreementResponse'
 components:
   schemas:
     Category:
       type: string
       description: Category
       enum:
-        - COMMUNICATION
-        - DISTRICT_COOLING
-        - DISTRICT_HEATING
-        - ELECTRICITY
-        - ELECTRICITY_TRADE
-        - WASTE_MANAGEMENT
-        - WATER
+      - COMMUNICATION
+      - DISTRICT_COOLING
+      - DISTRICT_HEATING
+      - ELECTRICITY
+      - ELECTRICITY_TRADE
+      - WASTE_MANAGEMENT
+      - WATER
     Aggregation:
       type: string
       description: Data point aggregation granularity
       enum:
-        - HOUR
-        - DAY
-        - MONTH
-        - YEAR
+      - HOUR
+      - DAY
+      - MONTH
+      - YEAR
     Direction:
       type: string
       description: The sort order direction
       example: ASC
       enum:
-        - ASC
-        - DESC
+      - ASC
+      - DESC
     MeasurementParameters:
       type: object
       properties:
@@ -378,7 +471,7 @@ components:
             description: The properties to sort on
             example: propertyName
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
         partyId:
           type: string
           description: PartyId (e.g. a personId or an organizationId)
@@ -411,12 +504,12 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: '#/components/schemas/StatusType'
     StatusType:
       type: object
       properties:
@@ -429,7 +522,7 @@ components:
       type: object
       properties:
         cause:
-          $ref: '#/components/schemas/ThrowableProblem'
+          $ref: "#/components/schemas/ThrowableProblem"
         stackTrace:
           type: array
           items:
@@ -456,11 +549,11 @@ components:
           type: string
           format: uri
         status:
-          $ref: '#/components/schemas/StatusType'
+          $ref: "#/components/schemas/StatusType"
         violations:
           type: array
           items:
-            $ref: '#/components/schemas/Violation'
+            $ref: "#/components/schemas/Violation"
         title:
           type: string
         message:
@@ -511,7 +604,7 @@ components:
       type: object
       properties:
         cause:
-          $ref: '#/components/schemas/ThrowableProblem'
+          $ref: "#/components/schemas/ThrowableProblem"
         stackTrace:
           type: array
           items:
@@ -546,12 +639,12 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: '#/components/schemas/StatusType'
         suppressed:
           type: array
           items:
@@ -606,9 +699,9 @@ components:
           readOnly: true
           example: "735999109151401011"
         category:
-          $ref: '#/components/schemas/Category'
+          $ref: "#/components/schemas/Category"
         aggregatedOn:
-          $ref: '#/components/schemas/Aggregation'
+          $ref: "#/components/schemas/Aggregation"
         measurementType:
           type: string
           description: Measurement type
@@ -634,7 +727,7 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/MeasurementMetaData'
+            $ref: "#/components/schemas/MeasurementMetaData"
         interpolation:
           type: integer
           description: Interpolation information. Zero means that no interpolations
@@ -667,9 +760,9 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/Measurement'
+            $ref: "#/components/schemas/Measurement"
         _meta:
-          $ref: '#/components/schemas/PagingAndSortingMetaData'
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
       description: Measurement response model
     PagingAndSortingMetaData:
       type: object
@@ -713,7 +806,7 @@ components:
             readOnly: true
             example: property
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
       description: PagingAndSortingMetaData model
       readOnly: true
     CustomerType:
@@ -721,8 +814,8 @@ components:
       description: Customer type
       example: Enterprise
       enum:
-        - Enterprise
-        - Private
+      - Enterprise
+      - Private
     InvoiceParameters:
       type: object
       properties:
@@ -747,7 +840,7 @@ components:
             description: The properties to sort on
             example: propertyName
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
         customerNumber:
           type: array
           items:
@@ -755,7 +848,7 @@ components:
             description: Customer numbers
             example: "39195"
         customerType:
-          $ref: '#/components/schemas/CustomerType'
+          $ref: "#/components/schemas/CustomerType"
         facilityId:
           type: array
           items:
@@ -826,7 +919,7 @@ components:
           readOnly: true
           example: "39195"
         customerType:
-          $ref: '#/components/schemas/CustomerType'
+          $ref: "#/components/schemas/CustomerType"
         facilityId:
           type: string
           description: Facility id
@@ -965,9 +1058,9 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/Invoice'
+            $ref: "#/components/schemas/Invoice"
         _meta:
-          $ref: '#/components/schemas/PagingAndSortingMetaData'
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
       description: Invoice response model
     InvoiceDetail:
       type: object
@@ -1070,7 +1163,7 @@ components:
             description: The properties to sort on
             example: propertyName
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
         company:
           type: string
           description: Company
@@ -1195,7 +1288,7 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/InstalledBaseItemMetaData'
+            $ref: "#/components/schemas/InstalledBaseItemMetaData"
       description: Installed base item model
       readOnly: true
     InstalledBaseItemMetaData:
@@ -1230,10 +1323,155 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/InstalledBaseItem'
+            $ref: "#/components/schemas/InstalledBaseItem"
         _meta:
-          $ref: '#/components/schemas/PagingAndSortingMetaData'
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
       description: Installed base response model
+    InstallationParameters:
+      type: object
+      properties:
+        page:
+          minimum: 1
+          type: integer
+          description: Page number
+          format: int32
+          example: 1
+          default: 1
+        limit:
+          minimum: 1
+          type: integer
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
+          format: int32
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: "#/components/schemas/Direction"
+        installed:
+          type: boolean
+          description: Is the installation installed
+          example: true
+        lastModifiedDateFrom:
+          type: string
+          description: Earliest date when item was last modified
+          format: date
+          example: 2022-12-31
+        lastModifiedDateTo:
+          type: string
+          description: Latest date when item was last modified
+          format: date
+          example: 2022-12-31
+        category:
+          $ref: "#/components/schemas/Category"
+        facilityId:
+          type: string
+          description: Facility id
+          example: "735999109151401011"
+      description: Installations request parameters model
+    InstallationDetails:
+      type: object
+      properties:
+        company:
+          type: string
+          description: Company
+          readOnly: true
+          example: Sundsvall Energi AB
+        type:
+          type: string
+          description: Type
+          readOnly: true
+          example: Fjärrvärme
+        facilityId:
+          type: string
+          description: Facility id
+          readOnly: true
+          example: "735999109270751042"
+        placementId:
+          type: integer
+          description: Placement id
+          format: int32
+          readOnly: true
+          example: 5263
+        careOf:
+          type: string
+          description: Care of address
+          readOnly: true
+          example: Agatha Malm
+        street:
+          type: string
+          description: Street
+          readOnly: true
+          example: Storgatan 9
+        postCode:
+          type: string
+          description: Post code
+          readOnly: true
+          example: "85230"
+        city:
+          type: string
+          description: City
+          readOnly: true
+          example: Sundsvall
+        propertyDesignation:
+          type: string
+          description: Property designation
+          readOnly: true
+          example: Södermalm 1:27
+        dateFrom:
+          type: string
+          description: From date
+          format: date
+          readOnly: true
+          example: 2019-01-01
+        dateTo:
+          type: string
+          description: To date
+          format: date
+          readOnly: true
+          example: 2022-12-31
+        dateLastModified:
+          type: string
+          description: Date when object was last modified (or null if never modified)
+          format: date
+          readOnly: true
+          example: 2022-12-31
+        metaData:
+          maxItems: 1000
+          type: array
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/InstallationMetaDataEmbeddable"
+      description: Installation details model
+      readOnly: true
+    InstallationDetailsResponse:
+      type: object
+      properties:
+        installationDetails:
+          type: array
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/InstallationDetails"
+        _meta:
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
+    InstallationMetaDataEmbeddable:
+      type: object
+      properties:
+        company:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        type:
+          type: string
+        displayName:
+          type: string
+      readOnly: true
     CustomerEngagementParameters:
       type: object
       properties:
@@ -1258,7 +1496,7 @@ components:
             description: The properties to sort on
             example: propertyName
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
         partyId:
           type: array
           items:
@@ -1287,7 +1525,7 @@ components:
           readOnly: true
           example: 81471222-5798-11e9-ae24-57fa13b361e1
         customerType:
-          $ref: '#/components/schemas/CustomerType'
+          $ref: "#/components/schemas/CustomerType"
         customerNumber:
           type: string
           description: Customer number
@@ -1303,6 +1541,17 @@ components:
           description: Organization name for counterpart of engagement
           readOnly: true
           example: Sundsvall Elnät
+        active:
+          type: boolean
+          description: "Indicates customer status, if not active then the moveInDate\
+            \ holds information on when the customer will be activated"
+          readOnly: true
+          example: true
+        moveInDate:
+          type: string
+          description: The prospective customer's move-in date
+          format: date
+          readOnly: true
       description: Customer engagement model
       readOnly: true
     CustomerEngagementResponse:
@@ -1312,13 +1561,13 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/CustomerEngagement'
+            $ref: "#/components/schemas/CustomerEngagement"
         _meta:
-          $ref: '#/components/schemas/PagingAndSortingMetaData'
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
       description: Customer engagement response model
     CustomerDetailsParameters:
       required:
-        - customerEngagementOrgId
+      - customerEngagementOrgId
       type: object
       properties:
         page:
@@ -1342,7 +1591,7 @@ components:
             description: The properties to sort on
             example: propertyName
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
         partyId:
           type: array
           items:
@@ -1358,12 +1607,6 @@ components:
           description: Date and time for when to search for changes from. Format is
             yyyy-MM-dd'T'HH:mm:ss.SSSXXX. If omitted changes within the last year
             will be returned.
-          format: date-time
-          example: 2000-10-31T01:30:00-05:00
-        toDateTime:
-          type: string
-          description: "Date and time for when to search for change to. Format is\
-            \ yyyy-MM-dd'T'HH:mm:ss.SSSXXX,"
           format: date-time
           example: 2000-10-31T01:30:00-05:00
       description: Customer details request parameters model
@@ -1455,6 +1698,17 @@ components:
             since the search date
           readOnly: true
           example: true
+        active:
+          type: boolean
+          description: "Indicates customer status, if not active then the moveInDate\
+            \ holds information on when the customer will be activated"
+          readOnly: true
+          example: true
+        moveInDate:
+          type: string
+          description: The prospective customer's move-in date
+          format: date
+          readOnly: true
       description: Customer details model
       readOnly: true
     CustomerDetailsResponse:
@@ -1464,9 +1718,9 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/CustomerDetails'
+            $ref: "#/components/schemas/CustomerDetails"
         _meta:
-          $ref: '#/components/schemas/PagingAndSortingMetaData'
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
       description: Customer details response model
     AgreementParameters:
       type: object
@@ -1492,7 +1746,7 @@ components:
             description: The properties to sort on
             example: propertyName
         sortDirection:
-          $ref: '#/components/schemas/Direction'
+          $ref: "#/components/schemas/Direction"
         partyId:
           type: string
           description: PartyId (e.g. a personId or an organizationId)
@@ -1508,7 +1762,7 @@ components:
         category:
           type: array
           items:
-            $ref: '#/components/schemas/Category'
+            $ref: "#/components/schemas/Category"
         billingId:
           type: string
           description: Billing Id
@@ -1567,7 +1821,7 @@ components:
           readOnly: true
           example: "1223334"
         category:
-          $ref: '#/components/schemas/Category'
+          $ref: "#/components/schemas/Category"
         billingId:
           type: string
           description: Billing Id
@@ -1623,8 +1877,8 @@ components:
           type: array
           readOnly: true
           items:
-            $ref: '#/components/schemas/Agreement'
+            $ref: "#/components/schemas/Agreement"
         _meta:
-          $ref: '#/components/schemas/PagingAndSortingMetaData'
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
       description: Agreement response model
   securitySchemes: {}

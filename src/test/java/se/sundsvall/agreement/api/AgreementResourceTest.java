@@ -1,5 +1,7 @@
 package se.sundsvall.agreement.api;
 
+import static java.util.Collections.emptyList;
+import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.mockito.Mockito.verify;
@@ -7,9 +9,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,9 @@ import se.sundsvall.agreement.service.AgreementService;
 @ActiveProfiles("junit")
 class AgreementResourceTest {
 
+	private static final String CATEGORY_AND_FACILITY_ID_PATH = "/{municipalityId}/agreements/{category}/{facilityId}";
+	private static final String PARTY_ID_PATH = "/{municipalityId}/agreements/{partyId}";
+
 	@MockBean
 	private AgreementService agreementServiceMock;
 
@@ -39,14 +42,15 @@ class AgreementResourceTest {
 	void getAgreementsByCategoryAndFacilityIdWithOnlyActiveAbsent() {
 
 		// Arrange
+		final var municipalityId = "2281";
 		final var category = Category.ELECTRICITY;
 		final var facilityId = "1234567";
 
-		when(agreementServiceMock.getAgreementsByCategoryAndFacilityId(category, facilityId, true))
+		when(agreementServiceMock.getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, true))
 			.thenReturn(AgreementResponse.create().withAgreementParties(List.of(AgreementParty.create().withAgreements(List.of(Agreement.create())))));
 
 		// Act
-		final var response = webTestClient.get().uri("/agreements/{category}/{facilityId}", category, facilityId)
+		final var response = webTestClient.get().uri(CATEGORY_AND_FACILITY_ID_PATH, municipalityId, category, facilityId)
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -61,22 +65,25 @@ class AgreementResourceTest {
 			.extracting(Agreement::isMainAgreement, Agreement::isBinding)
 			.containsExactly(tuple(false, false));
 
-		verify(agreementServiceMock).getAgreementsByCategoryAndFacilityId(category, facilityId, true);
+		verify(agreementServiceMock).getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, true);
 	}
 
 	@Test
 	void getAgreementsByCategoryAndFacilityIdWithOnlyActiveTrue() {
 
 		// Arrange
+		final var municipalityId = "2281";
 		final var category = Category.ELECTRICITY;
 		final var facilityId = "1234567";
 		final var onlyActive = true;
 
-		when(agreementServiceMock.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive))
+		when(agreementServiceMock.getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, onlyActive))
 			.thenReturn(AgreementResponse.create().withAgreementParties(List.of(AgreementParty.create().withAgreements(List.of(Agreement.create())))));
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("/agreements/{category}/{facilityId}").queryParam("onlyActive", String.valueOf(onlyActive)).build(category, facilityId))
+		final var response = webTestClient.get().uri(builder -> builder.path(CATEGORY_AND_FACILITY_ID_PATH)
+			.queryParam("onlyActive", String.valueOf(onlyActive))
+			.build(municipalityId, category, facilityId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -91,24 +98,27 @@ class AgreementResourceTest {
 			.extracting(Agreement::isMainAgreement, Agreement::isBinding)
 			.containsExactly(tuple(false, false));
 
-		verify(agreementServiceMock).getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive);
+		verify(agreementServiceMock).getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, onlyActive);
 	}
 
 	@Test
 	void getAgreementsByCategoryAndFacilityIdWithOnlyActiveFalse() {
 
 		// Arrange
+		final var municipalityId = "2281";
 		final var category = Category.ELECTRICITY;
 		final var facilityId = "1234567";
 		final var onlyActive = false;
 
-		when(agreementServiceMock.getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive))
+		when(agreementServiceMock.getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, onlyActive))
 			.thenReturn(AgreementResponse.create().withAgreementParties(List.of(
 				AgreementParty.create().withAgreements(List.of(Agreement.create(), Agreement.create())),
 				AgreementParty.create().withAgreements(List.of(Agreement.create(), Agreement.create())))));
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("/agreements/{category}/{facilityId}").queryParam("onlyActive", String.valueOf(onlyActive)).build(category, facilityId))
+		final var response = webTestClient.get().uri(builder -> builder.path(CATEGORY_AND_FACILITY_ID_PATH)
+			.queryParam("onlyActive", String.valueOf(onlyActive))
+			.build(municipalityId, category, facilityId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -130,20 +140,21 @@ class AgreementResourceTest {
 				tuple(false, false),
 				tuple(false, false));
 
-		verify(agreementServiceMock).getAgreementsByCategoryAndFacilityId(category, facilityId, onlyActive);
+		verify(agreementServiceMock).getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, onlyActive);
 	}
 
 	@Test
 	void getAgreementsByPartyIdAndCategoriesMinimumParameters() {
 
 		// Arrange
-		final var partyId = UUID.randomUUID().toString();
+		final var municipalityId = "2281";
+		final var partyId = randomUUID().toString();
 
-		when(agreementServiceMock.getAgreementsByPartyIdAndCategories(partyId, Collections.emptyList(), true))
+		when(agreementServiceMock.getAgreementsByPartyIdAndCategories(municipalityId, partyId, emptyList(), true))
 			.thenReturn(AgreementResponse.create().withAgreementParties(List.of(AgreementParty.create().withAgreements(List.of(Agreement.create())))));
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("/agreements/{partyId}").build(partyId))
+		final var response = webTestClient.get().uri(builder -> builder.path(PARTY_ID_PATH).build(municipalityId, partyId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -158,21 +169,24 @@ class AgreementResourceTest {
 			.extracting(Agreement::isMainAgreement, Agreement::isBinding)
 			.containsExactly(tuple(false, false));
 
-		verify(agreementServiceMock).getAgreementsByPartyIdAndCategories(partyId, Collections.emptyList(), true);
+		verify(agreementServiceMock).getAgreementsByPartyIdAndCategories(municipalityId, partyId, emptyList(), true);
 	}
 
 	@Test
 	void getAgreementsByPartyIdAndCategoriesWithCategoryFilters() {
 
 		// Arrange
-		final var partyId = UUID.randomUUID().toString();
+		final var municipalityId = "2281";
+		final var partyId = randomUUID().toString();
 		final var categories = List.of(Category.DISTRICT_COOLING, Category.DISTRICT_HEATING);
 
-		when(agreementServiceMock.getAgreementsByPartyIdAndCategories(partyId, categories, true))
+		when(agreementServiceMock.getAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, true))
 			.thenReturn(AgreementResponse.create().withAgreementParties(List.of(AgreementParty.create().withAgreements(List.of(Agreement.create())))));
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("/agreements/{partyId}").queryParam("category", categories).build(partyId))
+		final var response = webTestClient.get().uri(builder -> builder.path(PARTY_ID_PATH)
+			.queryParam("category", categories)
+			.build(municipalityId, partyId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -187,25 +201,26 @@ class AgreementResourceTest {
 			.extracting(Agreement::isMainAgreement, Agreement::isBinding)
 			.containsExactly(tuple(false, false));
 
-		verify(agreementServiceMock).getAgreementsByPartyIdAndCategories(partyId, categories, true);
+		verify(agreementServiceMock).getAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, true);
 	}
 
 	@Test
 	void getAgreementsByPartyIdAndCategoriesWithCategoryFiltersAndOnlyActiveFalse() {
 
 		// Arrange
-		final var partyId = UUID.randomUUID().toString();
+		final var municipalityId = "2281";
+		final var partyId = randomUUID().toString();
 		final var categories = List.of(Category.DISTRICT_COOLING, Category.DISTRICT_HEATING);
 		final var onlyActive = false;
 
-		when(agreementServiceMock.getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive))
+		when(agreementServiceMock.getAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, onlyActive))
 			.thenReturn(AgreementResponse.create().withAgreementParties(List.of(AgreementParty.create().withAgreements(List.of(Agreement.create())))));
 
 		// Act
-		final var response = webTestClient.get().uri(builder -> builder.path("/agreements/{partyId}")
+		final var response = webTestClient.get().uri(builder -> builder.path(PARTY_ID_PATH)
 			.queryParam("category", categories)
 			.queryParam("onlyActive", String.valueOf(onlyActive))
-			.build(partyId))
+			.build(municipalityId, partyId))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
@@ -220,6 +235,6 @@ class AgreementResourceTest {
 			.extracting(Agreement::isMainAgreement, Agreement::isBinding)
 			.containsExactly(tuple(false, false));
 
-		verify(agreementServiceMock).getAgreementsByPartyIdAndCategories(partyId, categories, onlyActive);
+		verify(agreementServiceMock).getAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, onlyActive);
 	}
 }
