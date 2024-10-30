@@ -20,16 +20,16 @@ public class Agreement {
 
 	@Schema(description = "Billing identifier", example = "111222333", accessMode = READ_ONLY)
 	private String billingId;
-	
+
 	@Schema(implementation = Category.class, accessMode = READ_ONLY)
 	private Category category;
-	
+
 	@Schema(description = "Description", example = "The master agreement", accessMode = READ_ONLY)
 	private String description;
 
 	@Schema(description = "Id of the facility connected to the agreement", example = "1223334", accessMode = READ_ONLY)
 	private String facilityId;
-	
+
 	@Schema(description = "Signal indicating whether the agreement is the main agreement or not", example = "true", accessMode = READ_ONLY)
 	private boolean mainAgreement;
 
@@ -47,7 +47,7 @@ public class Agreement {
 
 	@Schema(description = "Signal if the agreement is active or not", example = "true", accessMode = READ_ONLY)
 	private boolean active;
-	
+
 	public static Agreement create() {
 		return new Agreement();
 	}
@@ -77,7 +77,7 @@ public class Agreement {
 		this.agreementId = agreementId;
 		return this;
 	}
-	
+
 	public String getBillingId() {
 		return billingId;
 	}
@@ -129,7 +129,7 @@ public class Agreement {
 		this.facilityId = facilityId;
 		return this;
 	}
-	
+
 	public boolean isMainAgreement() {
 		return mainAgreement;
 	}
@@ -211,7 +211,7 @@ public class Agreement {
 	@Override
 	public int hashCode() {
 		return Objects.hash(active, agreementId, billingId, binding, bindingRule, category, customerId, description, facilityId,
-				fromDate, mainAgreement, toDate);
+			fromDate, mainAgreement, toDate);
 	}
 
 	@Override
@@ -224,11 +224,11 @@ public class Agreement {
 			return false;
 		Agreement other = (Agreement) obj;
 		return active == other.active && Objects.equals(agreementId, other.agreementId)
-				&& Objects.equals(billingId, other.billingId) && binding == other.binding
-				&& Objects.equals(bindingRule, other.bindingRule) && category == other.category
-				&& Objects.equals(description, other.description) && Objects.equals(facilityId, other.facilityId)
-				&& Objects.equals(fromDate, other.fromDate) && mainAgreement == other.mainAgreement
-				&& Objects.equals(toDate, other.toDate) && Objects.equals(customerId, other.customerId);
+			&& Objects.equals(billingId, other.billingId) && binding == other.binding
+			&& Objects.equals(bindingRule, other.bindingRule) && category == other.category
+			&& Objects.equals(description, other.description) && Objects.equals(facilityId, other.facilityId)
+			&& Objects.equals(fromDate, other.fromDate) && mainAgreement == other.mainAgreement
+			&& Objects.equals(toDate, other.toDate) && Objects.equals(customerId, other.customerId);
 	}
 
 	@Override

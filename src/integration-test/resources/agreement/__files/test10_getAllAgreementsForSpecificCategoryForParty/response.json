@@ -1,22 +1,16 @@
-{
-	"agreementParties": [
-		{
-			"customerId": "703421",
-			"agreements": [
-				{
-					"agreementId": "512840",
-					"billingId": "2179883",
-					"category": "ELECTRICITY_TRADE",
-					"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
-					"facilityId": "735999109223205905",
-					"mainAgreement": true,
-					"binding": false,
-					"bindingRule": "Anvisat, 14 dagars uppsägning",
-					"fromDate": "2022-01-04",
-					"toDate": "2022-03-13",
-					"active": false
-				}
-			]
-		}
-	]
-}
+{"agreementParties": [{
+	"customerId": "703421",
+	"agreements": [{
+		"fromDate": "2022-01-04",
+		"mainAgreement": true,
+		"billingId": "2179883",
+		"facilityId": "735999109223205905",
+		"toDate": "2022-03-13",
+		"agreementId": "512840",
+		"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
+		"binding": false,
+		"active": false,
+		"category": "ELECTRICITY_TRADE",
+		"bindingRule": "Anvisat, 14 dagars uppsägning"
+	}]
+}]}

@@ -98,7 +98,9 @@ class AgreementMapperTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(ints = { 1, 2 })
+	@ValueSource(ints = {
+		1, 2
+	})
 	void testToAgreementPartiesAllAgreementsBelongToSameParty(int agreementSize) {
 		final var agreementParties = toAgreementParties(createResponse(agreementSize));
 		assertThat(agreementParties).isNotNull().hasSize(1);

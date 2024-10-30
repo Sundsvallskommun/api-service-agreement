@@ -1,42 +1,38 @@
-{
-	"agreementParties": [
+{"agreementParties": [{
+	"customerId": "629956",
+	"agreements": [
 		{
-			"customerId": "629956",
-			"agreements": [
-				{
-					"agreementId": "18254",
-					"billingId": "2043064",
-					"category": "ELECTRICITY",
-					"description": "Villa Matfors & Kvissleby",
-					"facilityId": "735999109116016144",
-					"mainAgreement": true,
-					"binding": false,
-					"fromDate": "2014-09-01",
-					"active": true
-				},
-				{
-					"agreementId": "25778",
-					"billingId": "2043064",
-					"category": "ELECTRICITY",
-					"description": "Fastpris med el-certifikat",
-					"facilityId": "735999109116016144",
-					"mainAgreement": false,
-					"binding": false,
-					"fromDate": "2014-09-01",
-					"active": true
-				},
-				{
-					"agreementId": "39857",
-					"billingId": "2043064",
-					"category": "ELECTRICITY",
-					"description": "Fastpris 2 år",
-					"facilityId": "735999109116016144",
-					"mainAgreement": true,
-					"binding": false,
-					"fromDate": "2014-09-01",
-					"active": true
-				}
-			]
+			"fromDate": "2014-09-01",
+			"mainAgreement": true,
+			"billingId": "2043064",
+			"facilityId": "735999109116016144",
+			"agreementId": "18254",
+			"description": "Villa Matfors & Kvissleby",
+			"binding": false,
+			"active": true,
+			"category": "ELECTRICITY"
+		},
+		{
+			"fromDate": "2014-09-01",
+			"mainAgreement": false,
+			"billingId": "2043064",
+			"facilityId": "735999109116016144",
+			"agreementId": "25778",
+			"description": "Fastpris med el-certifikat",
+			"binding": false,
+			"active": true,
+			"category": "ELECTRICITY"
+		},
+		{
+			"fromDate": "2014-09-01",
+			"mainAgreement": true,
+			"billingId": "2043064",
+			"facilityId": "735999109116016144",
+			"agreementId": "39857",
+			"description": "Fastpris 2 år",
+			"binding": false,
+			"active": true,
+			"category": "ELECTRICITY"
 		}
 	]
-}
+}]}

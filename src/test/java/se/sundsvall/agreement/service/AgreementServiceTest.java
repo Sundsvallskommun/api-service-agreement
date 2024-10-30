@@ -156,7 +156,9 @@ class AgreementServiceTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(booleans = { true, false })
+	@ValueSource(booleans = {
+		true, false
+	})
 	void getPagedAgreementsByPartyIdAndCategoriesOnlyActive(boolean onlyActive) {
 
 		// Arrange

@@ -1,14 +1,13 @@
 package se.sundsvall.agreement.api.model;
 
-import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Agreement party model")
@@ -28,11 +27,11 @@ public class AgreementParty {
 		return customerId;
 	}
 
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(final String customerId) {
 		this.customerId = customerId;
 	}
 
-	public AgreementParty withCustomerId(String customerId) {
+	public AgreementParty withCustomerId(final String customerId) {
 		this.customerId = customerId;
 		return this;
 	}
@@ -41,11 +40,11 @@ public class AgreementParty {
 		return agreements;
 	}
 
-	public void setAgreements(List<Agreement> agreements) {
+	public void setAgreements(final List<Agreement> agreements) {
 		this.agreements = agreements;
 	}
 
-	public AgreementParty withAgreements(List<Agreement> agreements) {
+	public AgreementParty withAgreements(final List<Agreement> agreements) {
 		this.agreements = agreements;
 		return this;
 	}
@@ -56,22 +55,21 @@ public class AgreementParty {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AgreementParty other = (AgreementParty) obj;
+		final AgreementParty other = (AgreementParty) obj;
 		return Objects.equals(agreements, other.agreements) && Objects.equals(customerId, other.customerId);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("AgreementParty [customerId=").append(customerId).append(", agreements=").append(agreements)
-				.append("]");
-		return builder.toString();
+		final String builder = "AgreementParty [customerId=" + customerId + ", agreements=" + agreements
+			+ "]";
+		return builder;
 	}
 }

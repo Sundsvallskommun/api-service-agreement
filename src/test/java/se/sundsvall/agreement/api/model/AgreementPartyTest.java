@@ -29,11 +29,11 @@ class AgreementPartyTest {
 	void testBuilderMethods() {
 		final var agreements = List.of(Agreement.create());
 		final var customerId = "customerId";
-		
+
 		final var agreementParty = AgreementParty.create()
 			.withAgreements(agreements)
 			.withCustomerId(customerId);
-		
+
 		assertThat(agreementParty).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(agreementParty.getAgreements()).isEqualTo(agreements);
 		assertThat(agreementParty.getCustomerId()).isEqualTo(customerId);

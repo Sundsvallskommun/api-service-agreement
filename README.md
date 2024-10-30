@@ -18,7 +18,6 @@ _A component within the [DataWarehouseReader](https://github.com/Sundsvallskommu
    ```bash
    git clone git@github.com:Sundsvallskommun/api-service-agreement.git
    ```
-
 2. **Configure the application:**
 
    Before running the application, you need to set up configuration settings.
@@ -32,16 +31,15 @@ _A component within the [DataWarehouseReader](https://github.com/Sundsvallskommu
 
 4. **Build and run the application:**
 
-     ```bash
-     mvn spring-boot:run
-     ```
+   ```bash
+   mvn spring-boot:run
+   ```
 
 ## Dependencies
 
 This microservice depends on the following services:
 
 - **DataWarehouseReader**
-
   - **Purpose:** The core service that delivers agreement details.
   - **Repository:** [DataWarehouseReader](https://github.com/Sundsvallskommun/api-service-datawarehousereader)
   - **Setup Instructions:** Refer to its documentation for installation and configuration steps.
@@ -80,7 +78,6 @@ Configuration is crucial for the application to run successfully. Ensure all nec
   server:
     port: 8080
   ```
-
 - **DataWarehouseReader:**
 
   ```yaml
