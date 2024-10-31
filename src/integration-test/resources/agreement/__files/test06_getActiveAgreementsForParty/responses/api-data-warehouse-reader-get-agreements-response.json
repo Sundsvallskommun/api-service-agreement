@@ -1,36 +1,36 @@
 {
 	"agreements": [
 		{
-			"customerNumber": "703421",
+			"fromDate": "2022-01-01",
+			"mainAgreement": true,
 			"facilityId": "132220",
-			"category": "WASTE_MANAGEMENT",
 			"billingId": "2180429",
 			"agreementId": "513476",
 			"description": "Avfall",
-			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2022-01-01",
-			"active": true
+			"active": true,
+			"customerNumber": "703421",
+			"category": "WASTE_MANAGEMENT"
 		},
 		{
-			"customerNumber": "703421",
+			"fromDate": "2022-01-04",
+			"mainAgreement": true,
 			"facilityId": "735999109223205905",
-			"category": "ELECTRICITY",
 			"billingId": "2179863",
 			"agreementId": "512843",
 			"description": "Säkringsabonnemang",
-			"mainAgreement": true,
 			"binding": false,
-			"bindingRule": "B00-U00",
-			"fromDate": "2022-01-04",
-			"active": true
+			"active": true,
+			"customerNumber": "703421",
+			"category": "ELECTRICITY",
+			"bindingRule": "B00-U00"
 		}
 	],
 	"_meta": {
-		"page": 1,
+		"totalRecords": 2,
 		"limit": 1000,
 		"count": 2,
-		"totalRecords": 2,
-		"totalPages": 1
+		"totalPages": 1,
+		"page": 1
 	}
 }

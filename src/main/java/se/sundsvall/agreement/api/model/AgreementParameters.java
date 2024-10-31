@@ -28,7 +28,7 @@ public class AgreementParameters extends AbstractParameterPagingBase {
 		return this;
 	}
 
-	public AgreementParameters withPage(int page){
+	public AgreementParameters withPage(int page) {
 		super.setPage(page);
 		return this;
 	}

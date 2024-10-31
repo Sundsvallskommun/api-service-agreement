@@ -4,8 +4,9 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>6.0.2</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>6.0.3</version>
+		<relativePath />
+		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
 	<artifactId>api-service-agreement</artifactId>
@@ -13,7 +14,7 @@
 	<name>api-service-agreement</name>
 	<description>Service for retrieving contracts connected to a facility or a party</description>
 	<properties>
-  		<!-- Service properties -->
+		<!-- Service properties -->
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
 	</properties>
@@ -24,7 +25,7 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-common-validators</artifactId>
 		</dependency>
@@ -69,7 +70,7 @@
 								<modelPackage>generated.se.sundsvall.datawarehousereader</modelPackage>
 								<openApiNullable>false</openApiNullable>
 								<generatePom>false</generatePom>
-								<interfaceOnly>true</interfaceOnly>					
+								<interfaceOnly>true</interfaceOnly>
 							</configOptions>
 						</configuration>
 					</execution>
@@ -82,10 +83,10 @@
 				<executions>
 					<execution>
 						<id>add-generated-source</id>
-						<phase>initialize</phase>
 						<goals>
 							<goal>add-source</goal>
 						</goals>
+						<phase>initialize</phase>
 						<configuration>
 							<sources>
 								<source>${generated-sources-path}/models</source>

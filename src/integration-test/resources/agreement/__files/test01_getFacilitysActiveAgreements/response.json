@@ -1,20 +1,14 @@
-{
-	"agreementParties": [
-		{
-			"customerId": "698815",
-			"agreements": [
-				{
-					"agreementId": "491919",
-					"billingId": "2145103",
-					"category": "DISTRICT_COOLING",
-					"description": "Rörligt pris Provapå",
-					"facilityId": "7112702050",
-					"mainAgreement": true,
-					"binding": false,
-					"fromDate": "2020-05-01",
-					"active": true
-				}
-			]
-		}
-	]
-}
+{"agreementParties": [{
+	"customerId": "698815",
+	"agreements": [{
+		"fromDate": "2020-05-01",
+		"mainAgreement": true,
+		"billingId": "2145103",
+		"facilityId": "7112702050",
+		"agreementId": "491919",
+		"description": "Rörligt pris Provapå",
+		"binding": false,
+		"active": true,
+		"category": "DISTRICT_COOLING"
+	}]
+}]}

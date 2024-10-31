@@ -1,5 +1,5 @@
 {
+	"detail": "No matching agreements were found for facility with id '731588001866455800' and category 'ELECTRICITY_TRADE'",
 	"title": "Not Found",
-	"status": 404,
-	"detail": "No matching agreements were found for facility with id '731588001866455800' and category 'ELECTRICITY_TRADE'"
+	"status": 404
 }

@@ -20,7 +20,7 @@ public class AgreementResponse {
 	public static AgreementResponse create() {
 		return new AgreementResponse();
 	}
-	
+
 	public List<AgreementParty> getAgreementParties() {
 		return agreementParties;
 	}

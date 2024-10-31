@@ -1,5 +1,5 @@
 {
+	"detail": "No matching agreements were found for party with id '524EEBC1-15B3-9CE6-BF11-D2B5F1D47C22' and category in '[DISTRICT_COOLING]'",
 	"title": "Not Found",
-	"status": 404,
-	"detail": "No matching agreements were found for party with id '524EEBC1-15B3-9CE6-BF11-D2B5F1D47C22' and category in '[DISTRICT_COOLING]'"
+	"status": 404
 }

@@ -1,45 +1,41 @@
-{
-	"agreementParties": [
+{"agreementParties": [{
+	"customerId": "703421",
+	"agreements": [
 		{
-			"customerId": "703421",
-			"agreements": [
-				{
-					"agreementId": "513476",
-					"billingId": "2180429",
-					"category": "WASTE_MANAGEMENT",
-					"description": "Avfall",
-					"facilityId": "132220",
-					"mainAgreement": true,
-					"binding": false,
-					"fromDate": "2022-01-01",
-					"active": true
-				},
-				{
-					"agreementId": "512843",
-					"billingId": "2179863",
-					"category": "ELECTRICITY",
-					"description": "Säkringsabonnemang",
-					"facilityId": "735999109223205905",
-					"mainAgreement": true,
-					"binding": false,
-					"bindingRule": "B00-U00",
-					"fromDate": "2022-01-04",
-					"active": true
-				},
-				{
-					"agreementId": "512840",
-					"billingId": "2179883",
-					"category": "ELECTRICITY_TRADE",
-					"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
-					"facilityId": "735999109223205905",
-					"mainAgreement": true,
-					"binding": false,
-					"bindingRule": "Anvisat, 14 dagars uppsägning",
-					"fromDate": "2022-01-04",
-					"toDate": "2022-03-13",
-					"active": false
-				}
-			]
+			"fromDate": "2022-01-01",
+			"mainAgreement": true,
+			"billingId": "2180429",
+			"facilityId": "132220",
+			"agreementId": "513476",
+			"description": "Avfall",
+			"binding": false,
+			"active": true,
+			"category": "WASTE_MANAGEMENT"
+		},
+		{
+			"fromDate": "2022-01-04",
+			"mainAgreement": true,
+			"billingId": "2179863",
+			"facilityId": "735999109223205905",
+			"agreementId": "512843",
+			"description": "Säkringsabonnemang",
+			"binding": false,
+			"active": true,
+			"category": "ELECTRICITY",
+			"bindingRule": "B00-U00"
+		},
+		{
+			"fromDate": "2022-01-04",
+			"mainAgreement": true,
+			"billingId": "2179883",
+			"facilityId": "735999109223205905",
+			"toDate": "2022-03-13",
+			"agreementId": "512840",
+			"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
+			"binding": false,
+			"active": false,
+			"category": "ELECTRICITY_TRADE",
+			"bindingRule": "Anvisat, 14 dagars uppsägning"
 		}
 	]
-}
+}]}

@@ -1,36 +1,20 @@
 {
-	"name": "api-data-warehouse-reader-get-agreements",
 	"request": {
-		"headers": {
-			"Authorization": {
-				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
-			}
-		},
-		"urlPath": "/dataWarehouseReaderMock/2281/agreements",
+		"headers": {"Authorization": {"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"}},
 		"method": "GET",
 		"queryParameters": {
-			"partyId": {
-				"equalTo": "b4ed77db-306c-49f0-a3d4-b1aa32092ba8"
-			},
-			"category": {
-				"equalTo": "ELECTRICITY_TRADE"
-			},
-			"active": {
-				"absent": true
-			},
-			"page": {
-				"equalTo": "1"
-			},
-			"limit": {
-				"equalTo": "100"
-			}
-		}
+			"limit": {"equalTo": "100"},
+			"active": {"absent": true},
+			"page": {"equalTo": "1"},
+			"partyId": {"equalTo": "b4ed77db-306c-49f0-a3d4-b1aa32092ba8"},
+			"category": {"equalTo": "ELECTRICITY_TRADE"}
+		},
+		"urlPath": "/dataWarehouseReaderMock/2281/agreements"
 	},
 	"response": {
-		"headers": {
-			"Content-Type": "application/json"
-		},
-		"status": 200,
-		"bodyFileName": "test15_getPagedAgreementsForPartyAndCategoryAll/responses/api-data-warehouse-reader-get-agreements-response.json"
-	}
+		"headers": {"Content-Type": "application/json"},
+		"bodyFileName": "test15_getPagedAgreementsForPartyAndCategoryAll/responses/api-data-warehouse-reader-get-agreements-response.json",
+		"status": 200
+	},
+	"name": "api-data-warehouse-reader-get-agreements"
 }

@@ -1,37 +1,37 @@
 {
 	"agreements": [
 		{
-			"customerNumber": "692253",
+			"fromDate": "2018-05-01",
+			"mainAgreement": true,
 			"facilityId": "7112702050",
-			"category": "DISTRICT_COOLING",
 			"billingId": "2134243",
+			"toDate": "2019-04-30",
 			"agreementId": "154669",
 			"description": "Kovland",
-			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2018-05-01",
-			"toDate": "2019-04-30",
-			"active": false
+			"active": false,
+			"customerNumber": "692253",
+			"category": "DISTRICT_COOLING"
 		},
 		{
-			"customerNumber": "692253",
+			"fromDate": "2020-05-01",
+			"mainAgreement": true,
 			"facilityId": "7112702050",
-			"category": "DISTRICT_COOLING",
 			"billingId": "2134243",
+			"toDate": "2020-04-30",
 			"agreementId": "155926",
 			"description": "Rörligt pris Provapå",
-			"mainAgreement": true,
 			"binding": false,
-			"fromDate": "2020-05-01",
-			"toDate": "2020-04-30",
-			"active": false
+			"active": false,
+			"customerNumber": "692253",
+			"category": "DISTRICT_COOLING"
 		}
 	],
 	"_meta": {
-		"page": 1,
+		"totalRecords": 5,
 		"limit": 100,
 		"count": 2,
-		"totalRecords": 5,
-		"totalPages": 3
+		"totalPages": 3,
+		"page": 1
 	}
 }
