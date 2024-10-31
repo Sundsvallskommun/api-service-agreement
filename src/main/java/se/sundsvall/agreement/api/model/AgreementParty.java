@@ -68,8 +68,9 @@ public class AgreementParty {
 
 	@Override
 	public String toString() {
-		final String builder = "AgreementParty [customerId=" + customerId + ", agreements=" + agreements
-			+ "]";
-		return builder;
+		return "AgreementParty{"
+			+ "customerId='" + customerId + '\''
+			+ ", agreements=" + agreements
+			+ '}';
 	}
 }
