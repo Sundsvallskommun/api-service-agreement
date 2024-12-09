@@ -1,9 +1,8 @@
 package se.sundsvall.agreement.api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import se.sundsvall.dept44.models.api.paging.AbstractParameterPagingBase;
-
 import java.util.Objects;
+import se.sundsvall.dept44.models.api.paging.AbstractParameterPagingBase;
 
 @Schema(description = "Agreement request parameters model")
 public class AgreementParameters extends AbstractParameterPagingBase {
