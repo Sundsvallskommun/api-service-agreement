@@ -1,18 +1,34 @@
 {
 	"request": {
-		"headers": {"Authorization": {"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"}},
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
 		"method": "GET",
 		"queryParameters": {
-			"facilityId": {"equalTo": "735999109116016144"},
-			"limit": {"equalTo": "1000"},
-			"active": {"equalTo": "true"},
-			"page": {"equalTo": "1"},
-			"category": {"equalTo": "ELECTRICITY"}
+			"facilityId": {
+				"equalTo": "735999109116016144"
+			},
+			"limit": {
+				"equalTo": "1000"
+			},
+			"active": {
+				"equalTo": "true"
+			},
+			"page": {
+				"equalTo": "1"
+			},
+			"category": {
+				"equalTo": "ELECTRICITY"
+			}
 		},
 		"urlPath": "/dataWarehouseReaderMock/2281/agreements"
 	},
 	"response": {
-		"headers": {"Content-Type": "application/json"},
+		"headers": {
+			"Content-Type": "application/json"
+		},
 		"bodyFileName": "test02_getFacilitysActiveMainAndSupplementaryAgreements/responses/api-data-warehouse-reader-get-agreements-response.json",
 		"status": 200
 	},

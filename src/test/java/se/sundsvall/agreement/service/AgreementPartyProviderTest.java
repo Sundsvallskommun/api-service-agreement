@@ -13,18 +13,16 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 
+import generated.se.sundsvall.datawarehousereader.Agreement;
+import generated.se.sundsvall.datawarehousereader.AgreementResponse;
+import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import generated.se.sundsvall.datawarehousereader.Agreement;
-import generated.se.sundsvall.datawarehousereader.AgreementResponse;
-import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.integration.datawarehousereader.DataWarehouseReaderClient;
 

@@ -1,71 +1,73 @@
-{"agreementParties": [
-	{
-		"customerId": "692253",
-		"agreements": [
-			{
-				"fromDate": "2018-05-01",
-				"mainAgreement": true,
-				"billingId": "2134243",
-				"facilityId": "7112702050",
-				"toDate": "2019-04-30",
-				"agreementId": "154669",
-				"description": "Kovland",
-				"binding": false,
-				"active": false,
-				"category": "DISTRICT_COOLING"
-			},
-			{
-				"fromDate": "2020-05-01",
-				"mainAgreement": true,
-				"billingId": "2134243",
-				"facilityId": "7112702050",
-				"toDate": "2020-04-30",
-				"agreementId": "155926",
-				"description": "Rörligt pris Provapå",
-				"binding": false,
-				"active": false,
-				"category": "DISTRICT_COOLING"
-			},
-			{
-				"fromDate": "2019-05-01",
-				"mainAgreement": true,
-				"billingId": "2134243",
-				"facilityId": "7112702050",
-				"toDate": "2019-10-06",
-				"agreementId": "485107",
-				"description": "Fjärrkyla_2",
-				"binding": false,
-				"active": false,
-				"category": "DISTRICT_COOLING"
-			}
-		]
-	},
-	{
-		"customerId": "698815",
-		"agreements": [
-			{
-				"fromDate": "2019-10-22",
-				"mainAgreement": true,
-				"billingId": "2145103",
-				"facilityId": "7112702050",
-				"toDate": "2020-04-30",
-				"agreementId": "491917",
-				"description": "Fjärrkyla_2",
-				"binding": false,
-				"active": false,
-				"category": "DISTRICT_COOLING"
-			},
-			{
-				"fromDate": "2020-05-01",
-				"mainAgreement": true,
-				"billingId": "2145103",
-				"facilityId": "7112702050",
-				"agreementId": "491919",
-				"description": "Rörligt pris Provapå",
-				"binding": false,
-				"active": true,
-				"category": "DISTRICT_COOLING"
-			}
-		]
-	}
-]}
+{
+	"agreementParties": [
+		{
+			"customerId": "692253",
+			"agreements": [
+				{
+					"fromDate": "2018-05-01",
+					"mainAgreement": true,
+					"billingId": "2134243",
+					"facilityId": "7112702050",
+					"toDate": "2019-04-30",
+					"agreementId": "154669",
+					"description": "Kovland",
+					"binding": false,
+					"active": false,
+					"category": "DISTRICT_COOLING"
+				},
+				{
+					"fromDate": "2020-05-01",
+					"mainAgreement": true,
+					"billingId": "2134243",
+					"facilityId": "7112702050",
+					"toDate": "2020-04-30",
+					"agreementId": "155926",
+					"description": "Rörligt pris Provapå",
+					"binding": false,
+					"active": false,
+					"category": "DISTRICT_COOLING"
+				},
+				{
+					"fromDate": "2019-05-01",
+					"mainAgreement": true,
+					"billingId": "2134243",
+					"facilityId": "7112702050",
+					"toDate": "2019-10-06",
+					"agreementId": "485107",
+					"description": "Fjärrkyla_2",
+					"binding": false,
+					"active": false,
+					"category": "DISTRICT_COOLING"
+				}
+			]
+		},
+		{
+			"customerId": "698815",
+			"agreements": [
+				{
+					"fromDate": "2019-10-22",
+					"mainAgreement": true,
+					"billingId": "2145103",
+					"facilityId": "7112702050",
+					"toDate": "2020-04-30",
+					"agreementId": "491917",
+					"description": "Fjärrkyla_2",
+					"binding": false,
+					"active": false,
+					"category": "DISTRICT_COOLING"
+				},
+				{
+					"fromDate": "2020-05-01",
+					"mainAgreement": true,
+					"billingId": "2145103",
+					"facilityId": "7112702050",
+					"agreementId": "491919",
+					"description": "Rörligt pris Provapå",
+					"binding": false,
+					"active": true,
+					"category": "DISTRICT_COOLING"
+				}
+			]
+		}
+	]
+}

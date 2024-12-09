@@ -1,14 +1,20 @@
-{"agreementParties": [{
-	"customerId": "703421",
-	"agreements": [{
-		"fromDate": "2022-01-01",
-		"mainAgreement": true,
-		"billingId": "2180429",
-		"facilityId": "132220",
-		"agreementId": "513476",
-		"description": "Avfall",
-		"binding": false,
-		"active": true,
-		"category": "WASTE_MANAGEMENT"
-	}]
-}]}
+{
+	"agreementParties": [
+		{
+			"customerId": "703421",
+			"agreements": [
+				{
+					"fromDate": "2022-01-01",
+					"mainAgreement": true,
+					"billingId": "2180429",
+					"facilityId": "132220",
+					"agreementId": "513476",
+					"description": "Avfall",
+					"binding": false,
+					"active": true,
+					"category": "WASTE_MANAGEMENT"
+				}
+			]
+		}
+	]
+}

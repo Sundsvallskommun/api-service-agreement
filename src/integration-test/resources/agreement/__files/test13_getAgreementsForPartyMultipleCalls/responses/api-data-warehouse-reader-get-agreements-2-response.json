@@ -1,17 +1,19 @@
 {
-	"agreements": [{
-		"fromDate": "2022-01-04",
-		"mainAgreement": true,
-		"facilityId": "735999109223205905",
-		"billingId": "2179863",
-		"agreementId": "512843",
-		"description": "Säkringsabonnemang",
-		"binding": false,
-		"active": true,
-		"customerNumber": "703421",
-		"category": "ELECTRICITY",
-		"bindingRule": "B00-U00"
-	}],
+	"agreements": [
+		{
+			"fromDate": "2022-01-04",
+			"mainAgreement": true,
+			"facilityId": "735999109223205905",
+			"billingId": "2179863",
+			"agreementId": "512843",
+			"description": "Säkringsabonnemang",
+			"binding": false,
+			"active": true,
+			"customerNumber": "703421",
+			"category": "ELECTRICITY",
+			"bindingRule": "B00-U00"
+		}
+	],
 	"_meta": {
 		"totalRecords": 3,
 		"limit": 100,

@@ -13,9 +13,9 @@ import static org.mockito.Mockito.when;
 import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 
+import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,8 +26,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.ThrowableProblem;
-
-import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import se.sundsvall.agreement.api.model.Agreement;
 import se.sundsvall.agreement.api.model.AgreementParameters;
 import se.sundsvall.agreement.api.model.AgreementParty;
