@@ -11,7 +11,7 @@ import static org.zalando.problem.Status.BAD_REQUEST;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.zalando.problem.violations.ConstraintViolationProblem;
@@ -25,7 +25,7 @@ class PagedAgreementResourceFailuresTest {
 
 	private static final String PATH = "/{municipalityId}/paged/agreements/{partyId}";
 
-	@MockBean
+	@MockitoBean
 	private AgreementService agreementServiceMock;
 
 	@Autowired
