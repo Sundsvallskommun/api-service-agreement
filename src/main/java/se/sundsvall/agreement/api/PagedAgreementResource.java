@@ -36,26 +36,27 @@ public class PagedAgreementResource {
 
 	private final AgreementService agreementService;
 
-	public PagedAgreementResource(AgreementService agreementService) {
+	public PagedAgreementResource(final AgreementService agreementService) {
 		this.agreementService = agreementService;
 	}
 
 	@GetMapping(path = "/{partyId}", produces = {
 		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
 	})
-	@Operation(summary = "Get agreements connected to a party-ID, optionally filtered by provided categories")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
-		Problem.class, ConstraintViolationProblem.class
-	})))
-	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	@Operation(summary = "Get agreements connected to a party-ID, optionally filtered by provided categories", responses = {
+		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
+			Problem.class, ConstraintViolationProblem.class
+		}))),
+		@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
+		@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
 	public ResponseEntity<PagedAgreementResponse> getAgreementsForPartyId(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "partyId", description = "Party-ID", example = "81471222-5798-11e9-ae24-57fa13b361e1") @ValidUuid @PathVariable(name = "partyId") final String partyId,
 		@Parameter(name = "category", description = "Optional list of one or more agreement categories to be included in response, default is to return all agreements connected to the party-ID") @RequestParam(value = "category",
 			defaultValue = "") final List<Category> categories,
-		@Valid AgreementParameters parameters) {
+		@Valid final AgreementParameters parameters) {
 
 		return ok(agreementService.getPagedAgreementsByPartyIdAndCategories(municipalityId, partyId, categories, parameters));
 	}
