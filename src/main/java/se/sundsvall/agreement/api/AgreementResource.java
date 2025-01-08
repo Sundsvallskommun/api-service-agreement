@@ -38,9 +38,7 @@ public class AgreementResource {
 		this.agreementService = agreementService;
 	}
 
-	@GetMapping(path = "/{category}/{facilityId}", produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@GetMapping(path = "/{category}/{facilityId}", produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get agreements by category and facility-id", responses = {
 
 		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true),
@@ -61,9 +59,7 @@ public class AgreementResource {
 		return ok(agreementService.getAgreementsByCategoryAndFacilityId(municipalityId, category, facilityId, onlyActive));
 	}
 
-	@GetMapping(path = "/{partyId}", produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@GetMapping(path = "/{partyId}", produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get agreements connected to a party-ID, optionally filtered by provided categories", responses = {
 		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true),
 		@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
