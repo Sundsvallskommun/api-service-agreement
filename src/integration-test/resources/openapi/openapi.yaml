@@ -1,131 +1,148 @@
 openapi: 3.0.1
 info:
   title: api-agreement
-  contact: {}
+  contact: { }
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "4.0"
 servers:
-- url: http://localhost:8080
-  description: Generated server url
+  - url: http://localhost:62131
+    description: Generated server url
 tags:
-- name: Paged Agreement
-  description: Agreement resources with paging
-- name: Agreement
-  description: Agreement resources
+  - name: Paged Agreement
+    description: Agreement resources with paging
+  - name: Agreement
+    description: Agreement resources
 paths:
   /{municipalityId}/paged/agreements/{partyId}:
     get:
       tags:
-      - Paged Agreement
+        - Paged Agreement
       summary: "Get agreements connected to a party-ID, optionally filtered by provided\
         \ categories"
       operationId: getAgreementsForPartyId
       parameters:
-      - name: municipalityId
-        in: path
-        description: Municipality id
-        required: true
-        schema:
-          type: string
-        example: 2281
-      - name: partyId
-        in: path
-        description: Party-ID
-        required: true
-        schema:
-          type: string
-        example: 81471222-5798-11e9-ae24-57fa13b361e1
-      - name: category
-        in: query
-        description: "Optional list of one or more agreement categories to be included\
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: partyId
+          in: path
+          description: Party-ID
+          required: true
+          schema:
+            type: string
+          example: 81471222-5798-11e9-ae24-57fa13b361e1
+        - name: category
+          in: query
+          description: "Optional list of one or more agreement categories to be included\
           \ in response, default is to return all agreements connected to the party-ID"
-        required: false
-        schema:
-          type: array
-          items:
-            $ref: "#/components/schemas/Category"
-          default: []
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/AgreementParameters"
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Category"
+            default: [ ]
+        - name: parameters
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/AgreementParameters"
       responses:
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedAgreementResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/PagedAgreementResponse"
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /{municipalityId}/agreements/{partyId}:
     get:
       tags:
-      - Agreement
+        - Agreement
       summary: "Get agreements connected to a party-ID, optionally filtered by provided\
         \ categories"
       operationId: getAgreementsForPartyId_1
       parameters:
-      - name: municipalityId
-        in: path
-        description: Municipality id
-        required: true
-        schema:
-          type: string
-        example: 2281
-      - name: partyId
-        in: path
-        description: Party-ID
-        required: true
-        schema:
-          type: string
-        example: 81471222-5798-11e9-ae24-57fa13b361e1
-      - name: category
-        in: query
-        description: "Optional list of one or more agreement categories to be included\
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: partyId
+          in: path
+          description: Party-ID
+          required: true
+          schema:
+            type: string
+          example: 81471222-5798-11e9-ae24-57fa13b361e1
+        - name: category
+          in: query
+          description: "Optional list of one or more agreement categories to be included\
           \ in response, default is to return all agreements connected to the party-ID"
-        required: false
-        schema:
-          type: array
-          items:
-            $ref: "#/components/schemas/Category"
-          default: []
-      - name: onlyActive
-        in: query
-        description: "Signal if only active or all agreements should be included in\
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Category"
+            default: [ ]
+        - name: onlyActive
+          in: query
+          description: "Signal if only active or all agreements should be included in\
           \ response, default is to only return active agreements."
-        required: false
-        schema:
-          type: boolean
-          default: true
-        example: true
+          required: false
+          schema:
+            type: boolean
+            default: true
+          example: true
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementResponse"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
@@ -136,69 +153,66 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AgreementResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/AgreementResponse"
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
   /{municipalityId}/agreements/{category}/{facilityId}:
     get:
       tags:
-      - Agreement
+        - Agreement
       summary: Get agreements by category and facility-id
       operationId: getAgreementsByCategoryAndFacilityId
       parameters:
-      - name: municipalityId
-        in: path
-        description: Municipality id
-        required: true
-        schema:
-          type: string
-        example: 2281
-      - name: category
-        in: path
-        description: Agreement category
-        required: true
-        schema:
-          $ref: "#/components/schemas/Category"
-        example: ELECTRICITY
-      - name: facilityId
-        in: path
-        description: Id for the facility
-        required: true
-        schema:
-          type: string
-        example: 1471222
-      - name: onlyActive
-        in: query
-        description: "Signal if only active or all agreements should be included in\
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: category
+          in: path
+          description: Agreement category
+          required: true
+          schema:
+            $ref: "#/components/schemas/Category"
+          example: ELECTRICITY
+        - name: facilityId
+          in: path
+          description: Id for the facility
+          required: true
+          schema:
+            type: string
+          example: 1471222
+        - name: onlyActive
+          in: query
+          description: "Signal if only active or all agreements should be included in\
           \ response, default is to only return active agreements."
-        required: false
-        schema:
-          type: boolean
-          default: true
-        example: true
+          required: false
+          schema:
+            type: boolean
+            default: true
+          example: true
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementResponse"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
@@ -209,33 +223,10 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AgreementResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/AgreementResponse"
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
   /api-docs:
     get:
       tags:
-      - API
+        - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -250,40 +241,6 @@ paths:
       x-wso2-mutual-ssl: Optional
 components:
   schemas:
-    Category:
-      type: string
-      description: Category model
-      enum:
-      - COMMUNICATION
-      - DISTRICT_COOLING
-      - DISTRICT_HEATING
-      - ELECTRICITY
-      - ELECTRICITY_TRADE
-      - WASTE_MANAGEMENT
-      - WATER
-    AgreementParameters:
-      type: object
-      properties:
-        page:
-          minimum: 1
-          type: integer
-          description: Page number
-          format: int32
-          example: 1
-          default: 1
-        limit:
-          minimum: 1
-          type: integer
-          description: Result size per page. Maximum allowed value is dynamically
-            configured
-          format: int32
-          example: 15
-        onlyActive:
-          type: boolean
-          description: "Signal if only active or all agreements should be included\
-            \ in response, default is to only return active agreements."
-          example: true
-      description: Agreement request parameters model
     Problem:
       type: object
       properties:
@@ -299,18 +256,18 @@ components:
             type: object
         status:
           $ref: "#/components/schemas/StatusType"
-        detail:
-          type: string
         title:
+          type: string
+        detail:
           type: string
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -434,9 +391,9 @@ components:
             type: object
         status:
           $ref: "#/components/schemas/StatusType"
-        detail:
-          type: string
         title:
+          type: string
+        detail:
           type: string
         suppressed:
           type: array
@@ -478,6 +435,40 @@ components:
           type: string
         message:
           type: string
+    Category:
+      type: string
+      description: Category model
+      enum:
+        - COMMUNICATION
+        - DISTRICT_COOLING
+        - DISTRICT_HEATING
+        - ELECTRICITY
+        - ELECTRICITY_TRADE
+        - WASTE_MANAGEMENT
+        - WATER
+    AgreementParameters:
+      type: object
+      properties:
+        page:
+          minimum: 1
+          type: integer
+          description: Page number
+          format: int32
+          example: 1
+          default: 1
+        limit:
+          minimum: 1
+          type: integer
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
+          format: int32
+          example: 15
+        onlyActive:
+          type: boolean
+          description: "Signal if only active or all agreements should be included\
+            \ in response, default is to only return active agreements."
+          example: true
+      description: Agreement request parameters model
     Agreement:
       type: object
       properties:
@@ -616,4 +607,4 @@ components:
           items:
             $ref: "#/components/schemas/AgreementParty"
       description: Agreement response model
-  securitySchemes: {}
+  securitySchemes: { }
