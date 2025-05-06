@@ -10,6 +10,10 @@
 			"customerId": "703421",
 			"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Glassgränd 22",
+			"production": true,
 			"active": false,
 			"category": "ELECTRICITY_TRADE",
 			"bindingRule": "Anvisat, 14 dagars uppsägning"
@@ -23,6 +27,9 @@
 			"customerId": "703421",
 			"description": "Avfall",
 			"binding": false,
+			"placementStatus": "Tillkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Glassgränd 22",
 			"active": true,
 			"category": "WASTE_MANAGEMENT"
 		}

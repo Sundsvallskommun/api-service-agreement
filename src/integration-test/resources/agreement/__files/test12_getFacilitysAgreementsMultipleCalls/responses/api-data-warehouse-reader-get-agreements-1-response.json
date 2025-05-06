@@ -9,6 +9,9 @@
 			"agreementId": "154669",
 			"description": "Kovland",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Frufällan 5",
 			"active": false,
 			"customerNumber": "692253",
 			"category": "DISTRICT_COOLING"
@@ -22,6 +25,9 @@
 			"agreementId": "155926",
 			"description": "Rörligt pris Provapå",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Frufällan 5",
 			"active": false,
 			"customerNumber": "692253",
 			"category": "DISTRICT_COOLING"

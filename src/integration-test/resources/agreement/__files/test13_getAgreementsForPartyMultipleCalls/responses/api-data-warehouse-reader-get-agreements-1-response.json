@@ -8,6 +8,9 @@
 			"agreementId": "513476",
 			"description": "Avfall",
 			"binding": false,
+			"placementStatus": "Tillkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Öresundsgrundet 9",
 			"active": true,
 			"customerNumber": "703421",
 			"category": "WASTE_MANAGEMENT"

@@ -11,6 +11,9 @@
 					"agreementId": "491919",
 					"description": "Rörligt pris Provapå",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Mellangården 2",
 					"active": true,
 					"category": "DISTRICT_COOLING"
 				}

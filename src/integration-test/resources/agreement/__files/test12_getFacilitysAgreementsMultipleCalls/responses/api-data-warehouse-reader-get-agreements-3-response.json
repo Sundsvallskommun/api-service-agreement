@@ -8,6 +8,9 @@
 			"agreementId": "491919",
 			"description": "Rörligt pris Provapå",
 			"binding": false,
+			"placementStatus": "Tillkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Slängerumpan 3",
 			"active": true,
 			"customerNumber": "698815",
 			"category": "DISTRICT_COOLING"

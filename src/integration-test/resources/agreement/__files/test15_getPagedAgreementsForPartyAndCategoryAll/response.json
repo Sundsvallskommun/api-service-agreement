@@ -10,6 +10,10 @@
 			"customerId": "703421",
 			"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Foliehattgränd 123",
+			"production": false,
 			"active": false,
 			"category": "ELECTRICITY_TRADE",
 			"bindingRule": "Anvisat, 14 dagars uppsägning"
