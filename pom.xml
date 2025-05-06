@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>se.sundsvall</groupId>
 	<artifactId>api-service-agreement</artifactId>
-	<version>4.0</version>
+	<version>4.1</version>
 	<name>api-service-agreement</name>
 	<description>Service for retrieving contracts connected to a facility or a party</description>
 	<properties>

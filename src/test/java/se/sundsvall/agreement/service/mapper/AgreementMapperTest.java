@@ -36,6 +36,10 @@ class AgreementMapperTest {
 	private static final String DESCRIPTION = "description";
 	private static final String FACILITY_ID = "facilityId";
 	private static final String PARTY_ID = "partyId";
+	private static final String NET_AREA_ID = "netAreaId";
+	private static final String PLACEMENT_STATUS = "placementStatus";
+	private static final Boolean PRODUCTION = true;
+	private static final String SITE_ADDRESS = "siteAddress";
 
 	@Test
 	void testToCategories() {
@@ -79,7 +83,7 @@ class AgreementMapperTest {
 		final var agreements = toAgreements(createResponse(agreementSize));
 
 		assertThat(agreements).isNotNull().hasSize(agreementSize);
-		for (int i = 0; i < agreementSize; i++) {
+		for (var i = 0; i < agreementSize; i++) {
 			assertAgreementValues(agreements.get(i), i, false, true, (i % 2) == 0, now().plusYears(i));
 			assertThat(agreements.get(i).getCustomerId()).isEqualTo(CUSTOMER_ID + "0");
 		}
@@ -107,7 +111,7 @@ class AgreementMapperTest {
 		assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + "0");
 
 		assertThat(agreementParty).isNotNull().extracting(AgreementParty::getAgreements).asInstanceOf(LIST).hasSize(agreementSize);
-		for (int i = 0; i < agreementSize; i++) {
+		for (var i = 0; i < agreementSize; i++) {
 			assertAgreementValues(agreementParty.getAgreements().get(i), i, false, true, (i % 2) == 0, now().plusYears(i));
 		}
 	}
@@ -117,7 +121,7 @@ class AgreementMapperTest {
 		final var agreementParties = toAgreementParties(createResponse(2, false, true, false));
 		assertThat(agreementParties).isNotNull().hasSize(2);
 
-		for (int i = 0; i < 2; i++) {
+		for (var i = 0; i < 2; i++) {
 			final var agreementParty = agreementParties.get(i);
 			assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + i);
 
@@ -134,7 +138,7 @@ class AgreementMapperTest {
 		final var agreementParties = toAgreementParties(dataWarehouseReaderResponse);
 		assertThat(agreementParties).isNotNull().hasSize(2);
 
-		for (int i = 0; i < 2; i++) {
+		for (var i = 0; i < 2; i++) {
 			final var agreementParty = agreementParties.get(i);
 			assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + i);
 
@@ -166,6 +170,10 @@ class AgreementMapperTest {
 		assertThat(agreement.getDescription()).isEqualTo(DESCRIPTION + i);
 		assertThat(agreement.getFromDate()).isEqualTo(now().minusYears(i));
 		assertThat(agreement.isMainAgreement()).isEqualTo(mainAgreement);
+		assertThat(agreement.getNetAreaId()).isEqualTo(NET_AREA_ID);
+		assertThat(agreement.getPlacementStatus()).isEqualTo(PLACEMENT_STATUS);
+		assertThat(agreement.getProduction()).isEqualTo(PRODUCTION);
+		assertThat(agreement.getSiteAddress()).isEqualTo(SITE_ADDRESS);
 		assertThat(agreement.getToDate()).isEqualTo(toDate);
 	}
 
@@ -192,11 +200,11 @@ class AgreementMapperTest {
 	 * incoming settings
 	 */
 	private static generated.se.sundsvall.datawarehousereader.AgreementResponse createResponse(int size, boolean sameCustomer, boolean binding, boolean mainAgreement) {
-		final PagingAndSortingMetaData meta = new PagingAndSortingMetaData().totalRecords(Long.valueOf(size));
-		final generated.se.sundsvall.datawarehousereader.AgreementResponse response = new generated.se.sundsvall.datawarehousereader.AgreementResponse();
+		final var meta = new PagingAndSortingMetaData().totalRecords((long) size);
+		final var response = new generated.se.sundsvall.datawarehousereader.AgreementResponse();
 		response.meta(meta);
 
-		for (int i = 0; i < size; i++) {
+		for (var i = 0; i < size; i++) {
 			response.addAgreementsItem(new Agreement()
 				.agreementId(AGREEMENT_ID + i)
 				.billingId(BILLING_ID + i)
@@ -210,7 +218,11 @@ class AgreementMapperTest {
 				.mainAgreement(mainAgreement)
 				.partyId(PARTY_ID + (sameCustomer ? 0 : i))
 				.toDate(now().plusYears(i))
-				.active((i % 2) == 0));
+				.active((i % 2) == 0)
+				.netAreaId(NET_AREA_ID)
+				.placementStatus(PLACEMENT_STATUS)
+				.production(PRODUCTION)
+				.siteAddress(SITE_ADDRESS));
 		}
 
 		return response;
