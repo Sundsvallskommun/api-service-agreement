@@ -1,13 +1,13 @@
 openapi: 3.0.1
 info:
-  title: datawarehousereader
+  title: api-datawarehousereader
   contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "4.0"
+  version: "4.1"
 servers:
-- url: https://datawarehousereader-af-datawarehousereader.apps.ocp101.sundsvall.se
+- url: http://localhost:8080
   description: Generated server url
 tags:
 - name: Measurement
@@ -52,6 +52,15 @@ paths:
         schema:
           $ref: "#/components/schemas/MeasurementParameters"
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeasurementResponse"
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/MeasurementResponse"
         "400":
           description: Bad request
           content:
@@ -66,15 +75,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MeasurementResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/MeasurementResponse"
   /{municipalityId}/invoices:
     get:
       tags:
@@ -96,6 +96,12 @@ paths:
         schema:
           $ref: "#/components/schemas/InvoiceParameters"
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceResponse"
         "400":
           description: Bad request
           content:
@@ -110,15 +116,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvoiceResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/InvoiceResponse"
   /{municipalityId}/invoices/{organizationNumber}/{invoiceNumber}/details:
     get:
       tags:
@@ -150,21 +147,10 @@ paths:
           format: int64
         example: 805137494
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/InvoiceDetail"
-            application/problem+json:
               schema:
                 type: array
                 items:
@@ -177,6 +163,12 @@ paths:
                 $ref: "#/components/schemas/Problem"
         "404":
           description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
@@ -202,6 +194,12 @@ paths:
         schema:
           $ref: "#/components/schemas/InstalledBaseParameters"
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstalledBaseResponse"
         "400":
           description: Bad request
           content:
@@ -216,15 +214,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InstalledBaseResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/InstalledBaseResponse"
   /{municipalityId}/installations:
     get:
       tags:
@@ -246,6 +235,12 @@ paths:
         schema:
           $ref: "#/components/schemas/InstallationParameters"
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstallationDetailsResponse"
         "400":
           description: Bad request
           content:
@@ -260,15 +255,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InstallationDetailsResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/InstallationDetailsResponse"
   /{municipalityId}/customer/engagements:
     get:
       tags:
@@ -291,6 +277,12 @@ paths:
         schema:
           $ref: "#/components/schemas/CustomerEngagementParameters"
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerEngagementResponse"
         "400":
           description: Bad request
           content:
@@ -305,15 +297,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerEngagementResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/CustomerEngagementResponse"
   /{municipalityId}/customer/details:
     get:
       tags:
@@ -336,6 +319,12 @@ paths:
         schema:
           $ref: "#/components/schemas/CustomerDetailsParameters"
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerDetailsResponse"
         "400":
           description: Bad request
           content:
@@ -350,15 +339,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerDetailsResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/CustomerDetailsResponse"
   /{municipalityId}/agreements:
     get:
       tags:
@@ -380,6 +360,12 @@ paths:
         schema:
           $ref: "#/components/schemas/AgreementParameters"
       responses:
+        "200":
+          description: OK - Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementResponse"
         "400":
           description: Bad request
           content:
@@ -394,15 +380,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AgreementResponse"
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/AgreementResponse"
   /api-docs:
     get:
       tags:
@@ -421,76 +398,6 @@ paths:
       x-wso2-mutual-ssl: Optional
 components:
   schemas:
-    Category:
-      type: string
-      description: Category
-      enum:
-      - COMMUNICATION
-      - DISTRICT_COOLING
-      - DISTRICT_HEATING
-      - ELECTRICITY
-      - ELECTRICITY_TRADE
-      - WASTE_MANAGEMENT
-      - WATER
-    Aggregation:
-      type: string
-      description: Data point aggregation granularity
-      enum:
-      - HOUR
-      - DAY
-      - MONTH
-      - YEAR
-    Direction:
-      type: string
-      description: The sort order direction
-      example: ASC
-      enum:
-      - ASC
-      - DESC
-    MeasurementParameters:
-      type: object
-      properties:
-        page:
-          minimum: 1
-          type: integer
-          description: Page number
-          format: int32
-          example: 1
-          default: 1
-        limit:
-          minimum: 1
-          type: integer
-          description: Result size per page. Maximum allowed value is dynamically
-            configured
-          format: int32
-          example: 15
-        sortBy:
-          type: array
-          items:
-            type: string
-            description: The properties to sort on
-            example: propertyName
-        sortDirection:
-          $ref: "#/components/schemas/Direction"
-        partyId:
-          type: string
-          description: PartyId (e.g. a personId or an organizationId)
-          example: 81471222-5798-11e9-ae24-57fa13b361e1
-        facilityId:
-          type: string
-          description: Facility id
-          example: "735999109151401011"
-        fromDateTime:
-          type: string
-          description: "Date and time for oldest measurement point to return. Format\
-            \ is yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
-          format: date-time
-        toDateTime:
-          type: string
-          description: "Date and time for youngest measurement point to return. Format\
-            \ is yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
-          format: date-time
-      description: Measurement request parameters model
     Problem:
       type: object
       properties:
@@ -685,6 +592,76 @@ components:
           type: string
         message:
           type: string
+    Category:
+      type: string
+      description: Category
+      enum:
+      - COMMUNICATION
+      - DISTRICT_COOLING
+      - DISTRICT_HEATING
+      - ELECTRICITY
+      - ELECTRICITY_TRADE
+      - WASTE_MANAGEMENT
+      - WATER
+    Aggregation:
+      type: string
+      description: Data point aggregation granularity
+      enum:
+      - HOUR
+      - DAY
+      - MONTH
+      - YEAR
+    Direction:
+      type: string
+      description: The sort order direction
+      example: ASC
+      enum:
+      - ASC
+      - DESC
+    MeasurementParameters:
+      type: object
+      properties:
+        page:
+          minimum: 1
+          type: integer
+          description: Page number
+          format: int32
+          example: 1
+          default: 1
+        limit:
+          minimum: 1
+          type: integer
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
+          format: int32
+          example: 15
+        sortBy:
+          type: array
+          items:
+            type: string
+            description: The properties to sort on
+            example: propertyName
+        sortDirection:
+          $ref: "#/components/schemas/Direction"
+        partyId:
+          type: string
+          description: PartyId (e.g. a personId or an organizationId)
+          example: 81471222-5798-11e9-ae24-57fa13b361e1
+        facilityId:
+          type: string
+          description: Facility id
+          example: "735999109151401011"
+        fromDateTime:
+          type: string
+          description: "Date and time for oldest measurement point to return. Format\
+            \ is yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
+          format: date-time
+        toDateTime:
+          type: string
+          description: "Date and time for youngest measurement point to return. Format\
+            \ is yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example '2000-10-31T01:30:00.000-05:00'"
+          format: date-time
+      description: Measurement request parameters model
     Measurement:
       type: object
       properties:
@@ -1754,10 +1731,12 @@ components:
         customerNumber:
           type: string
           description: Customer number
+          nullable: true
           example: "10007"
         facilityId:
           type: string
           description: Facility Id
+          nullable: true
           example: "1223334"
         category:
           type: array
@@ -1766,35 +1745,64 @@ components:
         billingId:
           type: string
           description: Billing Id
+          nullable: true
           example: "222333"
         agreementId:
           type: string
           description: Agreement Id
+          nullable: true
           example: "333444"
         description:
           type: string
           description: Description
+          nullable: true
           example: Avtalet avser fjärrvärme
         mainAgreement:
           type: boolean
           description: Shows if agreement is a main-agreement or not
+          nullable: true
           example: true
         binding:
           type: boolean
           description: Shows if agreement include binding or not
+          nullable: true
           example: false
         bindingRule:
           type: string
           description: Rule of binding if exists
+          nullable: true
           example: 10 mån binding
+        placementStatus:
+          type: string
+          description: Placement status for agreement
+          nullable: true
+          example: Tillkopplad
+        netAreaId:
+          type: string
+          description: Net area id for agreement
+          nullable: true
+          example: SUV
+        siteAddress:
+          type: string
+          description: Site address connected to the agreement
+          nullable: true
+          example: Första gatan 2
+        production:
+          type: boolean
+          description: Signal if the agreement is a production agreement or not (can
+            be null if not applicable)
+          nullable: true
+          example: true
         fromDate:
           type: string
           description: From-date in validity of agreement
           format: date
+          nullable: true
         toDate:
           type: string
           description: To-date in validity of agreement
           format: date
+          nullable: true
         active:
           type: boolean
           description: Shows if agreement is active ('fromDate' <= today and 'toDate'
@@ -1852,6 +1860,27 @@ components:
           description: Rule of binding if exists
           readOnly: true
           example: 10 mån binding
+        placementStatus:
+          type: string
+          description: Placement status for agreement
+          readOnly: true
+          example: Tillkopplad
+        netAreaId:
+          type: string
+          description: Net area id for agreement
+          readOnly: true
+          example: SUV
+        siteAddress:
+          type: string
+          description: Site address connected to the agreement
+          readOnly: true
+          example: Första gatan 2
+        production:
+          type: boolean
+          description: Signal if the agreement is a production agreement or not (can
+            be null if not applicable)
+          readOnly: true
+          example: true
         fromDate:
           type: string
           description: From-date in validity of agreement

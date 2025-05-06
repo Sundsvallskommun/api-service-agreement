@@ -86,6 +86,10 @@ public final class AgreementMapper {
 			.withFacilityId(agreement.getFacilityId())
 			.withFromDate(agreement.getFromDate())
 			.withMainAgreement(toBoolean(agreement.getMainAgreement()))
+			.withNetAreaId(agreement.getNetAreaId())
+			.withPlacementStatus(agreement.getPlacementStatus())
+			.withProduction(agreement.getProduction())
+			.withSiteAddress(agreement.getSiteAddress())
 			.withToDate(agreement.getToDate());
 	}
 
