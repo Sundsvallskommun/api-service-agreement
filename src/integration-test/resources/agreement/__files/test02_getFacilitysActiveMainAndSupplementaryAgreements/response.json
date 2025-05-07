@@ -11,6 +11,10 @@
 					"agreementId": "18254",
 					"description": "Villa Matfors & Kvissleby",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Stora gatan 1",
+					"production": false,
 					"active": true,
 					"category": "ELECTRICITY"
 				},
@@ -22,6 +26,10 @@
 					"agreementId": "25778",
 					"description": "Fastpris med el-certifikat",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Stora gatan 1",
+					"production": false,
 					"active": true,
 					"category": "ELECTRICITY"
 				},
@@ -33,6 +41,10 @@
 					"agreementId": "39857",
 					"description": "Fastpris 2 år",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Stora gatan 1",
+					"production": false,
 					"active": true,
 					"category": "ELECTRICITY"
 				}

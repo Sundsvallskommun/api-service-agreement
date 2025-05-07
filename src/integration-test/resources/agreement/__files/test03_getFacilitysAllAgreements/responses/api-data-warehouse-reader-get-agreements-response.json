@@ -9,6 +9,9 @@
 			"agreementId": "154669",
 			"description": "Kovland",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Småland 1",
 			"active": false,
 			"customerNumber": "692253",
 			"category": "DISTRICT_COOLING"
@@ -22,6 +25,9 @@
 			"agreementId": "155926",
 			"description": "Rörligt pris Provapå",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Småland 1",
 			"active": false,
 			"customerNumber": "692253",
 			"category": "DISTRICT_COOLING"
@@ -35,6 +41,9 @@
 			"agreementId": "485107",
 			"description": "Fjärrkyla_2",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Småland 1",
 			"active": false,
 			"customerNumber": "692253",
 			"category": "DISTRICT_COOLING"
@@ -48,6 +57,9 @@
 			"agreementId": "491917",
 			"description": "Fjärrkyla_2",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Småland 2",
 			"active": false,
 			"customerNumber": "698815",
 			"category": "DISTRICT_COOLING"
@@ -60,6 +72,9 @@
 			"agreementId": "491919",
 			"description": "Rörligt pris Provapå",
 			"binding": false,
+			"placementStatus": "Tillkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Småland 2",
 			"active": true,
 			"customerNumber": "698815",
 			"category": "DISTRICT_COOLING"

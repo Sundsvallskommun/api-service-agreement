@@ -9,6 +9,9 @@
 			"agreementId": "485107",
 			"description": "Fjärrkyla_2",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Frufällan 5",
 			"active": false,
 			"customerNumber": "692253",
 			"category": "DISTRICT_COOLING"
@@ -22,6 +25,9 @@
 			"agreementId": "491917",
 			"description": "Fjärrkyla_2",
 			"binding": false,
+			"placementStatus": "Frånkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Slängerumpan 3",
 			"active": false,
 			"customerNumber": "698815",
 			"category": "DISTRICT_COOLING"

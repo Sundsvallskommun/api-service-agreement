@@ -11,6 +11,9 @@
 					"agreementId": "513476",
 					"description": "Avfall",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Vägs ände 34",
 					"active": true,
 					"category": "WASTE_MANAGEMENT"
 				}

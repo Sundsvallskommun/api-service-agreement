@@ -9,6 +9,9 @@
 			"customerId": "703421",
 			"description": "Avfall",
 			"binding": false,
+			"placementStatus": "Tillkopplad",
+			"netAreaId": "SUV",
+			"siteAddress": "Foliehattgränd 66",
 			"active": true,
 			"category": "WASTE_MANAGEMENT"
 		}

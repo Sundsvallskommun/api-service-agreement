@@ -11,6 +11,9 @@
 					"agreementId": "513476",
 					"description": "Avfall",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Öresundsgrundet 9",
 					"active": true,
 					"category": "WASTE_MANAGEMENT"
 				},
@@ -22,6 +25,9 @@
 					"agreementId": "512843",
 					"description": "Säkringsabonnemang",
 					"binding": false,
+					"placementStatus": "Tillkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Öresundsgrundet 9",
 					"active": true,
 					"category": "ELECTRICITY",
 					"bindingRule": "B00-U00"
@@ -35,6 +41,10 @@
 					"agreementId": "512840",
 					"description": "Förvaltat Anvisat rörligt pris+22,4 öre fastavg 59 kr/må",
 					"binding": false,
+					"placementStatus": "Frånkopplad",
+					"netAreaId": "SUV",
+					"siteAddress": "Öresundsgrundet 9",
+					"production": true,
 					"active": false,
 					"category": "ELECTRICITY_TRADE",
 					"bindingRule": "Anvisat, 14 dagars uppsägning"
