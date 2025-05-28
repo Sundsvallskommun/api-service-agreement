@@ -1,0 +1,5 @@
+{
+	"detail": "datawarehousereader error: {detail=PartyId '593f52db-8a21-494e-8e3c-12034efaa4c1' could not be found as a private customer or an enterprise customer, status=404 Not Found, title=Not Found}",
+	"title": "Not Found",
+	"status": 404
+}

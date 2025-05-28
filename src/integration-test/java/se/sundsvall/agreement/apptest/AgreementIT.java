@@ -204,4 +204,15 @@ class AgreementIT extends AbstractAppTest {
 			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
+
+	@Test
+	void test18_getAgreementsForNonExistingParty() {
+
+		setupCall()
+			.withServicePath("/2281/agreements/593f52db-8a21-494e-8e3c-12034efaa4c1")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(NOT_FOUND)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
 }
