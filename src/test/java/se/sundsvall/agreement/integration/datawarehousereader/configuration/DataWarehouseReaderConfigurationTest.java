@@ -3,9 +3,11 @@ package se.sundsvall.agreement.integration.datawarehousereader.configuration;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.agreement.integration.datawarehousereader.configuration.DataWarehouseReaderConfiguration.CLIENT_ID;
 
 import feign.codec.ErrorDecoder;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -54,11 +56,11 @@ class DataWarehouseReaderConfigurationTest {
 
 		// Mock static FeignMultiCustomizer to enable spy and to verify that static method is being called
 		try (MockedStatic<FeignMultiCustomizer> feignMultiCustomizerMock = Mockito.mockStatic(FeignMultiCustomizer.class)) {
-			feignMultiCustomizerMock.when(() -> FeignMultiCustomizer.create()).thenReturn(feignMultiCustomizerSpy);
+			feignMultiCustomizerMock.when(FeignMultiCustomizer::create).thenReturn(feignMultiCustomizerSpy);
 
 			configuration.feignBuilderCustomizer(clientRepositoryMock, propertiesMock);
 
-			feignMultiCustomizerMock.verify(() -> FeignMultiCustomizer.create());
+			feignMultiCustomizerMock.verify(FeignMultiCustomizer::create);
 		}
 
 		// Verifications
@@ -73,6 +75,7 @@ class DataWarehouseReaderConfigurationTest {
 		// Assert ErrorDecoder
 		assertThat(errorDecoderCaptor.getValue())
 			.isInstanceOf(ProblemErrorDecoder.class)
-			.hasFieldOrPropertyWithValue("integrationName", CLIENT_ID);
+			.hasFieldOrPropertyWithValue("integrationName", CLIENT_ID)
+			.hasFieldOrPropertyWithValue("bypassResponseCodes", List.of(NOT_FOUND.value()));
 	}
 }
