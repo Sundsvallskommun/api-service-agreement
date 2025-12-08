@@ -12,7 +12,7 @@ import java.util.Objects;
 @Schema(description = "Agreement party model")
 public class AgreementParty {
 
-	@Schema(description = "Customer identifier at the supplier of the agreement", example = "81471222", accessMode = READ_ONLY)
+	@Schema(description = "Customer identifier at the supplier of the agreement", examples = "81471222", accessMode = READ_ONLY)
 	private String customerId;
 
 	@ArraySchema(schema = @Schema(implementation = Agreement.class, accessMode = READ_ONLY))

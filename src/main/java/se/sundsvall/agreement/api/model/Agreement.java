@@ -11,52 +11,52 @@ import java.util.Objects;
 @Schema(description = "Agreement model")
 public class Agreement {
 
-	@Schema(description = "Customer identifier at the supplier of the agreement", example = "81471222", accessMode = READ_ONLY)
+	@Schema(description = "Customer identifier at the supplier of the agreement", examples = "81471222", accessMode = READ_ONLY)
 	private String customerId;
 
-	@Schema(description = "Agreement identifier", example = "223344-A", accessMode = READ_ONLY)
+	@Schema(description = "Agreement identifier", examples = "223344-A", accessMode = READ_ONLY)
 	private String agreementId;
 
-	@Schema(description = "Billing identifier", example = "111222333", accessMode = READ_ONLY)
+	@Schema(description = "Billing identifier", examples = "111222333", accessMode = READ_ONLY)
 	private String billingId;
 
 	@Schema(implementation = Category.class, accessMode = READ_ONLY)
 	private Category category;
 
-	@Schema(description = "Description", example = "The master agreement", accessMode = READ_ONLY)
+	@Schema(description = "Description", examples = "The master agreement", accessMode = READ_ONLY)
 	private String description;
 
-	@Schema(description = "Id of the facility connected to the agreement", example = "1223334", accessMode = READ_ONLY)
+	@Schema(description = "Id of the facility connected to the agreement", examples = "1223334", accessMode = READ_ONLY)
 	private String facilityId;
 
-	@Schema(description = "Signal indicating whether the agreement is the main agreement or not", example = "true", accessMode = READ_ONLY)
+	@Schema(description = "Signal indicating whether the agreement is the main agreement or not", examples = "true", accessMode = READ_ONLY)
 	private boolean mainAgreement;
 
-	@Schema(description = "Signal indicating whether the agreement has a binding period or not", example = "true", accessMode = READ_ONLY)
+	@Schema(description = "Signal indicating whether the agreement has a binding period or not", examples = "true", accessMode = READ_ONLY)
 	private boolean binding;
 
-	@Schema(description = "Description of the binding rule in cases where the agreement has a binding period", nullable = true, example = "12 mån bindning", accessMode = READ_ONLY)
+	@Schema(description = "Description of the binding rule in cases where the agreement has a binding period", nullable = true, examples = "12 mån bindning", accessMode = READ_ONLY)
 	private String bindingRule;
 
-	@Schema(description = "Placement status for agreement", example = "Tillkopplad", accessMode = READ_ONLY)
+	@Schema(description = "Placement status for agreement", examples = "Tillkopplad", accessMode = READ_ONLY)
 	private String placementStatus;
 
-	@Schema(description = "Net area id for agreement", example = "SUV", accessMode = READ_ONLY)
+	@Schema(description = "Net area id for agreement", examples = "SUV", accessMode = READ_ONLY)
 	private String netAreaId;
 
-	@Schema(description = "Site address connected to the agreement", example = "Första gatan 2", accessMode = READ_ONLY)
+	@Schema(description = "Site address connected to the agreement", examples = "Första gatan 2", accessMode = READ_ONLY)
 	private String siteAddress;
 
-	@Schema(description = "Signal if the agreement is a production agreement or not (can be null if not applicable)", example = "true", nullable = true, accessMode = READ_ONLY)
+	@Schema(description = "Signal if the agreement is a production agreement or not (can be null if not applicable)", examples = "true", nullable = true, accessMode = READ_ONLY)
 	private Boolean production;
 
-	@Schema(description = "Start date of the agreement", example = "2022-01-01", accessMode = READ_ONLY)
+	@Schema(description = "Start date of the agreement", examples = "2022-01-01", accessMode = READ_ONLY)
 	private LocalDate fromDate;
 
-	@Schema(description = "End date of the agreement", example = "2022-12-31", accessMode = READ_ONLY)
+	@Schema(description = "End date of the agreement", examples = "2022-12-31", accessMode = READ_ONLY)
 	private LocalDate toDate;
 
-	@Schema(description = "Signal if the agreement is active or not", example = "true", accessMode = READ_ONLY)
+	@Schema(description = "Signal if the agreement is active or not", examples = "true", accessMode = READ_ONLY)
 	private boolean active;
 
 	public static Agreement create() {

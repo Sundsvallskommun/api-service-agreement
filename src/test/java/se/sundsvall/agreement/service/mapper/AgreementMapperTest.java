@@ -41,6 +41,47 @@ class AgreementMapperTest {
 	private static final Boolean PRODUCTION = true;
 	private static final String SITE_ADDRESS = "siteAddress";
 
+	/**
+	 * Utility method returning dataWarehouseReader response with a list of size x agreements belonging to the same customer
+	 * where binding is false and mainAgreement is true
+	 */
+	private static generated.se.sundsvall.datawarehousereader.AgreementResponse createResponse(final int size) {
+		return createResponse(size, true, false, true);
+	}
+
+	/**
+	 * Utility method returning dataWarehouseReader response with a list of size x agreements with different data depending
+	 * on incoming settings
+	 */
+	private static generated.se.sundsvall.datawarehousereader.AgreementResponse createResponse(final int size, final boolean sameCustomer, final boolean binding, final boolean mainAgreement) {
+		final var meta = new PagingAndSortingMetaData().totalRecords((long) size);
+		final var response = new generated.se.sundsvall.datawarehousereader.AgreementResponse();
+		response.meta(meta);
+
+		for (var i = 0; i < size; i++) {
+			response.addAgreementsItem(new Agreement()
+				.agreementId(AGREEMENT_ID + i)
+				.billingId(BILLING_ID + i)
+				.binding(binding)
+				.bindingRule(binding ? BINDING_RULE : null)
+				.category(Category.COMMUNICATION)
+				.customerNumber(CUSTOMER_ID + (sameCustomer ? 0 : i))
+				.description(DESCRIPTION + i)
+				.facilityId(FACILITY_ID)
+				.fromDate(now().minusYears(i))
+				.mainAgreement(mainAgreement)
+				.partyId(PARTY_ID + (sameCustomer ? 0 : i))
+				.toDate(now().plusYears(i))
+				.active((i % 2) == 0)
+				.netAreaId(NET_AREA_ID)
+				.placementStatus(PLACEMENT_STATUS)
+				.production(PRODUCTION)
+				.siteAddress(SITE_ADDRESS));
+		}
+
+		return response;
+	}
+
 	@Test
 	void testToCategories() {
 		assertThat(toCategories(null)).isEmpty();
@@ -103,11 +144,11 @@ class AgreementMapperTest {
 	@ValueSource(ints = {
 		1, 2
 	})
-	void testToAgreementPartiesAllAgreementsBelongToSameParty(int agreementSize) {
+	void testToAgreementPartiesAllAgreementsBelongToSameParty(final int agreementSize) {
 		final var agreementParties = toAgreementParties(createResponse(agreementSize));
 		assertThat(agreementParties).isNotNull().hasSize(1);
 
-		final var agreementParty = agreementParties.get(0);
+		final var agreementParty = agreementParties.getFirst();
 		assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + "0");
 
 		assertThat(agreementParty).isNotNull().extracting(AgreementParty::getAgreements).asInstanceOf(LIST).hasSize(agreementSize);
@@ -126,14 +167,14 @@ class AgreementMapperTest {
 			assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + i);
 
 			assertThat(agreementParty).extracting(AgreementParty::getAgreements).asInstanceOf(LIST).hasSize(1);
-			assertAgreementValues(agreementParty.getAgreements().get(0), i, true, false, (i % 2) == 0, now().plusYears(i));
+			assertAgreementValues(agreementParty.getAgreements().getFirst(), i, true, false, (i % 2) == 0, now().plusYears(i));
 		}
 	}
 
 	@Test
 	void testToAgreementPartiesAgreementsForNonActiveAgreements() {
 		final var dataWarehouseReaderResponse = createResponse(2, false, true, false);
-		dataWarehouseReaderResponse.getAgreements().stream().forEach(agreement -> agreement.setToDate(now().minusDays(1)));
+		dataWarehouseReaderResponse.getAgreements().forEach(agreement -> agreement.setToDate(now().minusDays(1)));
 
 		final var agreementParties = toAgreementParties(dataWarehouseReaderResponse);
 		assertThat(agreementParties).isNotNull().hasSize(2);
@@ -143,25 +184,25 @@ class AgreementMapperTest {
 			assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + i);
 
 			assertThat(agreementParty).extracting(AgreementParty::getAgreements).asInstanceOf(LIST).hasSize(1);
-			assertAgreementValues(agreementParty.getAgreements().get(0), i, true, false, (i % 2) == 0, now().minusDays(1));
+			assertAgreementValues(agreementParty.getAgreements().getFirst(), i, true, false, (i % 2) == 0, now().minusDays(1));
 		}
 	}
 
 	@Test
 	void testToAgreementPartiesAgreementsForAgreementsWithNoEndDate() {
 		final var dataWarehouseReaderResponse = createResponse(1);
-		dataWarehouseReaderResponse.getAgreements().stream().forEach(agreement -> agreement.setToDate(null));
+		dataWarehouseReaderResponse.getAgreements().forEach(agreement -> agreement.setToDate(null));
 
 		final var agreementParties = toAgreementParties(dataWarehouseReaderResponse);
 
-		final var agreementParty = agreementParties.get(0);
+		final var agreementParty = agreementParties.getFirst();
 		assertThat(agreementParty.getCustomerId()).isEqualTo(CUSTOMER_ID + "0");
 
 		assertThat(agreementParty).isNotNull().extracting(AgreementParty::getAgreements).asInstanceOf(LIST).hasSize(1);
-		assertAgreementValues(agreementParty.getAgreements().get(0), 0, false, true, true, null);
+		assertAgreementValues(agreementParty.getAgreements().getFirst(), 0, false, true, true, null);
 	}
 
-	private void assertAgreementValues(se.sundsvall.agreement.api.model.Agreement agreement, int i, boolean bound, boolean mainAgreement, boolean active, LocalDate toDate) {
+	private void assertAgreementValues(final se.sundsvall.agreement.api.model.Agreement agreement, final int i, final boolean bound, final boolean mainAgreement, final boolean active, final LocalDate toDate) {
 		assertThat(agreement.isActive()).isEqualTo(active);
 		assertThat(agreement.getAgreementId()).isEqualTo(AGREEMENT_ID + i);
 		assertThat(agreement.getBillingId()).isEqualTo(BILLING_ID + i);
@@ -179,52 +220,11 @@ class AgreementMapperTest {
 
 	@ParameterizedTest
 	@EnumSource(se.sundsvall.agreement.api.model.Category.class)
-	void testMapFromDataWarehouseReaderCategories(se.sundsvall.agreement.api.model.Category category) {
+	void testMapFromDataWarehouseReaderCategories(final se.sundsvall.agreement.api.model.Category category) {
 		final var dataWarehouseReaderResponse = createResponse(1);
-		dataWarehouseReaderResponse.getAgreements().get(0).setCategory(toCategory(category));
+		dataWarehouseReaderResponse.getAgreements().getFirst().setCategory(toCategory(category));
 
 		final var agreementParties = toAgreementParties(dataWarehouseReaderResponse);
-		assertThat(agreementParties.get(0).getAgreements().get(0).getCategory()).isEqualTo(category);
-	}
-
-	/**
-	 * Utility method returning dataWarehouseReader response with list of size x agreements belonging to same customer where
-	 * binding is false and mainAgreement is true
-	 */
-	private static generated.se.sundsvall.datawarehousereader.AgreementResponse createResponse(int size) {
-		return createResponse(size, true, false, true);
-	}
-
-	/**
-	 * Utility method returning dataWarehouseReader response with list of size x agreements with different data depending on
-	 * incoming settings
-	 */
-	private static generated.se.sundsvall.datawarehousereader.AgreementResponse createResponse(int size, boolean sameCustomer, boolean binding, boolean mainAgreement) {
-		final var meta = new PagingAndSortingMetaData().totalRecords((long) size);
-		final var response = new generated.se.sundsvall.datawarehousereader.AgreementResponse();
-		response.meta(meta);
-
-		for (var i = 0; i < size; i++) {
-			response.addAgreementsItem(new Agreement()
-				.agreementId(AGREEMENT_ID + i)
-				.billingId(BILLING_ID + i)
-				.binding(binding)
-				.bindingRule(binding ? BINDING_RULE : null)
-				.category(Category.COMMUNICATION)
-				.customerNumber(CUSTOMER_ID + (sameCustomer ? 0 : i))
-				.description(DESCRIPTION + i)
-				.facilityId(FACILITY_ID)
-				.fromDate(now().minusYears(i))
-				.mainAgreement(mainAgreement)
-				.partyId(PARTY_ID + (sameCustomer ? 0 : i))
-				.toDate(now().plusYears(i))
-				.active((i % 2) == 0)
-				.netAreaId(NET_AREA_ID)
-				.placementStatus(PLACEMENT_STATUS)
-				.production(PRODUCTION)
-				.siteAddress(SITE_ADDRESS));
-		}
-
-		return response;
+		assertThat(agreementParties.getFirst().getAgreements().getFirst().getCategory()).isEqualTo(category);
 	}
 }
