@@ -7,7 +7,7 @@ import se.sundsvall.dept44.models.api.paging.AbstractParameterPagingBase;
 @Schema(description = "Agreement request parameters model")
 public class AgreementParameters extends AbstractParameterPagingBase {
 
-	@Schema(description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", example = "true")
+	@Schema(description = "Signal if only active or all agreements should be included in response, default is to only return active agreements.", examples = "true")
 	private boolean onlyActive = true;
 
 	public static AgreementParameters create() {
