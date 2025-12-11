@@ -6,7 +6,7 @@ _A component within the [DataWarehouseReader](https://github.com/Sundsvallskommu
 
 ### Prerequisites
 
-- **Java 21 or higher**
+- **Java 25 or higher**
 - **Maven**
 - **Git**
 - **[Dependent Microservices](#dependencies)**
