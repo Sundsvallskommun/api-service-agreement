@@ -1,18 +1,5 @@
 package se.sundsvall.agreement.service;
 
-import static java.util.Collections.emptyList;
-import static java.util.List.of;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
-
 import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +19,19 @@ import se.sundsvall.agreement.api.model.AgreementParty;
 import se.sundsvall.agreement.api.model.AgreementResponse;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.service.mapper.AgreementMapper;
+
+import static java.util.Collections.emptyList;
+import static java.util.List.of;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 
 @ExtendWith(MockitoExtension.class)
 class AgreementServiceTest {

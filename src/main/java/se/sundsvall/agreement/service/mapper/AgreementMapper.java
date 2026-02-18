@@ -1,10 +1,5 @@
 package se.sundsvall.agreement.service.mapper;
 
-import static java.util.Collections.emptyList;
-import static java.util.Objects.isNull;
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.BooleanUtils.toBoolean;
-
 import generated.se.sundsvall.datawarehousereader.AgreementResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +8,11 @@ import java.util.Map;
 import se.sundsvall.agreement.api.model.Agreement;
 import se.sundsvall.agreement.api.model.AgreementParty;
 import se.sundsvall.agreement.api.model.Category;
+
+import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.BooleanUtils.toBoolean;
 
 public final class AgreementMapper {
 

@@ -1,13 +1,5 @@
 package se.sundsvall.agreement.api;
 
-import static java.util.UUID.randomUUID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +16,14 @@ import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.api.model.PagedAgreementResponse;
 import se.sundsvall.agreement.service.AgreementService;
 import se.sundsvall.dept44.models.api.paging.PagingMetaData;
+
+import static java.util.UUID.randomUUID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
