@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "4.1"
 servers:
-- url: http://localhost:55029
+- url: http://localhost:51147
   description: Generated server url
 tags:
 - name: Paged Agreement
@@ -244,12 +244,12 @@ components:
     Problem:
       type: object
       properties:
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         instance:
           type: string
           format: uri
@@ -262,11 +262,11 @@ components:
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -376,12 +376,12 @@ components:
                 type: boolean
         message:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         instance:
           type: string
           format: uri
@@ -451,14 +451,16 @@ components:
           format: int32
           default: 1
           description: Page number
-          example: 1
+          examples:
+          - "1"
           minimum: 1
         limit:
           type: integer
           format: int32
           description: Result size per page. Maximum allowed value is dynamically
             configured
-          example: 15
+          examples:
+          - "15"
           minimum: 1
         onlyActive:
           type: boolean
@@ -590,31 +592,36 @@ components:
           type: integer
           format: int32
           description: Current page
-          example: 5
+          examples:
+          - "5"
           readOnly: true
         limit:
           type: integer
           format: int32
           description: Displayed objects per page
-          example: 20
+          examples:
+          - "20"
           readOnly: true
         count:
           type: integer
           format: int32
           description: Displayed objects on current page
-          example: 13
+          examples:
+          - "13"
           readOnly: true
         totalRecords:
           type: integer
           format: int64
           description: Total amount of hits based on provided search parameters
-          example: 98
+          examples:
+          - "98"
           readOnly: true
         totalPages:
           type: integer
           format: int32
           description: Total amount of pages based on provided search parameters
-          example: 23
+          examples:
+          - "23"
           readOnly: true
     AgreementParty:
       type: object

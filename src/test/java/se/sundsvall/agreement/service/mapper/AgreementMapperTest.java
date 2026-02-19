@@ -1,5 +1,16 @@
 package se.sundsvall.agreement.service.mapper;
 
+import generated.se.sundsvall.datawarehousereader.Agreement;
+import generated.se.sundsvall.datawarehousereader.Category;
+import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
+import java.time.LocalDate;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import se.sundsvall.agreement.api.model.AgreementParty;
+
 import static java.time.LocalDate.now;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,17 +26,6 @@ import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreementP
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreements;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategories;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
-
-import generated.se.sundsvall.datawarehousereader.Agreement;
-import generated.se.sundsvall.datawarehousereader.Category;
-import generated.se.sundsvall.datawarehousereader.PagingAndSortingMetaData;
-import java.time.LocalDate;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import se.sundsvall.agreement.api.model.AgreementParty;
 
 class AgreementMapperTest {
 

@@ -1,14 +1,14 @@
 package se.sundsvall.agreement.service;
 
-import static org.apache.commons.lang3.ObjectUtils.allNotNull;
-import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategories;
-import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
-
 import generated.se.sundsvall.datawarehousereader.AgreementResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.integration.datawarehousereader.DataWarehouseReaderClient;
+
+import static org.apache.commons.lang3.ObjectUtils.allNotNull;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategories;
+import static se.sundsvall.agreement.service.mapper.AgreementMapper.toCategory;
 
 @Service
 public class AgreementPartyProvider {
