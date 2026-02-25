@@ -2,16 +2,16 @@ package se.sundsvall.agreement.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
 import se.sundsvall.agreement.api.model.AgreementParameters;
 import se.sundsvall.agreement.api.model.AgreementResponse;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.api.model.PagedAgreementResponse;
 import se.sundsvall.dept44.models.api.paging.PagingMetaData;
+import se.sundsvall.dept44.problem.Problem;
 
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreementParties;
 import static se.sundsvall.agreement.service.mapper.AgreementMapper.toAgreements;
 
