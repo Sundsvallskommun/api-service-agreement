@@ -12,13 +12,13 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.agreement.api.model.Agreement;
 import se.sundsvall.agreement.api.model.AgreementParameters;
 import se.sundsvall.agreement.api.model.AgreementParty;
 import se.sundsvall.agreement.api.model.AgreementResponse;
 import se.sundsvall.agreement.api.model.Category;
 import se.sundsvall.agreement.service.mapper.AgreementMapper;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 
 import static java.util.Collections.emptyList;
 import static java.util.List.of;
@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.agreement.api.model.Category.WASTE_MANAGEMENT;
 
 @ExtendWith(MockitoExtension.class)
@@ -95,8 +95,7 @@ class AgreementServiceTest {
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyProviderMock).getAgreementsByCategoryAndFacility(municipalityId, category, facilityId, onlyActive);
 
-			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
-			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
+			assertThat(exception.getStatus()).isEqualTo(NOT_FOUND);
 			assertThat(exception.getMessage()).isEqualTo("Not Found: No matching agreements were found for facility with id 'facilityId' and category 'WASTE_MANAGEMENT'");
 			assertThat(exception.getDetail()).isEqualTo("No matching agreements were found for facility with id 'facilityId' and category 'WASTE_MANAGEMENT'");
 		}
@@ -146,8 +145,7 @@ class AgreementServiceTest {
 			agreementMapperMock.verify(() -> AgreementMapper.toAgreementParties(agreementResponseMock));
 			verify(agreementPartyProviderMock).getAgreementsByPartyIdAndCategories(municipalityId, partyId, filters, onlyActive);
 
-			assertThat(exception.getStatus().getStatusCode()).isEqualTo(NOT_FOUND.getStatusCode());
-			assertThat(exception.getStatus().getReasonPhrase()).isEqualTo(NOT_FOUND.getReasonPhrase());
+			assertThat(exception.getStatus()).isEqualTo(NOT_FOUND);
 			assertThat(exception.getMessage()).isEqualTo("Not Found: No matching agreements were found for party with id 'partyId'");
 			assertThat(exception.getDetail()).isEqualTo("No matching agreements were found for party with id 'partyId'");
 		}
