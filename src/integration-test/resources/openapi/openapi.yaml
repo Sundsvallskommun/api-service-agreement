@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "4.1"
 servers:
-- url: http://localhost:8080
+- url: http://localhost:54080
   description: Generated server url
 tags:
 - name: Paged Agreement
@@ -272,10 +272,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
         detail:
           type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
         instance:
           type: string
           format: uri
@@ -324,7 +324,7 @@ components:
           default: 1
           description: Page number
           examples:
-          - "1"
+          - 1
           minimum: 1
         limit:
           type: integer
@@ -332,7 +332,7 @@ components:
           description: Result size per page. Maximum allowed value is dynamically
             configured
           examples:
-          - "15"
+          - 15
           minimum: 1
         onlyActive:
           type: boolean
@@ -392,7 +392,9 @@ components:
           - "true"
           readOnly: true
         bindingRule:
-          type: string
+          type:
+          - string
+          - "null"
           description: Description of the binding rule in cases where the agreement
             has a binding period
           examples:
@@ -417,7 +419,9 @@ components:
           - Första gatan 2
           readOnly: true
         production:
-          type: boolean
+          type:
+          - boolean
+          - "null"
           description: Signal if the agreement is a production agreement or not (can
             be null if not applicable)
           examples:
@@ -464,35 +468,35 @@ components:
           format: int32
           description: Current page
           examples:
-          - "5"
+          - 5
           readOnly: true
         limit:
           type: integer
           format: int32
           description: Displayed objects per page
           examples:
-          - "20"
+          - 20
           readOnly: true
         count:
           type: integer
           format: int32
           description: Displayed objects on current page
           examples:
-          - "13"
+          - 13
           readOnly: true
         totalRecords:
           type: integer
           format: int64
           description: Total amount of hits based on provided search parameters
           examples:
-          - "98"
+          - 98
           readOnly: true
         totalPages:
           type: integer
           format: int32
           description: Total amount of pages based on provided search parameters
           examples:
-          - "23"
+          - 23
           readOnly: true
     AgreementParty:
       type: object
